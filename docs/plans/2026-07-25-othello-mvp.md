@@ -25,8 +25,10 @@ without coupling shared site code to Othello.
 2. **Game core — complete:** domain types, pure engine, rule tests, local
    two-player UI, legal-move and last-move markers, automatic pass, scoring,
    undo, new game, and resign.
-3. **AI:** beginner and intermediate strategies, bounded advanced search,
-   worker transport, safe fallback, deterministic fixtures.
+3. **AI — complete:** beginner random and intermediate phase-aware heuristic
+   strategies, iterative-deepening minimax with alpha-beta pruning, computation
+   deadline, deeper endgame search, worker transport, safe fallback, and
+   deterministic fixtures.
 4. **Persistence:** validators and adapters for settings, recent games, session,
    and stats; autosave/resume/delete UI; failure-path tests.
 5. **Release:** explanatory HTML, accessibility and responsive audits, social
@@ -55,5 +57,12 @@ React or browser APIs.
 - `npm run typecheck`: passed
 - `npm run build`: passed (3 application routes)
 
-Phase 3 is next: beginner and intermediate strategies, bounded advanced search,
-Web Worker transport, and deterministic AI fixtures.
+## Phase 3 verification
+
+- `npm test`: passed (15 tests)
+- `npm run lint`: passed with no warnings
+- `npm run typecheck`: passed
+- `npm run build`: passed with the AI worker included
+
+Phase 4 is next: validated versioned saves, autosave/resume/delete, personal
+stats, recent games, and storage failure-path tests.

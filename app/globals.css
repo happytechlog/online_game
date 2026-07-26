@@ -146,6 +146,13 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .othello-page-heading > p { color: var(--muted); font-size: 0.95rem; margin: 20px 0 0; }
 .local-mode-badge { align-items: center; background: var(--green-soft); border: 1px solid #cce3d4; border-radius: 999px; color: var(--green); display: inline-flex; font-size: 0.75rem; font-weight: 800; gap: 8px; margin-bottom: 7px; padding: 9px 13px; }
 .local-mode-badge i { background: var(--green); border-radius: 50%; height: 7px; width: 7px; }
+.game-settings { align-items: end; display: flex; flex-wrap: wrap; gap: 14px 28px; padding-top: 34px; }
+.setting-group { display: flex; flex-direction: column; gap: 8px; }
+.setting-group > span { color: var(--muted); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.segmented-control { background: #edf1eb; border: 1px solid #e0e7e0; border-radius: 12px; display: flex; padding: 3px; }
+.segmented-control button { align-items: center; background: transparent; border: 0; border-radius: 9px; color: var(--muted); cursor: pointer; display: inline-flex; font-size: 0.75rem; font-weight: 800; gap: 7px; justify-content: center; min-height: 38px; padding: 0 14px; }
+.segmented-control button[aria-pressed="true"] { background: white; box-shadow: 0 2px 9px rgba(20, 50, 34, 0.1); color: var(--green); }
+.color-control .score-disc { height: 15px; width: 15px; }
 .othello-game-layout { align-items: start; display: grid; gap: 34px; grid-template-columns: minmax(0, 1fr) 300px; padding-block: 48px 100px; }
 .othello-board-card { background: #123e2d; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; box-shadow: 0 28px 70px rgba(18, 62, 45, 0.22); padding: clamp(12px, 2.2vw, 24px); position: relative; }
 .othello-board { background: #16734b; border: 2px solid rgba(0, 0, 0, 0.22); border-radius: 12px; display: grid; grid-template-columns: repeat(8, 1fr); overflow: hidden; width: 100%; }
@@ -166,10 +173,20 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .game-result p { color: var(--muted); margin: 9px 0 0; }
 .game-result small { color: var(--muted); margin-top: 8px; }
 .game-result .button { margin-top: 20px; }
+.ai-thinking { align-items: center; backdrop-filter: blur(8px); background: rgba(250, 252, 247, 0.94); border: 1px solid white; border-radius: 999px; bottom: 38px; box-shadow: 0 12px 32px rgba(8, 34, 23, 0.24); color: var(--green-dark); display: flex; font-size: 0.78rem; font-weight: 800; gap: 11px; left: 50%; padding: 11px 17px; position: absolute; transform: translateX(-50%); white-space: nowrap; z-index: 5; }
+.thinking-dots { display: flex; gap: 3px; }
+.thinking-dots i { animation: thinking-pulse 900ms ease-in-out infinite; background: var(--green); border-radius: 50%; height: 5px; width: 5px; }
+.thinking-dots i:nth-child(2) { animation-delay: 150ms; }
+.thinking-dots i:nth-child(3) { animation-delay: 300ms; }
+@keyframes thinking-pulse {
+  0%, 100% { opacity: 0.25; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-3px); }
+}
 .othello-sidebar { display: flex; flex-direction: column; gap: 14px; }
 .turn-card, .score-card { background: white; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 10px 30px rgba(28, 61, 43, 0.05); padding: 22px; }
 .turn-label { color: var(--muted); display: block; font-size: 0.72rem; font-weight: 750; }
 .turn-player { align-items: center; display: flex; font-size: 1.35rem; gap: 12px; margin-top: 11px; }
+.turn-player small { background: var(--green-soft); border-radius: 999px; color: var(--green); font-size: 0.64rem; margin-left: auto; padding: 5px 8px; }
 .turn-card p { border-top: 1px solid var(--line); color: var(--muted); font-size: 0.77rem; line-height: 1.55; margin: 18px 0 0; padding-top: 16px; }
 .score-disc { border: 1px solid rgba(0, 0, 0, 0.18); border-radius: 50%; display: block; height: 22px; width: 22px; }
 .score-disc.black { background: #17211c; }
@@ -224,6 +241,8 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .othello-title-row { align-items: start; flex-direction: column; gap: 22px; }
   .othello-title-row h1 { font-size: 4.5rem; }
   .local-mode-badge { order: -1; }
+  .game-settings { gap: 14px; overflow-x: auto; padding-top: 28px; }
+  .setting-group { flex: 0 0 auto; }
   .othello-game-layout { grid-template-columns: 1fr; padding-block: 34px 72px; }
   .othello-sidebar { display: grid; grid-template-columns: 1fr 1fr; }
   .turn-card { grid-row: span 2; }
@@ -243,4 +262,5 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+  .thinking-dots i { animation: none; opacity: 0.7; }
 }

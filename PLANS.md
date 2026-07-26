@@ -24,9 +24,9 @@ results after each phase.
 
 ## Phase 3 — Computer players
 
-- [ ] Add beginner random and intermediate heuristic strategies.
-- [ ] Add bounded minimax with alpha-beta pruning and a safe fallback.
-- [ ] Run advanced search in a Web Worker and test AI decisions.
+- [x] Add beginner random and intermediate heuristic strategies.
+- [x] Add bounded minimax with alpha-beta pruning and a safe fallback.
+- [x] Run advanced search in a Web Worker and test AI decisions.
 
 ## Phase 4 — Local persistence
 
