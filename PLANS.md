@@ -44,3 +44,34 @@ results after each phase.
 The Othello MVP is release-ready locally. Production publishing remains a
 separate operation because uploading the repository to the private hosting
 source requires explicit approval.
+
+## Phase 6 — 2048 rules and engine
+
+- [x] Finalize the original 2048 rules and UX in
+  `docs/game-specs/2048.md`.
+- [ ] Implement a pure, deterministic 4×4 engine with injected tile spawning.
+- [ ] Cover movement, single-merge behavior, scoring, 2048 detection,
+  continuation, and game-over conditions with tests.
+
+## Phase 7 — 2048 play experience
+
+- [ ] Build the responsive board, score display, new-game control, win state,
+  continue action, and game-over state.
+- [ ] Support arrow keys, WASD, and touch swipes without adding undo.
+- [ ] Add Korean and English gameplay, guide, control, and FAQ content.
+
+## Phase 8 — 2048 persistence and site integration
+
+- [ ] Add validated, versioned autosave for the current game and best score.
+- [ ] Recover safely from malformed, unknown-version, and unavailable storage.
+- [ ] Add the `/games/2048` route, metadata, sitemap entry, recent-play support,
+  and change the catalog status to `available` only after verification.
+
+## Phase 9 — 2048 release quality
+
+- [ ] Audit keyboard, screen-reader, reduced-motion, contrast, and touch use.
+- [ ] Verify mobile and desktop layouts and route-specific SEO.
+- [ ] Run tests, lint, typecheck, and production build with no errors.
+
+Implementation details, acceptance criteria, and verification results belong in
+`docs/plans/2026-07-26-2048-mvp.md`.

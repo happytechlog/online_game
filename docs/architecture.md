@@ -39,15 +39,26 @@ unavailable storage falls back to defaults without interrupting play.
 
 Shared safe I/O and the recent-game schema live in `src/storage/`. Othello save,
 history validation, and stats remain inside `src/features/othello/storage/`.
-The UI pauses autosave when an older save awaits a resume/delete decision, so a
-fresh render cannot overwrite recoverable progress.
+The Othello UI pauses autosave when an older save awaits a resume/delete
+decision, so a fresh render cannot overwrite recoverable progress.
 
-## Othello execution model
+2048 current-game and best-score validation will remain inside
+`src/features/2048/storage/`. Each feature owns its schema and recovery policy
+while using the shared guarded I/O boundary.
 
-The engine accepts a position and returns legal results without side effects.
+## Game execution models
+
+The Othello engine accepts a position and returns legal results without side
+effects.
 Beginner and intermediate AI can run on the main thread within small budgets.
 Advanced search uses a Web Worker with request IDs, deadlines, cancellation,
 and a deterministic safe fallback. UI components never implement move legality.
+
+The 2048 engine accepts a board and direction and returns the moved board,
+merge score, and whether the board changed. Random tile position and value are
+injected after a successful move, keeping compression, merging, scoring, win,
+and game-over tests deterministic. React components translate keyboard, WASD,
+and swipe input into engine directions but never implement movement rules.
 
 ## SEO and localization
 
