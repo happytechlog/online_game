@@ -173,7 +173,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .saved-game-actions button { background: transparent; border: 0; border-radius: 9px; color: #735e15; cursor: pointer; font-size: 0.72rem; font-weight: 800; min-height: 44px; padding: 0 12px; }
 .saved-game-actions .resume-button { background: #715c18; color: white; }
 .othello-game-layout { align-items: start; display: grid; gap: 34px; grid-template-columns: minmax(0, 1fr) 300px; padding-block: 48px 100px; }
-.othello-board-card { background: #123e2d; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; box-shadow: 0 28px 70px rgba(18, 62, 45, 0.22); padding: clamp(12px, 2.2vw, 24px); position: relative; }
+.othello-board-card { background: #123e2d; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; box-shadow: 0 28px 70px rgba(18, 62, 45, 0.22); justify-self: center; padding: clamp(12px, 2.2vw, 24px); position: relative; width: min(100%, calc(100svh - 144px)); }
 .othello-board { background: #16734b; border: 2px solid rgba(0, 0, 0, 0.22); border-radius: 12px; display: grid; grid-template-columns: repeat(8, 1fr); overflow: hidden; width: 100%; }
 .othello-cell { align-items: center; aspect-ratio: 1; background: transparent; border: 0; border-bottom: 1px solid rgba(5, 51, 31, 0.55); border-right: 1px solid rgba(5, 51, 31, 0.55); cursor: default; display: flex; justify-content: center; padding: 8%; position: relative; }
 .othello-cell:nth-child(8n) { border-right: 0; }
@@ -308,6 +308,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .saved-game-banner { align-items: stretch; flex-direction: column; gap: 12px; width: calc(100% - 40px); }
   .saved-game-actions { justify-content: flex-end; }
   .othello-game-layout { grid-template-columns: 1fr; padding-block: 34px 72px; }
+  .othello-board-card { width: 100%; }
   .othello-sidebar { display: grid; grid-template-columns: 1fr 1fr; }
   .turn-card { grid-row: span 2; }
   .game-controls { grid-column: 1 / -1; }
@@ -325,8 +326,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .game-card-featured .game-art { min-height: 170px; }
   .hero-actions .button { width: 100%; }
   .othello-board-card { border-radius: 16px; padding: 9px; }
-  .othello-board-card { overflow-x: auto; }
-  .othello-board { border-radius: 8px; min-width: 352px; }
+  .othello-board { border-radius: 8px; }
   .othello-sidebar { display: flex; }
   .control-guide-grid { grid-template-columns: 1fr; }
   .control-guide-grid article, .difficulty-guide-grid article { min-height: auto; }
