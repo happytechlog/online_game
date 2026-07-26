@@ -11,7 +11,9 @@ export const metadata: Metadata = {
     description:
       "설치 없이 브라우저에서 바로 즐기는 무료 퍼즐과 보드 게임 모음.",
     url: "/games",
+    images: [{ url: "/og.png", width: 1536, height: 1024 }],
   },
+  alternates: { canonical: "/games" },
 };
 
 export default function GamesRoute() {

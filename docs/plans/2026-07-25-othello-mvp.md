@@ -32,8 +32,9 @@ without coupling shared site code to Othello.
 4. **Persistence — complete:** validators and adapters for settings, recent
    games, session history, and stats; autosave/resume/delete UI; failure-path
    tests; homepage recent-game continuation.
-5. **Release:** explanatory HTML, accessibility and responsive audits, social
-   metadata, full automated verification, and production deployment review.
+5. **Release — complete locally:** explanatory HTML, FAQ structured data,
+   accessibility and responsive audits, route metadata, social metadata, and
+   full automated verification. Hosting source upload remains approval-gated.
 
 ## Phase 1 verification
 
@@ -72,5 +73,14 @@ React or browser APIs.
 - `npm run typecheck`: passed
 - `npm run build`: passed
 
-Phase 5 is next: complete explanatory content and FAQ, accessibility and
-responsive audits, final SEO review, and release verification.
+## Phase 5 verification
+
+- `npm test`: passed (23 tests)
+- `npm run lint`: passed with no warnings
+- `npm run typecheck`: passed
+- `npm run build`: passed
+- Desktop audit: no document overflow, one H1, five H2 headings, no undersized
+  interactive targets.
+- Mobile audit: no document overflow, 44px board cells, no undersized
+  interactive targets.
+- Native FAQ disclosure interaction: passed.

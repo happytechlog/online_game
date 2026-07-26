@@ -36,7 +36,11 @@ results after each phase.
 
 ## Phase 5 — Release quality
 
-- [ ] Complete Othello guide, controls, difficulty details, and FAQ content.
-- [ ] Audit keyboard, screen-reader, reduced-motion, contrast, and touch use.
-- [ ] Verify mobile/desktop layouts and route-specific SEO.
-- [ ] Run tests, lint, typecheck, and production build with no errors.
+- [x] Complete Othello guide, controls, difficulty details, and FAQ content.
+- [x] Audit keyboard, screen-reader, reduced-motion, contrast, and touch use.
+- [x] Verify mobile/desktop layouts and route-specific SEO.
+- [x] Run tests, lint, typecheck, and production build with no errors.
+
+The Othello MVP is release-ready locally. Production publishing remains a
+separate operation because uploading the repository to the private hosting
+source requires explicit approval.

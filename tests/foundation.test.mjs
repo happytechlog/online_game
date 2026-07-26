@@ -62,3 +62,22 @@ test("publishes crawler discovery files and social artwork", async () => {
   assert.match(sitemap, /games\/othello/);
   assert.ok(image.byteLength > 100_000);
 });
+
+test("provides semantic Othello guide and FAQ SEO content", async () => {
+  const [guide, content, page] = await Promise.all([
+    source("src/features/othello/components/othello-guide.tsx"),
+    source("src/i18n/othello-content.ts"),
+    source("app/games/othello/page.tsx"),
+  ]);
+
+  assert.match(guide, /<section/);
+  assert.match(guide, /<h2/);
+  assert.match(guide, /<ol/);
+  assert.match(guide, /<details/);
+  assert.match(content, /introTitle/);
+  assert.match(content, /howTitle/);
+  assert.match(content, /faqTitle/);
+  assert.match(page, /FAQPage/);
+  assert.match(page, /application\/ld\+json/);
+  assert.match(page, /canonical/);
+});

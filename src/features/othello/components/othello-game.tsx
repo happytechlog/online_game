@@ -31,6 +31,7 @@ import {
   type SavedOthelloGame,
 } from "../storage/index.ts";
 import { markGameAsRecent } from "@/src/storage/recent-games";
+import { OthelloGuide } from "./othello-guide";
 
 function createSessionId() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -335,7 +336,7 @@ export function OthelloGame() {
       <section className="shell game-settings" aria-label={t("gameMode")}>
         <div className="setting-group">
           <span>{t("gameMode")}</span>
-          <div className="segmented-control">
+          <div className="segmented-control" role="group" aria-label={t("gameMode")}>
             <button
               aria-pressed={mode === "computer"}
               onClick={() => changeMode("computer")}
@@ -357,7 +358,7 @@ export function OthelloGame() {
           <>
             <div className="setting-group">
               <span>{t("difficulty")}</span>
-              <div className="segmented-control">
+              <div className="segmented-control" role="group" aria-label={t("difficulty")}>
                 {(["beginner", "intermediate", "advanced"] as const).map(
                   (level) => (
                     <button
@@ -374,7 +375,7 @@ export function OthelloGame() {
             </div>
             <div className="setting-group">
               <span>{t("humanColor")}</span>
-              <div className="segmented-control color-control">
+              <div className="segmented-control color-control" role="group" aria-label={t("humanColor")}>
                 {(["black", "white"] as const).map((color) => (
                   <button
                     aria-pressed={humanColor === color}
@@ -478,7 +479,7 @@ export function OthelloGame() {
         <aside className="othello-sidebar">
           <div className="turn-card">
             <span className="turn-label">{t("currentTurn")}</span>
-            <div className="turn-player">
+            <div className="turn-player" aria-live="polite">
               <span className={`score-disc ${state.currentPlayer}`} />
               <strong>{playerName(state.currentPlayer, language)}</strong>
               {currentPlayerOwner && <small>{currentPlayerOwner}</small>}
@@ -571,6 +572,7 @@ export function OthelloGame() {
           </div>
         </aside>
       </section>
+      <OthelloGuide />
     </main>
   );
 }

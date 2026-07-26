@@ -9,7 +9,9 @@ export const metadata: Metadata = {
     title: `${siteConfig.koreanName} | 무료 온라인 브라우저 게임`,
     description: siteConfig.koreanDescription,
     url: "/",
+    images: [{ url: "/og.png", width: 1536, height: 1024 }],
   },
+  alternates: { canonical: "/" },
 };
 
 export default function Home() {

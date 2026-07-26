@@ -52,3 +52,10 @@ The page includes bilingual introduction, rules, controls, AI descriptions, and
 FAQ as ordinary HTML. All cells expose coordinates and state to assistive
 technology. Keyboard and touch input receive equal support; color is never the
 only status cue.
+
+## Implementation status
+
+The MVP is complete through Phase 5: local two-player and three AI levels,
+worker-based advanced search, validated device-local saves and stats, recent
+games, bilingual guide content, FAQ structured data, and responsive
+accessibility verification.
