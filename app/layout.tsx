@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/next-script-for-ga -- Keep the site owner's Google Analytics snippet in the shared head. */
 import type { Metadata } from "next";
 import { LanguageProvider } from "@/src/components/providers/language-provider";
 import { SiteFooter } from "@/src/components/site-footer";
@@ -38,6 +39,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
+      <head>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-J3JQTW8ZFG"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-J3JQTW8ZFG');
+            `,
+          }}
+        />
+      </head>
       <body>
         <LanguageProvider>
           <a className="skip-link" href="#main-content">
