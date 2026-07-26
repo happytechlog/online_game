@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { OthelloPlaceholder } from "@/src/components/othello-placeholder";
+import { OthelloGame } from "@/src/features/othello/components/othello-game";
 import { siteConfig } from "@/src/config/site";
 
 export const metadata: Metadata = {
@@ -14,5 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function OthelloRoute() {
-  return <OthelloPlaceholder />;
+  return <OthelloGame />;
 }

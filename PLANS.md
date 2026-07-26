@@ -18,9 +18,9 @@ results after each phase.
 
 ## Phase 2 — Othello core
 
-- [ ] Implement a pure TypeScript 8×8 engine and immutable game history.
-- [ ] Cover legal moves, flipping, pass, end conditions, and scoring with tests.
-- [ ] Build local two-player controls, board UI, new game, resign, and undo.
+- [x] Implement a pure TypeScript 8×8 engine and immutable game history.
+- [x] Cover legal moves, flipping, pass, end conditions, and scoring with tests.
+- [x] Build local two-player controls, board UI, new game, resign, and undo.
 
 ## Phase 3 — Computer players
 

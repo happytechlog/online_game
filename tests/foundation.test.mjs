@@ -20,7 +20,7 @@ test("defines all phase-one routes with unique metadata", async () => {
   assert.match(othello, /title:\s*"오델로"/);
   assert.match(home, /<HomePage \/>/);
   assert.match(games, /<GamesPage \/>/);
-  assert.match(othello, /<OthelloPlaceholder \/>/);
+  assert.match(othello, /<OthelloGame \/>/);
 });
 
 test("keeps the game catalog centralized and extensible", async () => {

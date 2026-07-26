@@ -22,8 +22,9 @@ without coupling shared site code to Othello.
 1. **Foundation — complete:** routes, shared shell, central catalog, bilingual
    UI, browser-language selection, search, recommendation/recent placeholders,
    coming-soon cards, metadata, sitemap, and robots.
-2. **Game core — next:** domain types, pure engine, exhaustive rule tests,
-   local two-player reducer and UI, undo/new game/resign.
+2. **Game core — complete:** domain types, pure engine, rule tests, local
+   two-player UI, legal-move and last-move markers, automatic pass, scoring,
+   undo, new game, and resign.
 3. **AI:** beginner and intermediate strategies, bounded advanced search,
    worker transport, safe fallback, deterministic fixtures.
 4. **Persistence:** validators and adapters for settings, recent games, session,
@@ -46,3 +47,13 @@ All standard legal move and flip directions pass unit tests; forced passes and
 both end conditions are correct; two people can complete a match on one device;
 undo restores the exact prior immutable position; no engine module imports
 React or browser APIs.
+
+## Phase 2 verification
+
+- `npm test`: passed (10 tests)
+- `npm run lint`: passed with no warnings
+- `npm run typecheck`: passed
+- `npm run build`: passed (3 application routes)
+
+Phase 3 is next: beginner and intermediate strategies, bounded advanced search,
+Web Worker transport, and deterministic AI fixtures.
