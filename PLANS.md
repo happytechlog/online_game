@@ -30,9 +30,9 @@ results after each phase.
 
 ## Phase 4 — Local persistence
 
-- [ ] Add validated, versioned save, stats, settings, and recent-game schemas.
-- [ ] Add autosave, resume/delete, personal stats, and recent-play UI.
-- [ ] Test malformed JSON, unknown versions, invalid boards, and quota errors.
+- [x] Add validated, versioned save, stats, settings, and recent-game schemas.
+- [x] Add autosave, resume/delete, personal stats, and recent-play UI.
+- [x] Test malformed JSON, unknown versions, invalid boards, and quota errors.
 
 ## Phase 5 — Release quality
 

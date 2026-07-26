@@ -103,6 +103,16 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .recent-empty > span { color: var(--green); font-size: 1.5rem; }
 .recent-empty strong { font-size: 0.94rem; }
 .recent-empty p { color: var(--muted); font-size: 0.82rem; margin: 4px 0 0; }
+.recent-list { display: grid; gap: 12px; }
+.recent-game-card { align-items: center; background: rgba(255, 255, 255, 0.82); border: 1px solid #dce6dd; border-radius: 17px; display: grid; gap: 16px; grid-template-columns: auto 1fr auto; padding: 14px; transition: transform 160ms ease, box-shadow 160ms ease; }
+.recent-game-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.recent-game-icon { align-items: center; border-radius: 12px; display: flex; font-size: 0.75rem; font-weight: 900; height: 56px; justify-content: center; overflow: hidden; width: 56px; }
+.recent-game-icon.game-art-emerald { color: white; }
+.recent-game-card > span:nth-child(2) { display: flex; flex-direction: column; gap: 4px; }
+.recent-game-card strong { font-size: 0.92rem; }
+.recent-game-card small { color: var(--muted); font-size: 0.7rem; }
+.recent-action { color: var(--green); font-size: 0.75rem; font-weight: 850; }
+.recent-action i { font-style: normal; margin-left: 8px; }
 .page-hero { padding-block: 92px 42px; }
 .page-hero h1 { font-size: clamp(3rem, 7vw, 5.8rem); margin-block: 16px; }
 .page-hero p { font-size: 1.08rem; }
@@ -153,6 +163,15 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .segmented-control button { align-items: center; background: transparent; border: 0; border-radius: 9px; color: var(--muted); cursor: pointer; display: inline-flex; font-size: 0.75rem; font-weight: 800; gap: 7px; justify-content: center; min-height: 38px; padding: 0 14px; }
 .segmented-control button[aria-pressed="true"] { background: white; box-shadow: 0 2px 9px rgba(20, 50, 34, 0.1); color: var(--green); }
 .color-control .score-disc { height: 15px; width: 15px; }
+.saved-game-banner { align-items: center; background: #fff8df; border: 1px solid #efdd99; border-radius: 16px; display: flex; justify-content: space-between; margin-top: 20px; padding-block: 14px; width: calc(100% - 56px); }
+.saved-game-copy { align-items: center; display: flex; gap: 12px; }
+.saved-game-copy > span { color: #8d7219; font-size: 1.35rem; }
+.saved-game-copy div { display: flex; flex-direction: column; gap: 3px; }
+.saved-game-copy strong { color: #5d4c14; font-size: 0.82rem; }
+.saved-game-copy small { color: #8b7b48; font-size: 0.68rem; }
+.saved-game-actions { display: flex; gap: 8px; }
+.saved-game-actions button { background: transparent; border: 0; border-radius: 9px; color: #735e15; cursor: pointer; font-size: 0.72rem; font-weight: 800; min-height: 38px; padding: 0 12px; }
+.saved-game-actions .resume-button { background: #715c18; color: white; }
 .othello-game-layout { align-items: start; display: grid; gap: 34px; grid-template-columns: minmax(0, 1fr) 300px; padding-block: 48px 100px; }
 .othello-board-card { background: #123e2d; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; box-shadow: 0 28px 70px rgba(18, 62, 45, 0.22); padding: clamp(12px, 2.2vw, 24px); position: relative; }
 .othello-board { background: #16734b; border: 2px solid rgba(0, 0, 0, 0.22); border-radius: 12px; display: grid; grid-template-columns: repeat(8, 1fr); overflow: hidden; width: 100%; }
@@ -183,7 +202,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   50% { opacity: 1; transform: translateY(-3px); }
 }
 .othello-sidebar { display: flex; flex-direction: column; gap: 14px; }
-.turn-card, .score-card { background: white; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 10px 30px rgba(28, 61, 43, 0.05); padding: 22px; }
+.turn-card, .score-card, .stats-card { background: white; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 10px 30px rgba(28, 61, 43, 0.05); padding: 22px; }
 .turn-label { color: var(--muted); display: block; font-size: 0.72rem; font-weight: 750; }
 .turn-player { align-items: center; display: flex; font-size: 1.35rem; gap: 12px; margin-top: 11px; }
 .turn-player small { background: var(--green-soft); border-radius: 999px; color: var(--green); font-size: 0.64rem; margin-left: auto; padding: 5px 8px; }
@@ -196,6 +215,11 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .game-facts { border-top: 1px solid var(--line); display: flex; justify-content: space-between; margin-top: 10px; padding-top: 16px; }
 .game-facts span { color: var(--muted); display: flex; flex-direction: column; font-size: 0.68rem; gap: 4px; }
 .game-facts strong { color: var(--ink); font-size: 0.95rem; }
+.stats-card > span { color: var(--muted); display: block; font-size: 0.7rem; font-weight: 800; margin-bottom: 15px; }
+.stats-grid { display: grid; gap: 8px; grid-template-columns: repeat(4, 1fr); }
+.stats-grid span { align-items: center; color: var(--muted); display: flex; flex-direction: column; font-size: 0.62rem; gap: 3px; }
+.stats-grid strong { color: var(--ink); font-size: 1.05rem; }
+.local-stats-grid { grid-template-columns: repeat(2, 1fr); }
 .pass-alert { align-items: start; background: #fff8df; border: 1px solid #f0df9c; border-radius: 14px; color: #735e15; display: flex; font-size: 0.74rem; gap: 10px; line-height: 1.45; padding: 13px 15px; }
 .pass-alert > span { font-size: 1.2rem; }
 .pass-alert p { margin: 0; }
@@ -233,6 +257,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .game-card-featured .game-art { min-height: 240px; }
   .recent-empty { grid-template-columns: auto 1fr; }
   .recent-empty .button { grid-column: 1 / -1; }
+  .recent-action { display: none; }
   .page-hero { padding-block: 68px 24px; }
   .othello-hero { min-height: auto; padding-block: 42px 72px; }
   .back-link { margin-bottom: 38px; }
@@ -243,6 +268,8 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .local-mode-badge { order: -1; }
   .game-settings { gap: 14px; overflow-x: auto; padding-top: 28px; }
   .setting-group { flex: 0 0 auto; }
+  .saved-game-banner { align-items: stretch; flex-direction: column; gap: 12px; width: calc(100% - 40px); }
+  .saved-game-actions { justify-content: flex-end; }
   .othello-game-layout { grid-template-columns: 1fr; padding-block: 34px 72px; }
   .othello-sidebar { display: grid; grid-template-columns: 1fr 1fr; }
   .turn-card { grid-row: span 2; }

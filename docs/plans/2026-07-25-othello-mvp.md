@@ -29,8 +29,9 @@ without coupling shared site code to Othello.
    strategies, iterative-deepening minimax with alpha-beta pruning, computation
    deadline, deeper endgame search, worker transport, safe fallback, and
    deterministic fixtures.
-4. **Persistence:** validators and adapters for settings, recent games, session,
-   and stats; autosave/resume/delete UI; failure-path tests.
+4. **Persistence — complete:** validators and adapters for settings, recent
+   games, session history, and stats; autosave/resume/delete UI; failure-path
+   tests; homepage recent-game continuation.
 5. **Release:** explanatory HTML, accessibility and responsive audits, social
    metadata, full automated verification, and production deployment review.
 
@@ -64,5 +65,12 @@ React or browser APIs.
 - `npm run typecheck`: passed
 - `npm run build`: passed with the AI worker included
 
-Phase 4 is next: validated versioned saves, autosave/resume/delete, personal
-stats, recent games, and storage failure-path tests.
+## Phase 4 verification
+
+- `npm test`: passed (22 tests)
+- `npm run lint`: passed with no warnings
+- `npm run typecheck`: passed
+- `npm run build`: passed
+
+Phase 5 is next: complete explanatory content and FAQ, accessibility and
+responsive audits, final SEO review, and release verification.

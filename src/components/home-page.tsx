@@ -4,6 +4,7 @@ import Link from "next/link";
 import { games } from "@/src/config/games";
 import { GameCard } from "./game-card";
 import { useLanguage } from "./providers/language-provider";
+import { RecentGames } from "./recent-games";
 
 export function HomePage() {
   const { t } = useLanguage();
@@ -76,16 +77,7 @@ export function HomePage() {
               <h2>{t("recentTitle")}</h2>
             </div>
           </div>
-          <div className="recent-empty">
-            <span aria-hidden="true">↻</span>
-            <div>
-              <strong>{t("recentEmpty")}</strong>
-              <p>{t("recentHint")}</p>
-            </div>
-            <Link className="button button-small" href="/games/othello">
-              {t("playNow")}
-            </Link>
-          </div>
+          <RecentGames />
         </div>
       </section>
     </>

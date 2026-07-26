@@ -37,6 +37,11 @@ and immutable history. localStorage is read only after hydration through guarded
 adapters. Every stored payload has a version and runtime validator; invalid or
 unavailable storage falls back to defaults without interrupting play.
 
+Shared safe I/O and the recent-game schema live in `src/storage/`. Othello save,
+history validation, and stats remain inside `src/features/othello/storage/`.
+The UI pauses autosave when an older save awaits a resume/delete decision, so a
+fresh render cannot overwrite recoverable progress.
+
 ## Othello execution model
 
 The engine accepts a position and returns legal results without side effects.

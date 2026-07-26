@@ -18,8 +18,26 @@ import {
   type OthelloGameState,
   type Player,
 } from "../engine/index.ts";
+import {
+  createSavedOthelloGame,
+  deleteOthelloGame,
+  EMPTY_OTHELLO_STATS,
+  loadOthelloGame,
+  loadOthelloStats,
+  recordCompletedOthelloGame,
+  saveOthelloGame,
+  type OthelloGameMode,
+  type OthelloStats,
+  type SavedOthelloGame,
+} from "../storage/index.ts";
+import { markGameAsRecent } from "@/src/storage/recent-games";
 
-type GameMode = "local" | "computer";
+function createSessionId() {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  return `othello-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
 
 function playerName(player: Player, language: "ko" | "en") {
   if (language === "ko") return player === "black" ? "흑" : "백";
@@ -69,11 +87,18 @@ export function OthelloGame() {
     createInitialGame(),
   ]);
   const [passedPlayer, setPassedPlayer] = useState<Player | null>(null);
-  const [mode, setMode] = useState<GameMode>("computer");
+  const [mode, setMode] = useState<OthelloGameMode>("computer");
   const [difficulty, setDifficulty] =
     useState<AiDifficulty>("intermediate");
   const [humanColor, setHumanColor] = useState<Player>("black");
+  const [sessionId, setSessionId] = useState("new-session");
+  const [storageReady, setStorageReady] = useState(false);
+  const [persistenceActive, setPersistenceActive] = useState(false);
+  const [availableSave, setAvailableSave] =
+    useState<SavedOthelloGame | null>(null);
+  const [stats, setStats] = useState<OthelloStats>(EMPTY_OTHELLO_STATS);
   const aiRequestId = useRef(0);
+  const recordedSessionId = useRef<string | null>(null);
   const state = history[history.length - 1];
   const score = useMemo(() => getScore(state.board), [state.board]);
   const isComputerTurn =
@@ -100,6 +125,56 @@ export function OthelloGame() {
   );
   const canUndo =
     mode === "local" ? history.length > 1 : previousHumanDecision >= 0;
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const savedGame = loadOthelloGame(window.localStorage);
+      setAvailableSave(savedGame);
+      setStats(loadOthelloStats(window.localStorage));
+      setSessionId(createSessionId());
+      setPersistenceActive(savedGame === null);
+      setStorageReady(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!storageReady || !persistenceActive) return;
+
+    if (state.status === "playing") {
+      const save = createSavedOthelloGame({
+        sessionId,
+        mode,
+        difficulty,
+        humanColor,
+        history: [...history],
+      });
+      saveOthelloGame(window.localStorage, save);
+      markGameAsRecent(window.localStorage, "othello");
+      return;
+    }
+
+    deleteOthelloGame(window.localStorage);
+    if (recordedSessionId.current === sessionId) return;
+    recordedSessionId.current = sessionId;
+    const nextStats = recordCompletedOthelloGame(
+      window.localStorage,
+      state,
+      { mode, humanColor },
+    );
+    markGameAsRecent(window.localStorage, "othello");
+    const timer = window.setTimeout(() => setStats(nextStats), 0);
+    return () => window.clearTimeout(timer);
+  }, [
+    difficulty,
+    history,
+    humanColor,
+    mode,
+    persistenceActive,
+    sessionId,
+    state,
+    storageReady,
+  ]);
 
   useEffect(() => {
     if (!isComputerTurn) return;
@@ -157,11 +232,15 @@ export function OthelloGame() {
 
   function startNewGame() {
     aiRequestId.current += 1;
+    recordedSessionId.current = null;
     setHistory([createInitialGame()]);
     setPassedPlayer(null);
+    setSessionId(createSessionId());
+    setAvailableSave(null);
+    setPersistenceActive(true);
   }
 
-  function changeMode(nextMode: GameMode) {
+  function changeMode(nextMode: OthelloGameMode) {
     setMode(nextMode);
     startNewGame();
   }
@@ -169,6 +248,27 @@ export function OthelloGame() {
   function changeHumanColor(player: Player) {
     setHumanColor(player);
     startNewGame();
+  }
+
+  function resumeSavedGame() {
+    if (!availableSave) return;
+    aiRequestId.current += 1;
+    recordedSessionId.current = null;
+    setMode(availableSave.mode);
+    setDifficulty(availableSave.difficulty);
+    setHumanColor(availableSave.humanColor);
+    setHistory(availableSave.history);
+    setSessionId(availableSave.sessionId);
+    setPassedPlayer(null);
+    setAvailableSave(null);
+    setPersistenceActive(true);
+  }
+
+  function removeSavedGame() {
+    deleteOthelloGame(window.localStorage);
+    setAvailableSave(null);
+    setSessionId(createSessionId());
+    setPersistenceActive(true);
   }
 
   function handleMove(index: number) {
@@ -292,6 +392,32 @@ export function OthelloGame() {
         )}
       </section>
 
+      {availableSave && (
+        <section className="shell saved-game-banner" aria-label={t("savedGame")}>
+          <div className="saved-game-copy">
+            <span aria-hidden="true">↻</span>
+            <div>
+              <strong>{t("savedGame")}</strong>
+              <small>
+                {t("savedAt")}{" "}
+                {new Intl.DateTimeFormat(language, {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                }).format(new Date(availableSave.savedAt))}
+              </small>
+            </div>
+          </div>
+          <div className="saved-game-actions">
+            <button onClick={removeSavedGame} type="button">
+              {t("deleteSave")}
+            </button>
+            <button className="resume-button" onClick={resumeSavedGame} type="button">
+              {t("resumeGame")} <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </section>
+      )}
+
       <section className="shell othello-game-layout" aria-label={t("othelloTitle")}>
         <div className="othello-board-card">
           <div
@@ -390,6 +516,41 @@ export function OthelloGame() {
                 {t("moveCount")} <strong>{state.moveNumber}</strong>
               </span>
             </div>
+          </div>
+
+          <div className="stats-card">
+            <span>{t("personalStats")}</span>
+            {mode === "computer" ? (
+              <div className="stats-grid">
+                <span>
+                  <strong>{stats.computer.played}</strong>
+                  {t("played")}
+                </span>
+                <span>
+                  <strong>{stats.computer.wins}</strong>
+                  {t("wins")}
+                </span>
+                <span>
+                  <strong>{stats.computer.losses}</strong>
+                  {t("losses")}
+                </span>
+                <span>
+                  <strong>{stats.computer.draws}</strong>
+                  {t("draws")}
+                </span>
+              </div>
+            ) : (
+              <div className="stats-grid local-stats-grid">
+                <span>
+                  <strong>{stats.local.played}</strong>
+                  {t("localMatches")}
+                </span>
+                <span>
+                  <strong>{stats.local.draws}</strong>
+                  {t("draws")}
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="game-controls">
