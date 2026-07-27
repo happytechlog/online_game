@@ -49,8 +49,8 @@ source requires explicit approval.
 
 - [x] Finalize the original 2048 rules and UX in
   `docs/game-specs/2048.md`.
-- [ ] Implement a pure, deterministic 4×4 engine with injected tile spawning.
-- [ ] Cover movement, single-merge behavior, scoring, 2048 detection,
+- [x] Implement a pure, deterministic 4×4 engine with injected tile spawning.
+- [x] Cover movement, single-merge behavior, scoring, 2048 detection,
   continuation, and game-over conditions with tests.
 
 ## Phase 7 — 2048 play experience
