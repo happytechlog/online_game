@@ -267,6 +267,61 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .faq-list details[open] summary::after { content: "−"; }
 .faq-list details p { color: var(--muted); font-size: 0.86rem; line-height: 1.75; margin: 0; max-width: 720px; padding: 0 48px 24px 0; }
 
+.game-2048-page {
+  background:
+    radial-gradient(circle at 88% 5%, rgba(237, 194, 46, 0.2), transparent 27rem),
+    var(--paper);
+  min-height: 100vh;
+}
+.game-2048-heading { padding-top: 48px; }
+.game-2048-heading .back-link { margin-bottom: 34px; }
+.game-2048-title-row { align-items: end; display: flex; justify-content: space-between; }
+.game-2048-title-row h1 { color: #776e65; font-size: clamp(4.2rem, 9vw, 7.2rem); letter-spacing: -0.09em; line-height: 0.86; margin: 18px 0 24px; }
+.game-2048-title-row p { color: var(--muted); line-height: 1.7; margin: 0; }
+.game-2048-badge { background: #f4e7c8; border: 1px solid #e7d1a1; border-radius: 999px; color: #8b6818; font-size: 0.75rem; font-weight: 850; margin-bottom: 5px; padding: 10px 14px; }
+.game-2048-layout { align-items: start; display: grid; gap: 34px; grid-template-columns: minmax(0, 520px) 270px; justify-content: center; padding-block: 54px 110px; }
+.game-2048-play { min-width: 0; }
+.game-2048-scoreboard { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 14px; }
+.game-2048-scoreboard > div { align-items: center; background: #776e65; border-radius: 12px; color: white; display: flex; flex-direction: column; min-width: 112px; padding: 10px 18px; }
+.game-2048-scoreboard span { color: #eee4da; font-size: 0.66rem; font-weight: 850; letter-spacing: 0.05em; text-transform: uppercase; }
+.game-2048-scoreboard strong { font-size: 1.45rem; line-height: 1.15; margin-top: 3px; }
+.game-2048-board-card { background: #bbada0; border-radius: 22px; box-shadow: 0 28px 70px rgba(90, 68, 49, 0.19); padding: clamp(10px, 2vw, 16px); position: relative; width: 100%; }
+.game-2048-board { display: grid; gap: clamp(8px, 1.8vw, 14px); grid-template-columns: repeat(4, 1fr); outline-offset: 5px; touch-action: auto; user-select: none; width: 100%; }
+.game-2048-cell { align-items: center; aspect-ratio: 1; background: #cdc1b4; border-radius: 12px; color: #f9f6f2; display: flex; justify-content: center; min-width: 0; transition: background-color 130ms ease, transform 130ms ease; }
+.game-2048-cell span { font-size: clamp(1.45rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: -0.07em; line-height: 1; }
+.game-2048-cell.tile-2 { background: #eee4da; color: #776e65; }
+.game-2048-cell.tile-4 { background: #ede0c8; color: #776e65; }
+.game-2048-cell.tile-8 { background: #f2b179; }
+.game-2048-cell.tile-16 { background: #f59563; }
+.game-2048-cell.tile-32 { background: #f67c5f; }
+.game-2048-cell.tile-64 { background: #f65e3b; }
+.game-2048-cell.tile-128 { background: #edcf72; }
+.game-2048-cell.tile-256 { background: #edcc61; }
+.game-2048-cell.tile-512 { background: #edc850; }
+.game-2048-cell.tile-1024 { background: #edc53f; }
+.game-2048-cell.tile-2048 { background: #edc22e; box-shadow: 0 0 30px rgba(237, 194, 46, 0.45); }
+.game-2048-cell.tile-4096, .game-2048-cell.tile-super { background: #3c3a32; }
+.game-2048-cell.tile-1024 span, .game-2048-cell.tile-2048 span, .game-2048-cell.tile-4096 span, .game-2048-cell.tile-super span { font-size: clamp(1.15rem, 4.1vw, 2.45rem); }
+.game-2048-loading { align-items: center; background: rgba(238, 228, 218, 0.88); border-radius: 15px; color: #776e65; display: flex; font-size: 0.82rem; font-weight: 800; inset: 16px; justify-content: center; position: absolute; z-index: 5; }
+.game-2048-result > span { color: #9b7417; }
+.game-2048-primary { background: #8f7a66; border: 0; color: white; cursor: pointer; }
+.game-2048-primary:hover { background: #776e65; }
+.game-2048-sidebar { display: flex; flex-direction: column; gap: 12px; padding-top: 74px; }
+.game-2048-instructions { background: white; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 10px 30px rgba(90, 68, 49, 0.06); padding: 24px; }
+.game-2048-instructions > span { color: #9b7417; font-size: 1.5rem; }
+.game-2048-instructions p { color: var(--muted); font-size: 0.8rem; line-height: 1.65; margin: 14px 0 20px; }
+.key-cluster { display: grid; gap: 5px; grid-template-columns: repeat(3, 36px); justify-content: center; }
+.key-cluster kbd { align-items: center; background: #f3eee8; border: 1px solid #d9cec2; border-bottom-width: 3px; border-radius: 7px; color: #776e65; display: flex; font-size: 0.72rem; font-weight: 900; height: 34px; justify-content: center; }
+.key-cluster kbd:first-child { grid-column: 2; }
+.game-2048-new-game { gap: 8px; min-height: 52px; width: 100%; }
+.game-2048-guide { background: white; border-top: 1px solid var(--line); }
+.game-2048-guide h2 { font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -0.055em; line-height: 1.1; margin: -8px 0 24px; }
+.game-2048-control-guide { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); margin-top: 44px; }
+.game-2048-control-guide article { border: 1px solid var(--line); border-radius: 16px; min-height: 200px; padding: 24px; }
+.game-2048-control-guide article > span { color: #9b7417; font-size: 0.75rem; }
+.game-2048-control-guide h3 { font-size: 1rem; margin: 42px 0 10px; }
+.game-2048-control-guide p { color: var(--muted); font-size: 0.78rem; line-height: 1.6; margin: 0; }
+
 @media (max-width: 900px) {
   .hero { gap: 20px; grid-template-columns: 1fr 0.8fr; }
   .games-grid { grid-template-columns: repeat(2, 1fr); }
@@ -274,6 +329,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .game-card-featured .game-art { min-height: 180px; }
   .othello-hero { gap: 40px; grid-template-columns: 1fr; }
   .othello-game-layout { grid-template-columns: minmax(0, 1fr) 250px; }
+  .game-2048-layout { grid-template-columns: minmax(0, 1fr) 230px; }
 }
 
 @media (max-width: 680px) {
@@ -312,6 +368,13 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .othello-sidebar { display: grid; grid-template-columns: 1fr 1fr; }
   .turn-card { grid-row: span 2; }
   .game-controls { grid-column: 1 / -1; }
+  .game-2048-heading { padding-top: 36px; }
+  .game-2048-title-row { align-items: start; flex-direction: column; gap: 22px; }
+  .game-2048-title-row h1 { font-size: 5rem; }
+  .game-2048-badge { order: -1; }
+  .game-2048-layout { grid-template-columns: 1fr; padding-block: 38px 76px; }
+  .game-2048-sidebar { display: grid; grid-template-columns: 1fr 1fr; padding-top: 0; }
+  .game-2048-new-game { align-self: stretch; height: 100%; }
   .footer-inner { align-items: start; flex-direction: column; gap: 30px; }
   .footer-meta { text-align: left; }
   .guide-intro { gap: 20px; grid-template-columns: 1fr; padding-block: 72px; }
@@ -319,6 +382,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .rule-grid, .difficulty-guide-grid { grid-template-columns: 1fr; }
   .rule-grid li, .rule-grid li:first-child, .rule-grid li:nth-child(2), .rule-grid li:nth-child(3), .rule-grid li:last-child { border-radius: 14px; min-height: auto; }
   .control-guide-grid { grid-template-columns: repeat(2, 1fr); }
+  .game-2048-control-guide { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 450px) {
@@ -328,11 +392,17 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .othello-board-card { border-radius: 16px; padding: 9px; }
   .othello-board { border-radius: 8px; }
   .othello-sidebar { display: flex; }
+  .game-2048-scoreboard > div { min-width: 0; padding-inline: 14px; width: 50%; }
+  .game-2048-board-card { border-radius: 16px; }
+  .game-2048-board { gap: 8px; }
+  .game-2048-cell { border-radius: 8px; }
+  .game-2048-sidebar { display: flex; }
   .control-guide-grid { grid-template-columns: 1fr; }
-  .control-guide-grid article, .difficulty-guide-grid article { min-height: auto; }
+  .control-guide-grid article, .difficulty-guide-grid article, .game-2048-control-guide article { min-height: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
   .thinking-dots i { animation: none; opacity: 0.7; }
+  .game-2048-cell { transition: none; }
 }

@@ -55,17 +55,17 @@ source requires explicit approval.
 
 ## Phase 7 — 2048 play experience
 
-- [ ] Build the responsive board, score display, new-game control, win state,
+- [x] Build the responsive board, score display, new-game control, win state,
   continue action, and game-over state.
-- [ ] Support arrow keys, WASD, and touch swipes without adding undo.
-- [ ] Add Korean and English gameplay, guide, control, and FAQ content.
+- [x] Support arrow keys, WASD, and touch swipes without adding undo.
+- [x] Add Korean and English gameplay, guide, control, and FAQ content.
 
 ## Phase 8 — 2048 persistence and site integration
 
 - [ ] Add validated, versioned autosave for the current game and best score.
 - [ ] Recover safely from malformed, unknown-version, and unavailable storage.
-- [ ] Add the `/games/2048` route, metadata, sitemap entry, recent-play support,
-  and change the catalog status to `available` only after verification.
+- [ ] Finalize `/games/2048` metadata, add its sitemap entry and recent-play
+  support, and change the catalog status to `available` only after verification.
 
 ## Phase 9 — 2048 release quality
 
