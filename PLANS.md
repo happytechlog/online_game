@@ -69,9 +69,9 @@ source requires explicit approval.
 
 ## Phase 9 — 2048 release quality
 
-- [ ] Audit keyboard, screen-reader, reduced-motion, contrast, and touch use.
-- [ ] Verify mobile and desktop layouts and route-specific SEO.
-- [ ] Run tests, lint, typecheck, and production build with no errors.
+- [x] Audit keyboard, screen-reader, reduced-motion, contrast, and touch use.
+- [x] Verify mobile and desktop layouts and route-specific SEO.
+- [x] Run tests, lint, typecheck, and production build with no errors.
 
 Implementation details, acceptance criteria, and verification results belong in
 `docs/plans/2026-07-26-2048-mvp.md`.

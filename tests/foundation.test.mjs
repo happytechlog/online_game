@@ -108,3 +108,53 @@ test("provides semantic 2048 guide and FAQ SEO content", async () => {
   assert.match(page, /application\/ld\+json/);
   assert.match(page, /canonical/);
 });
+
+test("keeps the 2048 board accessible for keyboard and touch play", async () => {
+  const [game, styles] = await Promise.all([
+    source("src/features/2048/components/2048-game.tsx"),
+    source("app/globals.css"),
+  ]);
+
+  assert.match(game, /role="grid"/);
+  assert.match(game, /role="row"/);
+  assert.match(game, /role="gridcell"/);
+  assert.match(game, /aria-keyshortcuts=/);
+  assert.match(game, /aria-live="polite"/);
+  assert.match(styles, /\.game-2048-board \{[^}]*touch-action: none;/);
+  assert.match(styles, /\.game-2048-row \{ display: contents; \}/);
+  assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
+});
+
+test("keeps every standard 2048 tile above large-text contrast minimums", async () => {
+  const styles = await source("app/globals.css");
+  const tileValues = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048];
+
+  function luminance(hex) {
+    const channels = hex
+      .match(/[0-9a-f]{2}/gi)
+      .map((channel) => Number.parseInt(channel, 16) / 255)
+      .map((channel) =>
+        channel <= 0.04045
+          ? channel / 12.92
+          : ((channel + 0.055) / 1.055) ** 2.4,
+      );
+    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+  }
+
+  for (const value of tileValues) {
+    const rule = styles.match(
+      new RegExp(`\\.game-2048-cell\\.tile-${value} \\{([^}]*)\\}`),
+    );
+    assert.ok(rule, `missing tile style for ${value}`);
+
+    const background = rule[1].match(/background:\s*(#[0-9a-f]{6})/i)?.[1];
+    const foreground = rule[1].match(/color:\s*(#[0-9a-f]{6})/i)?.[1];
+    assert.ok(background, `missing background for ${value}`);
+    assert.ok(foreground, `missing foreground for ${value}`);
+
+    const light = Math.max(luminance(background), luminance(foreground));
+    const dark = Math.min(luminance(background), luminance(foreground));
+    const ratio = (light + 0.05) / (dark + 0.05);
+    assert.ok(ratio >= 3, `${value} tile contrast was ${ratio.toFixed(2)}:1`);
+  }
+});

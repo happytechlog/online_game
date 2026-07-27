@@ -258,32 +258,38 @@ export function Game2048() {
               role="grid"
               tabIndex={0}
             >
-              {board.map((tile, index) => {
-                const row = Math.floor(index / 4) + 1;
-                const column = (index % 4) + 1;
-                const value = tile ?? t("game2048EmptyCell");
-                const tileClass =
-                  tile === null
-                    ? " empty"
-                    : tile <= 4096
-                      ? ` tile-${tile}`
-                      : " tile-super";
+              {[0, 1, 2, 3].map((rowIndex) => (
+                <div className="game-2048-row" key={rowIndex} role="row">
+                  {board
+                    .slice(rowIndex * 4, rowIndex * 4 + 4)
+                    .map((tile, columnIndex) => {
+                      const row = rowIndex + 1;
+                      const column = columnIndex + 1;
+                      const value = tile ?? t("game2048EmptyCell");
+                      const tileClass =
+                        tile === null
+                          ? " empty"
+                          : tile <= 4096
+                            ? ` tile-${tile}`
+                            : " tile-super";
 
-                return (
-                  <div
-                    aria-label={formatMessage(t("game2048CellLabel"), {
-                      row,
-                      column,
-                      value,
+                      return (
+                        <div
+                          aria-label={formatMessage(t("game2048CellLabel"), {
+                            row,
+                            column,
+                            value,
+                          })}
+                          className={`game-2048-cell${tileClass}`}
+                          key={columnIndex}
+                          role="gridcell"
+                        >
+                          {tile !== null && <span>{tile}</span>}
+                        </div>
+                      );
                     })}
-                    className={`game-2048-cell${tileClass}`}
-                    key={index}
-                    role="gridcell"
-                  >
-                    {tile !== null && <span>{tile}</span>}
-                  </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
 
             {!game && (
@@ -295,7 +301,6 @@ export function Game2048() {
             {game?.status === "won" && (
               <div
                 aria-labelledby="game-2048-result-title"
-                aria-modal="true"
                 className="game-result game-2048-result"
                 role="dialog"
               >
@@ -316,7 +321,6 @@ export function Game2048() {
             {game?.status === "game-over" && (
               <div
                 aria-labelledby="game-2048-result-title"
-                aria-modal="true"
                 className="game-result game-2048-result"
                 role="dialog"
               >

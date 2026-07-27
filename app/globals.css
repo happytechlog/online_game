@@ -286,20 +286,21 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .game-2048-scoreboard span { color: #eee4da; font-size: 0.66rem; font-weight: 850; letter-spacing: 0.05em; text-transform: uppercase; }
 .game-2048-scoreboard strong { font-size: 1.45rem; line-height: 1.15; margin-top: 3px; }
 .game-2048-board-card { background: #bbada0; border-radius: 22px; box-shadow: 0 28px 70px rgba(90, 68, 49, 0.19); padding: clamp(10px, 2vw, 16px); position: relative; width: 100%; }
-.game-2048-board { display: grid; gap: clamp(8px, 1.8vw, 14px); grid-template-columns: repeat(4, 1fr); outline-offset: 5px; touch-action: auto; user-select: none; width: 100%; }
+.game-2048-board { display: grid; gap: clamp(8px, 1.8vw, 14px); grid-template-columns: repeat(4, 1fr); outline-offset: 5px; touch-action: none; user-select: none; width: 100%; }
+.game-2048-row { display: contents; }
 .game-2048-cell { align-items: center; aspect-ratio: 1; background: #cdc1b4; border-radius: 12px; color: #f9f6f2; display: flex; justify-content: center; min-width: 0; transition: background-color 130ms ease, transform 130ms ease; }
 .game-2048-cell span { font-size: clamp(1.45rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: -0.07em; line-height: 1; }
 .game-2048-cell.tile-2 { background: #eee4da; color: #776e65; }
 .game-2048-cell.tile-4 { background: #ede0c8; color: #776e65; }
-.game-2048-cell.tile-8 { background: #f2b179; }
-.game-2048-cell.tile-16 { background: #f59563; }
-.game-2048-cell.tile-32 { background: #f67c5f; }
-.game-2048-cell.tile-64 { background: #f65e3b; }
-.game-2048-cell.tile-128 { background: #edcf72; }
-.game-2048-cell.tile-256 { background: #edcc61; }
-.game-2048-cell.tile-512 { background: #edc850; }
-.game-2048-cell.tile-1024 { background: #edc53f; }
-.game-2048-cell.tile-2048 { background: #edc22e; box-shadow: 0 0 30px rgba(237, 194, 46, 0.45); }
+.game-2048-cell.tile-8 { background: #f2b179; color: #3c3a32; }
+.game-2048-cell.tile-16 { background: #f59563; color: #3c3a32; }
+.game-2048-cell.tile-32 { background: #f67c5f; color: #3c3a32; }
+.game-2048-cell.tile-64 { background: #f65e3b; color: #3c3a32; }
+.game-2048-cell.tile-128 { background: #edcf72; color: #3c3a32; }
+.game-2048-cell.tile-256 { background: #edcc61; color: #3c3a32; }
+.game-2048-cell.tile-512 { background: #edc850; color: #3c3a32; }
+.game-2048-cell.tile-1024 { background: #edc53f; color: #3c3a32; }
+.game-2048-cell.tile-2048 { background: #edc22e; box-shadow: 0 0 30px rgba(237, 194, 46, 0.45); color: #3c3a32; }
 .game-2048-cell.tile-4096, .game-2048-cell.tile-super { background: #3c3a32; }
 .game-2048-cell.tile-1024 span, .game-2048-cell.tile-2048 span, .game-2048-cell.tile-4096 span, .game-2048-cell.tile-super span { font-size: clamp(1.15rem, 4.1vw, 2.45rem); }
 .game-2048-loading { align-items: center; background: rgba(238, 228, 218, 0.88); border-radius: 15px; color: #776e65; display: flex; font-size: 0.82rem; font-weight: 800; inset: 16px; justify-content: center; position: absolute; z-index: 5; }
