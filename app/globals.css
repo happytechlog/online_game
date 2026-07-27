@@ -136,12 +136,12 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .placeholder-message h2 { font-size: 1rem; margin: 0 0 6px; }
 .placeholder-message p { color: var(--muted); font-size: 0.8rem; line-height: 1.55; margin: 0; }
 
-.site-footer { background: #18231d; color: white; padding-block: 48px; }
-.footer-inner { align-items: end; display: flex; justify-content: space-between; }
-.footer-brand .brand-mark { background: var(--lime); }
-.footer-brand .brand-mark span { background: var(--green-dark); }
-.footer-inner p { color: #aebcb3; font-size: 0.78rem; margin: 12px 0 0; }
-.footer-meta { text-align: right; }
+.site-footer { background: var(--surface); border-top: 1px solid var(--line); padding-block: 38px; }
+.footer-inner { align-items: flex-start; display: flex; flex-direction: column; }
+.footer-owner-label { color: var(--muted); font-size: 0.9rem; font-weight: 700; }
+.footer-owner-link { align-items: center; display: inline-flex; font-size: 1.2rem; font-weight: 850; gap: 7px; letter-spacing: -0.035em; min-height: 44px; }
+.footer-owner-link:hover { color: var(--green); }
+.footer-owner-link span { font-size: 1.05rem; }
 
 .othello-page {
   background:
@@ -376,8 +376,6 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .game-2048-layout { grid-template-columns: 1fr; padding-block: 38px 76px; }
   .game-2048-sidebar { display: grid; grid-template-columns: 1fr 1fr; padding-top: 0; }
   .game-2048-new-game { align-self: stretch; height: 100%; }
-  .footer-inner { align-items: start; flex-direction: column; gap: 30px; }
-  .footer-meta { text-align: left; }
   .guide-intro { gap: 20px; grid-template-columns: 1fr; padding-block: 72px; }
   .guide-section { padding-block: 72px; }
   .rule-grid, .difficulty-guide-grid { grid-template-columns: 1fr; }

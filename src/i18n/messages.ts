@@ -26,8 +26,8 @@ export const messages = {
     searchLabel: "게임 검색",
     searchPlaceholder: "게임 이름이나 장르 검색",
     searchEmpty: "검색 결과가 없습니다.",
-    footerTagline: "좋은 게임을, 가장 간단하게.",
-    footerRights: "무료 브라우저 게임 컬렉션",
+    footerBlogLabel: "운영자의 블로그",
+    footerBlogLinkLabel: "happy tlog, 새 창에서 열기",
     othelloEyebrow: "클래식 보드 게임",
     othelloTitle: "오델로",
     othelloBody:
@@ -122,8 +122,8 @@ export const messages = {
     searchLabel: "Search games",
     searchPlaceholder: "Search by title or genre",
     searchEmpty: "No games match your search.",
-    footerTagline: "Good games, made simple.",
-    footerRights: "Free browser game collection",
+    footerBlogLabel: "From the operator",
+    footerBlogLinkLabel: "Open happy tlog in a new window",
     othelloEyebrow: "Classic board game",
     othelloTitle: "Othello",
     othelloBody:
