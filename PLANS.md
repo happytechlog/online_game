@@ -62,9 +62,9 @@ source requires explicit approval.
 
 ## Phase 8 — 2048 persistence and site integration
 
-- [ ] Add validated, versioned autosave for the current game and best score.
-- [ ] Recover safely from malformed, unknown-version, and unavailable storage.
-- [ ] Finalize `/games/2048` metadata, add its sitemap entry and recent-play
+- [x] Add validated, versioned autosave for the current game and best score.
+- [x] Recover safely from malformed, unknown-version, and unavailable storage.
+- [x] Finalize `/games/2048` metadata, add its sitemap entry and recent-play
   support, and change the catalog status to `available` only after verification.
 
 ## Phase 9 — 2048 release quality

@@ -14,5 +14,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${siteConfig.url}/games/2048`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
   ];
 }

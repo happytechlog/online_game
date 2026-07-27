@@ -42,7 +42,7 @@ history validation, and stats remain inside `src/features/othello/storage/`.
 The Othello UI pauses autosave when an older save awaits a resume/delete
 decision, so a fresh render cannot overwrite recoverable progress.
 
-2048 current-game and best-score validation will remain inside
+2048 current-game and best-score validation remain inside
 `src/features/2048/storage/`. Each feature owns its schema and recovery policy
 while using the shared guarded I/O boundary.
 

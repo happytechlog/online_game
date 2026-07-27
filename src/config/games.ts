@@ -29,8 +29,8 @@ export const games: readonly GameCatalogItem[] = [
   },
   {
     id: "2048",
-    href: "/games",
-    status: "coming-soon",
+    href: "/games/2048",
+    status: "available",
     featured: true,
     accent: "amber",
     icon: "2048",

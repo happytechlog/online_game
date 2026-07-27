@@ -24,14 +24,23 @@ import {
   directionFromSwipe,
   type Point,
 } from "../input.ts";
+import {
+  load2048Game,
+  loadBest2048Score,
+  save2048Game,
+  saveBest2048Score,
+} from "../storage/index.ts";
+import { markGameAsRecent } from "@/src/storage/recent-games";
 import { Game2048Guide } from "./2048-guide";
 
 interface GameSession {
   game: Game2048State | null;
   bestScore: number;
+  hydrated: boolean;
 }
 
 type GameAction =
+  | { type: "hydrate"; game: Game2048State; bestScore: number }
   | { type: "start"; game: Game2048State }
   | { type: "move"; direction: Direction; spawner: TileSpawner }
   | { type: "continue" };
@@ -39,8 +48,15 @@ type GameAction =
 const EMPTY_BOARD = createEmptyBoard();
 
 function gameReducer(state: GameSession, action: GameAction): GameSession {
+  if (action.type === "hydrate") {
+    return {
+      game: action.game,
+      bestScore: Math.max(action.bestScore, action.game.score),
+      hydrated: true,
+    };
+  }
   if (action.type === "start") {
-    return { game: action.game, bestScore: state.bestScore };
+    return { ...state, game: action.game };
   }
   if (!state.game) return state;
 
@@ -50,6 +66,7 @@ function gameReducer(state: GameSession, action: GameAction): GameSession {
 
   const result = playMove(state.game, action.direction, action.spawner);
   return {
+    ...state,
     game: result.state,
     bestScore: Math.max(state.bestScore, result.state.score),
   };
@@ -85,6 +102,7 @@ export function Game2048() {
   const [session, dispatch] = useReducer(gameReducer, {
     game: null,
     bestScore: 0,
+    hydrated: false,
   });
   const touchStart = useRef<Point | null>(null);
   const resultActionRef = useRef<HTMLButtonElement | null>(null);
@@ -92,10 +110,23 @@ export function Game2048() {
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      dispatch({ type: "start", game: newRandomGame() });
+      const savedGame = load2048Game(window.localStorage);
+      dispatch({
+        type: "hydrate",
+        game: savedGame?.game ?? newRandomGame(),
+        bestScore: loadBest2048Score(window.localStorage),
+      });
     }, 0);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!session.hydrated || !game) return;
+
+    save2048Game(window.localStorage, game);
+    saveBest2048Score(window.localStorage, session.bestScore);
+    markGameAsRecent(window.localStorage, "2048");
+  }, [game, session.bestScore, session.hydrated]);
 
   const move = useCallback((direction: Direction) => {
     dispatch({

@@ -8,19 +8,22 @@ async function source(path) {
   return readFile(new URL(path, root), "utf8");
 }
 
-test("defines all phase-one routes with unique metadata", async () => {
-  const [home, games, othello] = await Promise.all([
+test("defines all public routes with unique metadata", async () => {
+  const [home, games, othello, game2048] = await Promise.all([
     source("app/page.tsx"),
     source("app/games/page.tsx"),
     source("app/games/othello/page.tsx"),
+    source("app/games/2048/page.tsx"),
   ]);
 
   assert.match(home, /title:\s*"무료 온라인 브라우저 게임"/);
   assert.match(games, /title:\s*"모든 게임"/);
   assert.match(othello, /title:\s*"오델로"/);
+  assert.match(game2048, /title:\s*"2048"/);
   assert.match(home, /<HomePage \/>/);
   assert.match(games, /<GamesPage \/>/);
   assert.match(othello, /<OthelloGame \/>/);
+  assert.match(game2048, /<Game2048 \/>/);
 });
 
 test("keeps the game catalog centralized and extensible", async () => {
@@ -33,6 +36,10 @@ test("keeps the game catalog centralized and extensible", async () => {
   assert.match(catalog, /status:\s*"available"/);
   assert.match(catalog, /status:\s*"coming-soon"/);
   assert.match(catalog, /title:\s*\{\s*ko:/);
+  assert.match(
+    catalog,
+    /id:\s*"2048"[\s\S]*?href:\s*"\/games\/2048"[\s\S]*?status:\s*"available"/,
+  );
 });
 
 test("guards versioned language persistence", async () => {
@@ -60,6 +67,7 @@ test("publishes crawler discovery files and social artwork", async () => {
   assert.match(layout, /images:\s*\[\{ url: "\/og\.png"/);
   assert.match(robots, /sitemap/);
   assert.match(sitemap, /games\/othello/);
+  assert.match(sitemap, /games\/2048/);
   assert.ok(image.byteLength > 100_000);
 });
 
@@ -68,6 +76,25 @@ test("provides semantic Othello guide and FAQ SEO content", async () => {
     source("src/features/othello/components/othello-guide.tsx"),
     source("src/i18n/othello-content.ts"),
     source("app/games/othello/page.tsx"),
+  ]);
+
+  assert.match(guide, /<section/);
+  assert.match(guide, /<h2/);
+  assert.match(guide, /<ol/);
+  assert.match(guide, /<details/);
+  assert.match(content, /introTitle/);
+  assert.match(content, /howTitle/);
+  assert.match(content, /faqTitle/);
+  assert.match(page, /FAQPage/);
+  assert.match(page, /application\/ld\+json/);
+  assert.match(page, /canonical/);
+});
+
+test("provides semantic 2048 guide and FAQ SEO content", async () => {
+  const [guide, content, page] = await Promise.all([
+    source("src/features/2048/components/2048-guide.tsx"),
+    source("src/i18n/2048-content.ts"),
+    source("app/games/2048/page.tsx"),
   ]);
 
   assert.match(guide, /<section/);
