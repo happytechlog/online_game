@@ -92,8 +92,10 @@ The collaborative planning record is
 
 - [x] Implement pure board, candidate, conflict, completion, parsing, and
   uniqueness-validation modules.
-- [ ] Implement the approved logical-solving technique catalog and difficulty
-  classification.
+- [x] Implement structured logical-step contracts plus naked-single and
+  hidden-single discovery, application, and Easy solving.
+- [ ] Implement the remaining approved logical-solving technique catalog and
+  Medium-to-Expert difficulty classification.
 - [ ] Create the ahead-of-time puzzle preparation and validation pipeline.
 - [ ] Bundle 100 uniquely solvable, correctly classified puzzles per
   difficulty.

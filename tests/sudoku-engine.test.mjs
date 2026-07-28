@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  applyLogicalStep,
   CELL_COUNT,
+  findNextLogicalStep,
   getCandidates,
   getCellPosition,
   getConflictIndices,
@@ -11,6 +13,7 @@ import {
   parseBoard,
   searchSolutions,
   serializeBoard,
+  solveLogically,
   validatePuzzleDefinition,
 } from "../src/features/sudoku/engine/index.ts";
 
@@ -35,6 +38,17 @@ const solutionText =
   "961537284" +
   "287419635" +
   "345286179";
+
+const hiddenSingleText =
+  "5..6...12" +
+  "..2....4." +
+  "1.8.425.7" +
+  ".597..4.." +
+  ".2.8...91" +
+  "..3..4.56" +
+  "...5..2.4" +
+  "28.41...." +
+  "3452.6...";
 
 test("parses and serializes canonical 81-cell boards", () => {
   const board = parseBoard(puzzleText);
@@ -136,4 +150,62 @@ test("validates bundled puzzle structure, clues, uniqueness, and solution", () =
   assert.equal(invalid.issues.includes("invalid-difficulty"), true);
   assert.equal(invalid.issues.includes("solution-conflict"), true);
   assert.equal(invalid.issues.includes("clue-mismatch"), true);
+});
+
+test("returns a structured naked-single step before harder techniques", () => {
+  const board = parseBoard(puzzleText);
+  const step = findNextLogicalStep(board);
+
+  assert.deepEqual(step, {
+    technique: "naked-single",
+    placements: [{ index: 40, digit: 5 }],
+    eliminations: [],
+    highlights: [{ index: 40, digits: [5] }],
+    relatedCells: [40],
+    unit: null,
+  });
+});
+
+test("finds hidden singles deterministically by unit and digit", () => {
+  const board = parseBoard(hiddenSingleText);
+  const step = findNextLogicalStep(board);
+
+  assert.equal(getCandidates(board, 2).length > 1, true);
+  assert.equal(step.technique, "hidden-single");
+  assert.deepEqual(step.placements, [{ index: 2, digit: 4 }]);
+  assert.deepEqual(step.unit, { kind: "row", index: 0 });
+  assert.deepEqual(step.relatedCells, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+});
+
+test("applies a logical placement immutably and rejects stale steps", () => {
+  const board = parseBoard(puzzleText);
+  const step = findNextLogicalStep(board);
+  const next = applyLogicalStep(board, step);
+
+  assert.equal(board[40], null);
+  assert.equal(next[40], 5);
+  assert.throws(() => applyLogicalStep(next, step), RangeError);
+});
+
+test("solves singles-only puzzles and reports the hardest used technique", () => {
+  const solved = solveLogically(parseBoard(puzzleText));
+  assert.equal(solved.status, "solved");
+  assert.equal(serializeBoard(solved.board), solutionText);
+  assert.equal(solved.steps.length, 51);
+  assert.equal(solved.hardestTechnique, "naked-single");
+
+  const stuck = solveLogically(parseBoard(hiddenSingleText));
+  assert.equal(stuck.status, "stuck");
+  assert.equal(stuck.steps.length > 0, true);
+  assert.equal(stuck.hardestTechnique, "hidden-single");
+});
+
+test("reports conflicting boards as invalid without producing steps", () => {
+  const board = parseBoard(puzzleText);
+  board[2] = 5;
+  const result = solveLogically(board);
+
+  assert.equal(result.status, "invalid");
+  assert.deepEqual(result.steps, []);
+  assert.equal(result.hardestTechnique, null);
 });

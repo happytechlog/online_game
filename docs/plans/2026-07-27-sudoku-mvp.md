@@ -204,5 +204,12 @@ This sequence is provisional until product decisions are complete:
 - `npm test`: 53 passed.
 - `npm run typecheck`: passed.
 - `npm run lint`: passed.
-- Next: implement logical step discovery and classification in technique order,
-  beginning with naked and hidden singles.
+- Implemented deterministic naked-single and hidden-single discovery,
+  immutable step application, structured hint context, and a logical solver
+  that distinguishes solved, stuck, and invalid boards.
+- `npm test`: 58 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- Next: add persistent candidate-state eliminations for locked candidates and
+  candidate pairs, then classify puzzles solved with those techniques as
+  Medium.

@@ -8,6 +8,8 @@ export type Digit = (typeof DIGITS)[number];
 export type Cell = Digit | null;
 export type Board = readonly Cell[];
 export type Difficulty = "easy" | "medium" | "hard" | "expert";
+export type UnitKind = "row" | "column" | "box";
+export type LogicalTechnique = "naked-single" | "hidden-single";
 
 export interface CellPosition {
   row: number;
@@ -39,4 +41,37 @@ export interface PuzzleValidationResult {
   issues: readonly PuzzleValidationIssue[];
   puzzle: Board | null;
   solution: Board | null;
+}
+
+export interface LogicalPlacement {
+  index: number;
+  digit: Digit;
+}
+
+export interface LogicalCandidateHighlight {
+  index: number;
+  digits: readonly Digit[];
+}
+
+export interface LogicalUnit {
+  kind: UnitKind;
+  index: number;
+}
+
+export interface LogicalStep {
+  technique: LogicalTechnique;
+  placements: readonly LogicalPlacement[];
+  eliminations: readonly LogicalCandidateHighlight[];
+  highlights: readonly LogicalCandidateHighlight[];
+  relatedCells: readonly number[];
+  unit: LogicalUnit | null;
+}
+
+export type LogicalSolveStatus = "solved" | "stuck" | "invalid";
+
+export interface LogicalSolveResult {
+  status: LogicalSolveStatus;
+  board: Board;
+  steps: readonly LogicalStep[];
+  hardestTechnique: LogicalTechnique | null;
 }
