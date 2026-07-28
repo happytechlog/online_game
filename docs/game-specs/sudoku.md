@@ -118,6 +118,7 @@ implemented with deterministic tests. Structured naked-single and hidden-single
 steps now support deterministic Easy solving and expose placements, candidates,
 related cells, and unit context for future hints. Persistent candidate state,
 pointing and claiming locked candidates, naked and hidden candidate pairs, and
-Medium classification are also implemented. Hard and Expert logical
-techniques, the preparation pipeline, and the verified 400-puzzle bundle remain
-before gameplay implementation.
+Medium classification are also implemented. Naked and hidden candidate triples,
+row- and column-based X-Wing, and Hard classification are complete. Expert
+logical techniques, the preparation pipeline, and the verified 400-puzzle
+bundle remain before gameplay implementation.

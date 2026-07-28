@@ -33,6 +33,8 @@ const TECHNIQUE_RANK: Readonly<Record<LogicalTechnique, number>> = {
   "hidden-single": 1,
   "locked-candidates": 2,
   "candidate-pair": 3,
+  "candidate-triple": 4,
+  "x-wing": 5,
 };
 
 function getUnits(): readonly UnitEntry[] {
@@ -368,6 +370,246 @@ function findCandidatePair(state: LogicalState): LogicalStep | null {
   return findNakedPair(state) ?? findHiddenPair(state);
 }
 
+function getCombinations<T>(
+  values: readonly T[],
+  size: number,
+): readonly (readonly T[])[] {
+  const combinations: T[][] = [];
+
+  const visit = (start: number, selected: T[]): void => {
+    if (selected.length === size) {
+      combinations.push([...selected]);
+      return;
+    }
+
+    for (
+      let index = start;
+      index <= values.length - (size - selected.length);
+      index += 1
+    ) {
+      selected.push(values[index]);
+      visit(index + 1, selected);
+      selected.pop();
+    }
+  };
+
+  visit(0, []);
+  return combinations;
+}
+
+function createTripleStep(
+  state: LogicalState,
+  unit: LogicalUnit,
+  tripleIndices: readonly number[],
+  tripleDigits: readonly Digit[],
+  eliminations: readonly LogicalCandidateHighlight[],
+  pattern: "naked" | "hidden",
+): LogicalStep {
+  return {
+    technique: "candidate-triple",
+    pattern,
+    placements: [],
+    eliminations,
+    highlights: tripleIndices.map((index) => ({
+      index,
+      digits: (state.candidates[index] ?? []).filter((digit) =>
+        tripleDigits.includes(digit),
+      ),
+    })),
+    relatedCells: uniqueSorted([
+      ...tripleIndices,
+      ...eliminations.map(({ index }) => index),
+    ]),
+    unit,
+  };
+}
+
+function findNakedTriple(state: LogicalState): LogicalStep | null {
+  for (const { unit, indices } of UNITS) {
+    const eligible = indices.filter((index) => {
+      const length = state.candidates[index]?.length ?? 0;
+      return length >= 2 && length <= 3;
+    });
+
+    for (const tripleIndices of getCombinations(eligible, 3)) {
+      const tripleDigits = uniqueSorted(
+        tripleIndices.flatMap((index) => state.candidates[index] ?? []),
+      ) as readonly Digit[];
+      if (tripleDigits.length !== 3) continue;
+
+      const eliminations: LogicalCandidateHighlight[] = [];
+      for (const index of indices) {
+        const candidates = state.candidates[index];
+        if (tripleIndices.includes(index) || candidates === null) continue;
+        const digits = tripleDigits.filter((digit) =>
+          candidates.includes(digit),
+        );
+        if (digits.length > 0 && digits.length < candidates.length) {
+          eliminations.push({ index, digits });
+        }
+      }
+
+      if (eliminations.length > 0) {
+        return createTripleStep(
+          state,
+          unit,
+          tripleIndices,
+          tripleDigits,
+          eliminations,
+          "naked",
+        );
+      }
+    }
+  }
+
+  return null;
+}
+
+function findHiddenTriple(state: LogicalState): LogicalStep | null {
+  for (const { unit, indices } of UNITS) {
+    for (const tripleDigits of getCombinations(DIGITS, 3)) {
+      const positionsByDigit = tripleDigits.map((digit) =>
+        indices.filter((index) => state.candidates[index]?.includes(digit)),
+      );
+      if (positionsByDigit.some((positions) => positions.length < 2)) {
+        continue;
+      }
+
+      const tripleIndices = uniqueSorted(positionsByDigit.flat());
+      if (tripleIndices.length !== 3) continue;
+
+      const eliminations = tripleIndices.flatMap((index) => {
+        const candidates = state.candidates[index] ?? [];
+        const digits = candidates.filter(
+          (digit) => !tripleDigits.includes(digit),
+        );
+        return digits.length > 0 ? [{ index, digits }] : [];
+      });
+
+      if (eliminations.length > 0) {
+        return createTripleStep(
+          state,
+          unit,
+          tripleIndices,
+          tripleDigits,
+          eliminations,
+          "hidden",
+        );
+      }
+    }
+  }
+
+  return null;
+}
+
+function findCandidateTriple(state: LogicalState): LogicalStep | null {
+  return findNakedTriple(state) ?? findHiddenTriple(state);
+}
+
+function findXWingByRows(state: LogicalState): LogicalStep | null {
+  for (const digit of DIGITS) {
+    const rowColumns = Array.from({ length: BOARD_SIZE }, (_, row) => ({
+      row,
+      columns: getRowIndices(row)
+        .filter((index) => state.candidates[index]?.includes(digit))
+        .map((index) => getCellPosition(index).column),
+    })).filter(({ columns }) => columns.length === 2);
+
+    for (const [first, second] of getCombinations(rowColumns, 2)) {
+      if (
+        first.columns[0] !== second.columns[0] ||
+        first.columns[1] !== second.columns[1]
+      ) {
+        continue;
+      }
+
+      const sourceIndices = [
+        first.row * BOARD_SIZE + first.columns[0],
+        first.row * BOARD_SIZE + first.columns[1],
+        second.row * BOARD_SIZE + second.columns[0],
+        second.row * BOARD_SIZE + second.columns[1],
+      ];
+      const targets = first.columns.flatMap((column) =>
+        getColumnIndices(column).filter((index) => {
+          const row = getCellPosition(index).row;
+          return (
+            row !== first.row &&
+            row !== second.row &&
+            state.candidates[index]?.includes(digit)
+          );
+        }),
+      );
+      if (targets.length === 0) continue;
+
+      return {
+        technique: "x-wing",
+        pattern: "row-based",
+        placements: [],
+        eliminations: createEliminations(targets, [digit]),
+        highlights: createEliminations(sourceIndices, [digit]),
+        relatedCells: uniqueSorted([...sourceIndices, ...targets]),
+        unit: null,
+      };
+    }
+  }
+
+  return null;
+}
+
+function findXWingByColumns(state: LogicalState): LogicalStep | null {
+  for (const digit of DIGITS) {
+    const columnRows = Array.from({ length: BOARD_SIZE }, (_, column) => ({
+      column,
+      rows: getColumnIndices(column)
+        .filter((index) => state.candidates[index]?.includes(digit))
+        .map((index) => getCellPosition(index).row),
+    })).filter(({ rows }) => rows.length === 2);
+
+    for (const [first, second] of getCombinations(columnRows, 2)) {
+      if (
+        first.rows[0] !== second.rows[0] ||
+        first.rows[1] !== second.rows[1]
+      ) {
+        continue;
+      }
+
+      const sourceIndices = [
+        first.rows[0] * BOARD_SIZE + first.column,
+        first.rows[1] * BOARD_SIZE + first.column,
+        second.rows[0] * BOARD_SIZE + second.column,
+        second.rows[1] * BOARD_SIZE + second.column,
+      ];
+      const targets = first.rows.flatMap((row) =>
+        getRowIndices(row).filter((index) => {
+          const column = getCellPosition(index).column;
+          return (
+            column !== first.column &&
+            column !== second.column &&
+            state.candidates[index]?.includes(digit)
+          );
+        }),
+      );
+      if (targets.length === 0) continue;
+
+      return {
+        technique: "x-wing",
+        pattern: "column-based",
+        placements: [],
+        eliminations: createEliminations(targets, [digit]),
+        highlights: createEliminations(sourceIndices, [digit]),
+        relatedCells: uniqueSorted([...sourceIndices, ...targets]),
+        unit: null,
+      };
+    }
+  }
+
+  return null;
+}
+
+function findXWing(state: LogicalState): LogicalStep | null {
+  return findXWingByRows(state) ?? findXWingByColumns(state);
+}
+
 export function findNextLogicalStep(
   value: Board | LogicalState,
 ): LogicalStep | null {
@@ -379,7 +621,9 @@ export function findNextLogicalStep(
     findNakedSingle(state) ??
     findHiddenSingle(state) ??
     findLockedCandidates(state) ??
-    findCandidatePair(state)
+    findCandidatePair(state) ??
+    findCandidateTriple(state) ??
+    findXWing(state)
   );
 }
 
@@ -465,9 +709,12 @@ function getDifficulty(
   technique: LogicalTechnique | null,
 ): Difficulty | null {
   if (technique === null) return null;
-  return TECHNIQUE_RANK[technique] <= TECHNIQUE_RANK["hidden-single"]
-    ? "easy"
-    : "medium";
+  if (TECHNIQUE_RANK[technique] <= TECHNIQUE_RANK["hidden-single"]) {
+    return "easy";
+  }
+  return TECHNIQUE_RANK[technique] <= TECHNIQUE_RANK["candidate-pair"]
+    ? "medium"
+    : "hard";
 }
 
 function hasImpossibleCell(state: LogicalState): boolean {

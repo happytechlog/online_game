@@ -8,16 +8,18 @@ implemented and covered by deterministic tests. Naked singles and hidden
 singles produce structured logical steps and can solve and identify Easy
 puzzles without guessing. Persistent candidate eliminations now support
 pointing and claiming locked candidates, naked and hidden candidate pairs, and
-Medium classification.
+Medium classification. Naked and hidden candidate triples plus row- and
+column-based X-Wing now support Hard classification.
 
 ## Next implementation
 
-Implement candidate triples and X-Wing with immutable structured elimination
-steps. Extend logical solving so puzzles requiring either technique are
-classified as Hard, with uniquely solvable regression puzzles demonstrating
-that candidate eliminations persist through completion.
+Implement XY-Wing and row- and column-based Swordfish with immutable structured
+elimination steps. Define the MVP's bounded logical-chain algorithm precisely
+in `docs/DECISIONS.md` before implementing it, then extend logical solving so
+puzzles requiring any approved advanced technique are classified as Expert.
 
-After Hard coverage, continue with XY-Wing, Swordfish, and logical chains.
+Add synthetic technique coverage and uniquely solvable Expert puzzle
+regressions proving eliminations persist through completion.
 
 Return structured explanation data and affected cells/candidates so the same
 engine result can power difficulty classification and player-facing hints.

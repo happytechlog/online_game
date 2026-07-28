@@ -73,6 +73,39 @@ const candidatePairPuzzleText =
   "28.41...." +
   ".4......9";
 
+const candidateTriplePuzzleText =
+  "....7...2" +
+  "...1....." +
+  "1..3.2.6." +
+  "85....4.3" +
+  ".2.....9." +
+  "....248.." +
+  "..1.....4" +
+  "..7..9..5" +
+  "3..2.6..9";
+
+const xWingPuzzleText =
+  "700090006" +
+  "400207005" +
+  "050030040" +
+  "080000070" +
+  "300409008" +
+  "060000010" +
+  "070040060" +
+  "100902003" +
+  "800010002";
+
+const xWingSolutionText =
+  "713594826" +
+  "498267135" +
+  "652138947" +
+  "584621379" +
+  "321479658" +
+  "967385214" +
+  "279843561" +
+  "146952783" +
+  "835716492";
+
 function createCandidateState(overrides) {
   const board = parseBoard(".".repeat(CELL_COUNT));
   const state = createLogicalState(board);
@@ -364,4 +397,119 @@ test("retains pair eliminations through a complete Medium solution", () => {
     true,
   );
   assert.equal(serializeBoard(result.board), solutionText);
+});
+
+test("finds naked candidate triples and removes their digits from a unit", () => {
+  const state = createCandidateState([
+    [0, [1, 2]],
+    [1, [1, 3]],
+    [2, [2, 3]],
+  ]);
+  const step = findNextLogicalStep(state);
+
+  assert.equal(step.technique, "candidate-triple");
+  assert.equal(step.pattern, "naked");
+  assert.deepEqual(step.unit, { kind: "row", index: 0 });
+  assert.deepEqual(step.highlights, [
+    { index: 0, digits: [1, 2] },
+    { index: 1, digits: [1, 3] },
+    { index: 2, digits: [2, 3] },
+  ]);
+  assert.deepEqual(step.eliminations, [3, 4, 5, 6, 7, 8].map(
+    (index) => ({ index, digits: [1, 2, 3] }),
+  ));
+});
+
+test("finds hidden candidate triples and removes unrelated candidates", () => {
+  const overrides = [
+    [0, [1, 2, 4]],
+    [1, [2, 3, 5]],
+    [2, [1, 3, 6]],
+  ];
+  for (const index of [3, 4, 5, 6, 7, 8, 9, 10, 11, 18, 19, 20]) {
+    overrides.push([index, withoutDigits([1, 2, 3])]);
+  }
+  const step = findNextLogicalStep(createCandidateState(overrides));
+
+  assert.equal(step.technique, "candidate-triple");
+  assert.equal(step.pattern, "hidden");
+  assert.deepEqual(step.unit, { kind: "row", index: 0 });
+  assert.deepEqual(step.eliminations, [
+    { index: 0, digits: [4] },
+    { index: 1, digits: [5] },
+    { index: 2, digits: [6] },
+  ]);
+});
+
+test("finds row-based X-Wings and eliminates candidates in both columns", () => {
+  const overrides = [];
+  for (const row of [0, 3]) {
+    for (const column of [0, 2, 3, 5, 6, 7, 8]) {
+      overrides.push([row * 9 + column, withoutDigits([1])]);
+    }
+  }
+  const step = findNextLogicalStep(createCandidateState(overrides));
+
+  assert.equal(step.technique, "x-wing");
+  assert.equal(step.pattern, "row-based");
+  assert.equal(step.unit, null);
+  assert.deepEqual(step.highlights, [1, 4, 28, 31].map(
+    (index) => ({ index, digits: [1] }),
+  ));
+  assert.deepEqual(step.eliminations, [
+    10, 13, 19, 22, 37, 40, 46, 49, 55, 58, 64, 67, 73, 76,
+  ].map((index) => ({ index, digits: [1] })));
+});
+
+test("finds column-based X-Wings and eliminates candidates in both rows", () => {
+  const overrides = [];
+  for (const column of [2, 7]) {
+    for (const row of [0, 2, 3, 4, 6, 7, 8]) {
+      overrides.push([row * 9 + column, withoutDigits([2])]);
+    }
+  }
+  const step = findNextLogicalStep(createCandidateState(overrides));
+
+  assert.equal(step.technique, "x-wing");
+  assert.equal(step.pattern, "column-based");
+  assert.equal(step.unit, null);
+  assert.deepEqual(step.highlights, [11, 47, 16, 52].sort(
+    (left, right) => left - right,
+  ).map((index) => ({ index, digits: [2] })));
+  assert.deepEqual(step.eliminations, [
+    9, 10, 12, 13, 14, 15, 17,
+    45, 46, 48, 49, 50, 51, 53,
+  ].map((index) => ({ index, digits: [2] })));
+});
+
+test("classifies a unique candidate-triple puzzle as Hard", () => {
+  const puzzle = parseBoard(candidateTriplePuzzleText);
+  const uniqueness = searchSolutions(puzzle);
+  const result = solveLogically(puzzle);
+
+  assert.equal(uniqueness.count, 1);
+  assert.equal(result.status, "solved");
+  assert.equal(result.difficulty, "hard");
+  assert.equal(result.hardestTechnique, "candidate-triple");
+  assert.equal(
+    result.steps.some((step) => step.technique === "candidate-triple"),
+    true,
+  );
+  assert.equal(serializeBoard(result.board), solutionText);
+});
+
+test("retains X-Wing eliminations through a unique Hard solution", () => {
+  const puzzle = parseBoard(xWingPuzzleText);
+  const uniqueness = searchSolutions(puzzle);
+  const result = solveLogically(puzzle);
+
+  assert.equal(uniqueness.count, 1);
+  assert.equal(result.status, "solved");
+  assert.equal(result.difficulty, "hard");
+  assert.equal(result.hardestTechnique, "x-wing");
+  assert.equal(
+    result.steps.filter((step) => step.technique === "x-wing").length,
+    2,
+  );
+  assert.equal(serializeBoard(result.board), xWingSolutionText);
 });

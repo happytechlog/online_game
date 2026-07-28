@@ -96,8 +96,10 @@ The collaborative planning record is
   hidden-single discovery, application, and Easy solving.
 - [x] Implement persistent candidate eliminations, pointing and claiming
   locked candidates, naked and hidden pairs, and Medium classification.
-- [ ] Implement the remaining approved Hard and Expert logical-solving
-  technique catalog and classification.
+- [x] Implement naked and hidden candidate triples, row- and column-based
+  X-Wing, and Hard classification.
+- [ ] Implement the remaining approved Expert logical-solving technique
+  catalog and classification.
 - [ ] Create the ahead-of-time puzzle preparation and validation pipeline.
 - [ ] Bundle 100 uniquely solvable, correctly classified puzzles per
   difficulty.

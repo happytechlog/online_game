@@ -222,3 +222,13 @@ This sequence is provisional until product decisions are complete:
 - `npm run typecheck`: passed.
 - `npm run lint`: passed without warnings.
 - Next: implement candidate triples and X-Wing with Hard classification.
+- Added naked and hidden candidate triples plus row- and column-based X-Wing
+  as immutable elimination steps.
+- Added synthetic orientation and subset coverage plus uniquely solvable Hard
+  puzzle regressions proving Triple and X-Wing eliminations persist through
+  completion and determine Hard classification.
+- `npm test`: 70 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- Next: implement XY-Wing, Swordfish, and a bounded logical-chain definition
+  with Expert classification.

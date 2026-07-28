@@ -13,12 +13,16 @@ export type LogicalTechnique =
   | "naked-single"
   | "hidden-single"
   | "locked-candidates"
-  | "candidate-pair";
+  | "candidate-pair"
+  | "candidate-triple"
+  | "x-wing";
 export type LogicalPattern =
   | "pointing"
   | "claiming"
   | "naked"
-  | "hidden";
+  | "hidden"
+  | "row-based"
+  | "column-based";
 export type CandidateGrid = readonly (readonly Digit[] | null)[];
 
 export interface CellPosition {
