@@ -244,3 +244,15 @@ The implementation follows this delivery sequence:
 - `npm run lint`: passed without warnings.
 - `npm run build`: passed.
 - Next: create the ahead-of-time puzzle preparation and validation pipeline.
+- Added a pure, versioned, atomic Sudoku preparation pipeline plus a
+  development-only JSON command.
+- Added deterministic rejection for malformed entries, duplicate IDs and
+  canonical grids, non-unique or mismatched solutions, logical-solver stalls,
+  and declared difficulty mismatches.
+- Documented source and bundle formats, stable normalization and ordering, and
+  per-difficulty validation summaries.
+- `npm test`: 81 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- Next: assemble and validate 100 release puzzles per difficulty, then add the
+  lightweight gameplay bundle loader.

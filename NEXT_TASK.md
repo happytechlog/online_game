@@ -12,18 +12,22 @@ Medium classification. Naked and hidden candidate triples plus row- and
 column-based X-Wing support Hard classification. XY-Wing, row- and column-based
 Swordfish, and bounded single-digit X-Chains now complete the approved Expert
 catalog and classification.
+The ahead-of-time preparation pipeline now rejects malformed definitions,
+duplicate IDs or grids, invalid uniqueness or solutions, puzzles outside the
+approved logical catalog, and difficulty mismatches. Valid sources produce a
+canonical, stably sorted local bundle plus per-difficulty counts.
 
 ## Next implementation
 
-Create the ahead-of-time Sudoku puzzle preparation and validation pipeline.
-It must ingest candidate puzzle definitions, reject malformed, non-unique,
-unsolved, solution-mismatched, or difficulty-mismatched entries, and emit a
-stable local bundle suitable for gameplay.
+Assemble the 400-puzzle release source: 100 uniquely solvable, correctly
+classified puzzles for each of Easy, Medium, Hard, and Expert. Run the complete
+source through the preparation command and commit the generated stable local
+bundle only after all entries pass atomically.
 
-Add deterministic pipeline tests, a documented input/output format, duplicate
-ID and duplicate-grid checks, and a summary by difficulty. Keep the pipeline
-outside the browser runtime and reuse the same uniqueness and logical-solving
-contracts used by gameplay hints.
+Add a lightweight gameplay-facing bundle loader that validates the generated
+artifact's version and shape without rerunning uniqueness search or logical
+classification in the browser. Cover invalid artifact versions, malformed
+entries, and exact per-difficulty counts before starting the board UI.
 
 ## Constraints
 
@@ -32,6 +36,7 @@ contracts used by gameplay hints.
   difficulty classification; backtracking remains limited to uniqueness
   validation.
 - Keep the solver React-independent and deterministic.
-- Do not begin assembling the 400-puzzle release bundle until the preparation
-  pipeline rejects every invalid fixture class deterministically.
+- Keep candidate sources and the generated gameplay bundle clearly separated.
+- Do not weaken validation or silently drop rejected entries to reach the
+  required per-difficulty counts.
 - Record any product-rule change in the dated plan before implementation.

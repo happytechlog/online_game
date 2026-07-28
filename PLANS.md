@@ -100,7 +100,7 @@ The collaborative planning record is
   X-Wing, and Hard classification.
 - [x] Implement the remaining approved Expert logical-solving technique
   catalog and classification.
-- [ ] Create the ahead-of-time puzzle preparation and validation pipeline.
+- [x] Create the ahead-of-time puzzle preparation and validation pipeline.
 - [ ] Bundle 100 uniquely solvable, correctly classified puzzles per
   difficulty.
 - [ ] Cover engine rules, every approved technique, uniqueness, classification,

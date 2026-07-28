@@ -73,3 +73,22 @@ of the MVP contract.
   chains longer than five links remain outside player-facing classification.
 - The preparation pipeline may reject otherwise valid puzzles that require a
   broader chain catalog; bundled Expert puzzles must solve within this bound.
+
+## 2026-07-27 — Make Sudoku bundle preparation atomic and deterministic
+
+### Decision
+
+Keep the preparation logic as a pure, React-independent module and expose it
+through a development-only file command. Treat the versioned JSON source as
+untrusted input. If any entry fails shape, duplicate, uniqueness, solution,
+logical-completion, or difficulty checks, emit no bundle. Normalize grids and
+sort accepted puzzles by difficulty and ID before serialization.
+
+### Consequences
+
+- Gameplay can consume a stable local artifact without shipping preparation
+  code in its route bundle.
+- Reordered equivalent inputs produce the same release artifact.
+- A partially valid source cannot accidentally become a partial release set.
+- Validation reports remain deterministic and include per-difficulty counts
+  for accepted entries.
