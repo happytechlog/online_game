@@ -88,8 +88,7 @@ remain in `docs/plans/2026-07-27-sudoku-mvp.md` until decided.
 
 ## Decision status
 
-The Sudoku MVP product rules are finalized. Implementation remains blocked
-until the user explicitly requests it.
+The Sudoku MVP product rules are finalized and implementation is in progress.
 
 ## Persistence boundary
 
@@ -120,5 +119,6 @@ related cells, and unit context for future hints. Persistent candidate state,
 pointing and claiming locked candidates, naked and hidden candidate pairs, and
 Medium classification are also implemented. Naked and hidden candidate triples,
 row- and column-based X-Wing, and Hard classification are complete. Expert
-logical techniques, the preparation pipeline, and the verified 400-puzzle
-bundle remain before gameplay implementation.
+classification is complete with XY-Wing, row- and column-based Swordfish, and
+deterministic single-digit X-Chains bounded to five links. The preparation
+pipeline and verified 400-puzzle bundle remain before gameplay implementation.

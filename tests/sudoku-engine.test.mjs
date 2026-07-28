@@ -5,6 +5,7 @@ import {
   CELL_COUNT,
   createLogicalState,
   findNextLogicalStep,
+  findXChain,
   getCandidates,
   getCellPosition,
   getConflictIndices,
@@ -105,6 +106,50 @@ const xWingSolutionText =
   "279843561" +
   "146952783" +
   "835716492";
+
+const xyWingPuzzleText =
+  "....6...." +
+  "....1.863" +
+  "..3..9..." +
+  "9.4......" +
+  "3.....7.4" +
+  "57.82...." +
+  ".....658." +
+  "69...7..." +
+  "....4..3.";
+
+const xyWingSolutionText =
+  "857362941" +
+  "249715863" +
+  "163489275" +
+  "924673158" +
+  "386951724" +
+  "571824396" +
+  "432196587" +
+  "698537412" +
+  "715248639";
+
+const swordfishPuzzleText =
+  "16.54..7." +
+  "..8..1.3." +
+  ".3.8....." +
+  "7...5..69" +
+  "6..9.2.57" +
+  "........." +
+  "....3..4." +
+  ".......16" +
+  "...1645..";
+
+const swordfishSolutionText =
+  "169543872" +
+  "278691435" +
+  "435827691" +
+  "723458169" +
+  "684912357" +
+  "951376284" +
+  "516239748" +
+  "342785916" +
+  "897164523";
 
 function createCandidateState(overrides) {
   const board = parseBoard(".".repeat(CELL_COUNT));
@@ -482,6 +527,108 @@ test("finds column-based X-Wings and eliminates candidates in both rows", () => 
   ].map((index) => ({ index, digits: [2] })));
 });
 
+test("finds XY-Wings and eliminates the shared pincer candidate", () => {
+  const state = createCandidateState([
+    [10, [1, 2]],
+    [1, [1, 3]],
+    [12, [2, 3]],
+  ]);
+  const step = findNextLogicalStep(state);
+
+  assert.equal(step.technique, "xy-wing");
+  assert.equal(step.pattern, "xy-wing");
+  assert.equal(step.unit, null);
+  assert.deepEqual(step.highlights, [
+    { index: 10, digits: [1, 2] },
+    { index: 1, digits: [1, 3] },
+    { index: 12, digits: [2, 3] },
+  ]);
+  assert.deepEqual(step.eliminations, [3, 4, 5, 9, 11].map(
+    (index) => ({ index, digits: [3] }),
+  ));
+
+  const applied = applyLogicalStep(state, step);
+  assert.equal(applied.candidates[3].includes(3), false);
+  assert.equal(applied.candidates[4].includes(3), false);
+  assert.equal(applied.candidates[5].includes(3), false);
+  assert.equal(applied.candidates[9].includes(3), false);
+  assert.equal(applied.candidates[11].includes(3), false);
+});
+
+test("finds row-based Swordfish and eliminates candidates in cover columns", () => {
+  const overrides = [];
+  const sourceColumns = new Map([
+    [0, [1, 4]],
+    [3, [1, 7]],
+    [6, [4, 7]],
+  ]);
+  for (const [row, columns] of sourceColumns) {
+    for (let column = 0; column < 9; column += 1) {
+      if (!columns.includes(column)) {
+        overrides.push([row * 9 + column, withoutDigits([4])]);
+      }
+    }
+  }
+  const step = findNextLogicalStep(createCandidateState(overrides));
+
+  assert.equal(step.technique, "swordfish");
+  assert.equal(step.pattern, "row-based");
+  assert.deepEqual(step.highlights, [1, 4, 28, 34, 58, 61].map(
+    (index) => ({ index, digits: [4] }),
+  ));
+  assert.deepEqual(step.eliminations, [
+    10, 13, 16, 19, 22, 25, 37, 40, 43, 46, 49, 52, 64, 67, 70, 73, 76, 79,
+  ].map((index) => ({ index, digits: [4] })));
+});
+
+test("finds column-based Swordfish and eliminates candidates in cover rows", () => {
+  const overrides = [];
+  const sourceRows = new Map([
+    [0, [1, 4]],
+    [3, [1, 7]],
+    [6, [4, 7]],
+  ]);
+  for (const [column, rows] of sourceRows) {
+    for (let row = 0; row < 9; row += 1) {
+      if (!rows.includes(row)) {
+        overrides.push([row * 9 + column, withoutDigits([5])]);
+      }
+    }
+  }
+  const step = findNextLogicalStep(createCandidateState(overrides));
+
+  assert.equal(step.technique, "swordfish");
+  assert.equal(step.pattern, "column-based");
+  assert.deepEqual(step.highlights, [9, 36, 12, 66, 42, 69].sort(
+    (left, right) => left - right,
+  ).map((index) => ({ index, digits: [5] })));
+  assert.deepEqual(step.eliminations, [
+    10, 11, 13, 14, 16, 17, 37, 38, 40, 41, 43, 44,
+    64, 65, 67, 68, 70, 71,
+  ].map((index) => ({ index, digits: [5] })));
+});
+
+test("finds bounded X-Chains and eliminates candidates seen by both endpoints", () => {
+  const overrides = [];
+  for (const [row, columns] of [[0, [0, 4]], [1, [1, 4]]]) {
+    for (let column = 0; column < 9; column += 1) {
+      if (!columns.includes(column)) {
+        overrides.push([row * 9 + column, withoutDigits([1])]);
+      }
+    }
+  }
+  const step = findXChain(createCandidateState(overrides));
+
+  assert.equal(step.technique, "logical-chain");
+  assert.equal(step.pattern, "x-chain");
+  assert.deepEqual(step.highlights, [0, 4, 13, 10].map(
+    (index) => ({ index, digits: [1] }),
+  ));
+  assert.deepEqual(step.eliminations, [18, 19, 20].map(
+    (index) => ({ index, digits: [1] }),
+  ));
+});
+
 test("classifies a unique candidate-triple puzzle as Hard", () => {
   const puzzle = parseBoard(candidateTriplePuzzleText);
   const uniqueness = searchSolutions(puzzle);
@@ -512,4 +659,36 @@ test("retains X-Wing eliminations through a unique Hard solution", () => {
     2,
   );
   assert.equal(serializeBoard(result.board), xWingSolutionText);
+});
+
+test("retains XY-Wing eliminations through a unique Expert solution", () => {
+  const puzzle = parseBoard(xyWingPuzzleText);
+  const uniqueness = searchSolutions(puzzle);
+  const result = solveLogically(puzzle);
+
+  assert.equal(uniqueness.count, 1);
+  assert.equal(result.status, "solved");
+  assert.equal(result.difficulty, "expert");
+  assert.equal(result.hardestTechnique, "xy-wing");
+  assert.equal(
+    result.steps.some((step) => step.technique === "xy-wing"),
+    true,
+  );
+  assert.equal(serializeBoard(result.board), xyWingSolutionText);
+});
+
+test("retains Swordfish eliminations through a unique Expert solution", () => {
+  const puzzle = parseBoard(swordfishPuzzleText);
+  const uniqueness = searchSolutions(puzzle);
+  const result = solveLogically(puzzle);
+
+  assert.equal(uniqueness.count, 1);
+  assert.equal(result.status, "solved");
+  assert.equal(result.difficulty, "expert");
+  assert.equal(result.hardestTechnique, "swordfish");
+  assert.equal(
+    result.steps.some((step) => step.technique === "swordfish"),
+    true,
+  );
+  assert.equal(serializeBoard(result.board), swordfishSolutionText);
 });

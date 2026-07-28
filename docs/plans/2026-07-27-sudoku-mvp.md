@@ -2,9 +2,8 @@
 
 ## Context
 
-Sudoku is the next planned game in the browser game collection. This phase is
-collaborative product planning only: implementation must not begin until the
-open decisions below have been reviewed with the user.
+Sudoku is the next game being implemented in the browser game collection.
+Product decisions were completed collaboratively before Phase 11 began.
 
 ## Confirmed requirements
 
@@ -154,7 +153,7 @@ Resolve one product area at a time and update this plan plus
 
 ## Proposed delivery sequence
 
-This sequence is provisional until product decisions are complete:
+The implementation follows this delivery sequence:
 
 1. Finalize the specification and deterministic engine contracts.
 2. Build and test the ahead-of-time puzzle preparation pipeline, local puzzle
@@ -232,3 +231,16 @@ This sequence is provisional until product decisions are complete:
 - `npm run lint`: passed without warnings.
 - Next: implement XY-Wing, Swordfish, and a bounded logical-chain definition
   with Expert classification.
+- Defined the MVP logical-chain boundary as deterministic single-digit
+  X-Chains with alternating strong and weak links, simple paths, and a maximum
+  of five links.
+- Added XY-Wing, row- and column-based Swordfish, and bounded X-Chain
+  elimination steps with Expert classification.
+- Added synthetic coverage for every Expert technique plus uniquely solvable
+  XY-Wing and Swordfish regressions proving eliminations persist through
+  completion.
+- `npm test`: 76 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed.
+- Next: create the ahead-of-time puzzle preparation and validation pipeline.

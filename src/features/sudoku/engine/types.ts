@@ -15,14 +15,19 @@ export type LogicalTechnique =
   | "locked-candidates"
   | "candidate-pair"
   | "candidate-triple"
-  | "x-wing";
+  | "x-wing"
+  | "xy-wing"
+  | "swordfish"
+  | "logical-chain";
 export type LogicalPattern =
   | "pointing"
   | "claiming"
   | "naked"
   | "hidden"
   | "row-based"
-  | "column-based";
+  | "column-based"
+  | "xy-wing"
+  | "x-chain";
 export type CandidateGrid = readonly (readonly Digit[] | null)[];
 
 export interface CellPosition {

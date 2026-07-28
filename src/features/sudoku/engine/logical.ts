@@ -35,6 +35,9 @@ const TECHNIQUE_RANK: Readonly<Record<LogicalTechnique, number>> = {
   "candidate-pair": 3,
   "candidate-triple": 4,
   "x-wing": 5,
+  "xy-wing": 6,
+  "swordfish": 7,
+  "logical-chain": 8,
 };
 
 function getUnits(): readonly UnitEntry[] {
@@ -610,6 +613,246 @@ function findXWing(state: LogicalState): LogicalStep | null {
   return findXWingByRows(state) ?? findXWingByColumns(state);
 }
 
+function findXYWing(state: LogicalState): LogicalStep | null {
+  for (let pivot = 0; pivot < state.board.length; pivot += 1) {
+    const pivotDigits = state.candidates[pivot];
+    if (pivotDigits?.length !== 2) continue;
+
+    const pincers = getPeerIndices(pivot).filter(
+      (index) => state.candidates[index]?.length === 2,
+    );
+
+    for (const [first, second] of getCombinations(pincers, 2)) {
+      const firstDigits = state.candidates[first] ?? [];
+      const secondDigits = state.candidates[second] ?? [];
+      const firstPivotDigits = firstDigits.filter((digit) =>
+        pivotDigits.includes(digit),
+      );
+      const secondPivotDigits = secondDigits.filter((digit) =>
+        pivotDigits.includes(digit),
+      );
+      if (
+        firstPivotDigits.length !== 1 ||
+        secondPivotDigits.length !== 1 ||
+        firstPivotDigits[0] === secondPivotDigits[0]
+      ) {
+        continue;
+      }
+
+      const firstOther = firstDigits.find(
+        (digit) => !pivotDigits.includes(digit),
+      );
+      const secondOther = secondDigits.find(
+        (digit) => !pivotDigits.includes(digit),
+      );
+      if (firstOther === undefined || firstOther !== secondOther) continue;
+
+      const targets = getPeerIndices(first).filter(
+        (index) =>
+          index !== pivot &&
+          index !== second &&
+          getPeerIndices(second).includes(index) &&
+          state.candidates[index]?.includes(firstOther),
+      );
+      if (targets.length === 0) continue;
+
+      const sourceIndices = [pivot, first, second];
+      return {
+        technique: "xy-wing",
+        pattern: "xy-wing",
+        placements: [],
+        eliminations: createEliminations(targets, [firstOther]),
+        highlights: sourceIndices.map((index) => ({
+          index,
+          digits: state.candidates[index] ?? [],
+        })),
+        relatedCells: uniqueSorted([...sourceIndices, ...targets]),
+        unit: null,
+      };
+    }
+  }
+
+  return null;
+}
+
+function findSwordfishByRows(state: LogicalState): LogicalStep | null {
+  for (const digit of DIGITS) {
+    const rowColumns = Array.from({ length: BOARD_SIZE }, (_, row) => ({
+      row,
+      columns: getRowIndices(row)
+        .filter((index) => state.candidates[index]?.includes(digit))
+        .map((index) => getCellPosition(index).column),
+    })).filter(
+      ({ columns }) => columns.length >= 2 && columns.length <= 3,
+    );
+
+    for (const rows of getCombinations(rowColumns, 3)) {
+      const columns = uniqueSorted(rows.flatMap((entry) => entry.columns));
+      if (columns.length !== 3) continue;
+
+      const baseRows = rows.map(({ row }) => row);
+      const sources = rows.flatMap(({ row, columns: sourceColumns }) =>
+        sourceColumns.map((column) => row * BOARD_SIZE + column),
+      );
+      const targets = columns.flatMap((column) =>
+        getColumnIndices(column).filter(
+          (index) =>
+            !baseRows.includes(getCellPosition(index).row) &&
+            state.candidates[index]?.includes(digit),
+        ),
+      );
+      if (targets.length === 0) continue;
+
+      return {
+        technique: "swordfish",
+        pattern: "row-based",
+        placements: [],
+        eliminations: createEliminations(targets, [digit]),
+        highlights: createEliminations(sources, [digit]),
+        relatedCells: uniqueSorted([...sources, ...targets]),
+        unit: null,
+      };
+    }
+  }
+
+  return null;
+}
+
+function findSwordfishByColumns(state: LogicalState): LogicalStep | null {
+  for (const digit of DIGITS) {
+    const columnRows = Array.from(
+      { length: BOARD_SIZE },
+      (_, column) => ({
+        column,
+        rows: getColumnIndices(column)
+          .filter((index) => state.candidates[index]?.includes(digit))
+          .map((index) => getCellPosition(index).row),
+      }),
+    ).filter(({ rows }) => rows.length >= 2 && rows.length <= 3);
+
+    for (const columns of getCombinations(columnRows, 3)) {
+      const rows = uniqueSorted(columns.flatMap((entry) => entry.rows));
+      if (rows.length !== 3) continue;
+
+      const baseColumns = columns.map(({ column }) => column);
+      const sources = columns.flatMap(({ column, rows: sourceRows }) =>
+        sourceRows.map((row) => row * BOARD_SIZE + column),
+      );
+      const targets = rows.flatMap((row) =>
+        getRowIndices(row).filter(
+          (index) =>
+            !baseColumns.includes(getCellPosition(index).column) &&
+            state.candidates[index]?.includes(digit),
+        ),
+      );
+      if (targets.length === 0) continue;
+
+      return {
+        technique: "swordfish",
+        pattern: "column-based",
+        placements: [],
+        eliminations: createEliminations(targets, [digit]),
+        highlights: createEliminations(sources, [digit]),
+        relatedCells: uniqueSorted([...sources, ...targets]),
+        unit: null,
+      };
+    }
+  }
+
+  return null;
+}
+
+function findSwordfish(state: LogicalState): LogicalStep | null {
+  return findSwordfishByRows(state) ?? findSwordfishByColumns(state);
+}
+
+function getStrongLinkNeighbors(
+  state: LogicalState,
+  index: number,
+  digit: Digit,
+): readonly number[] {
+  const neighbors: number[] = [];
+
+  for (const { indices } of UNITS) {
+    if (!indices.includes(index)) continue;
+    const candidates = indices.filter((candidateIndex) =>
+      state.candidates[candidateIndex]?.includes(digit),
+    );
+    if (candidates.length === 2) {
+      neighbors.push(
+        candidates[0] === index ? candidates[1] : candidates[0],
+      );
+    }
+  }
+
+  return uniqueSorted(neighbors);
+}
+
+export function findXChain(state: LogicalState): LogicalStep | null {
+  const maxLinks = 5;
+
+  for (const digit of DIGITS) {
+    const nodes = state.candidates.flatMap((candidates, index) =>
+      candidates?.includes(digit) ? [index] : [],
+    );
+
+    const visit = (
+      path: readonly number[],
+      nextLink: "strong" | "weak",
+    ): LogicalStep | null => {
+      const current = path[path.length - 1];
+      const linkCount = path.length - 1;
+
+      if (nextLink === "weak" && linkCount >= 3) {
+        const first = path[0];
+        const targets = getPeerIndices(first).filter(
+          (index) =>
+            !path.includes(index) &&
+            getPeerIndices(current).includes(index) &&
+            state.candidates[index]?.includes(digit),
+        );
+        if (targets.length > 0) {
+          return {
+            technique: "logical-chain",
+            pattern: "x-chain",
+            placements: [],
+            eliminations: createEliminations(targets, [digit]),
+            highlights: path.map((index) => ({ index, digits: [digit] })),
+            relatedCells: uniqueSorted([...path, ...targets]),
+            unit: null,
+          };
+        }
+      }
+
+      if (linkCount >= maxLinks) return null;
+
+      const neighbors = nextLink === "strong"
+        ? getStrongLinkNeighbors(state, current, digit)
+        : getPeerIndices(current).filter((index) =>
+            state.candidates[index]?.includes(digit),
+          );
+
+      for (const neighbor of neighbors) {
+        if (path.includes(neighbor)) continue;
+        const step = visit(
+          [...path, neighbor],
+          nextLink === "strong" ? "weak" : "strong",
+        );
+        if (step !== null) return step;
+      }
+
+      return null;
+    };
+
+    for (const node of nodes) {
+      const step = visit([node], "strong");
+      if (step !== null) return step;
+    }
+  }
+
+  return null;
+}
+
 export function findNextLogicalStep(
   value: Board | LogicalState,
 ): LogicalStep | null {
@@ -623,7 +866,10 @@ export function findNextLogicalStep(
     findLockedCandidates(state) ??
     findCandidatePair(state) ??
     findCandidateTriple(state) ??
-    findXWing(state)
+    findXWing(state) ??
+    findXYWing(state) ??
+    findSwordfish(state) ??
+    findXChain(state)
   );
 }
 
@@ -712,9 +958,12 @@ function getDifficulty(
   if (TECHNIQUE_RANK[technique] <= TECHNIQUE_RANK["hidden-single"]) {
     return "easy";
   }
-  return TECHNIQUE_RANK[technique] <= TECHNIQUE_RANK["candidate-pair"]
-    ? "medium"
-    : "hard";
+  if (TECHNIQUE_RANK[technique] <= TECHNIQUE_RANK["candidate-pair"]) {
+    return "medium";
+  }
+  return TECHNIQUE_RANK[technique] <= TECHNIQUE_RANK["x-wing"]
+    ? "hard"
+    : "expert";
 }
 
 function hasImpossibleCell(state: LogicalState): boolean {

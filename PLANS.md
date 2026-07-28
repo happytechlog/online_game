@@ -86,7 +86,7 @@ Implementation details, acceptance criteria, and verification results belong in
   implementation.
 
 The collaborative planning record is
-`docs/plans/2026-07-27-sudoku-mvp.md`. Sudoku implementation has not started.
+`docs/plans/2026-07-27-sudoku-mvp.md`. Sudoku implementation is in progress.
 
 ## Phase 11 — Sudoku puzzle foundation
 
@@ -98,7 +98,7 @@ The collaborative planning record is
   locked candidates, naked and hidden pairs, and Medium classification.
 - [x] Implement naked and hidden candidate triples, row- and column-based
   X-Wing, and Hard classification.
-- [ ] Implement the remaining approved Expert logical-solving technique
+- [x] Implement the remaining approved Expert logical-solving technique
   catalog and classification.
 - [ ] Create the ahead-of-time puzzle preparation and validation pipeline.
 - [ ] Bundle 100 uniquely solvable, correctly classified puzzles per

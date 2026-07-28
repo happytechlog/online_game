@@ -9,20 +9,21 @@ singles produce structured logical steps and can solve and identify Easy
 puzzles without guessing. Persistent candidate eliminations now support
 pointing and claiming locked candidates, naked and hidden candidate pairs, and
 Medium classification. Naked and hidden candidate triples plus row- and
-column-based X-Wing now support Hard classification.
+column-based X-Wing support Hard classification. XY-Wing, row- and column-based
+Swordfish, and bounded single-digit X-Chains now complete the approved Expert
+catalog and classification.
 
 ## Next implementation
 
-Implement XY-Wing and row- and column-based Swordfish with immutable structured
-elimination steps. Define the MVP's bounded logical-chain algorithm precisely
-in `docs/DECISIONS.md` before implementing it, then extend logical solving so
-puzzles requiring any approved advanced technique are classified as Expert.
+Create the ahead-of-time Sudoku puzzle preparation and validation pipeline.
+It must ingest candidate puzzle definitions, reject malformed, non-unique,
+unsolved, solution-mismatched, or difficulty-mismatched entries, and emit a
+stable local bundle suitable for gameplay.
 
-Add synthetic technique coverage and uniquely solvable Expert puzzle
-regressions proving eliminations persist through completion.
-
-Return structured explanation data and affected cells/candidates so the same
-engine result can power difficulty classification and player-facing hints.
+Add deterministic pipeline tests, a documented input/output format, duplicate
+ID and duplicate-grid checks, and a summary by difficulty. Keep the pipeline
+outside the browser runtime and reuse the same uniqueness and logical-solving
+contracts used by gameplay hints.
 
 ## Constraints
 
@@ -31,4 +32,6 @@ engine result can power difficulty classification and player-facing hints.
   difficulty classification; backtracking remains limited to uniqueness
   validation.
 - Keep the solver React-independent and deterministic.
+- Do not begin assembling the 400-puzzle release bundle until the preparation
+  pipeline rejects every invalid fixture class deterministically.
 - Record any product-rule change in the dated plan before implementation.

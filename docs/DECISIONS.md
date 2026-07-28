@@ -48,3 +48,28 @@ Undo and redo history are session-only and reset after reload.
   puzzle selection history.
 - Runtime validation must isolate invalid payloads so one damaged record does
   not erase unrelated valid records.
+
+## 2026-07-27 — Bound Expert logical chains to X-Chains
+
+### Decision
+
+The Sudoku MVP interprets the approved Expert "logical chains" technique as a
+single-digit X-Chain. Candidate nodes for one digit are connected by strong
+links when that digit appears in exactly two cells of a row, column, or box,
+and by weak links when the two cells are peers. The solver considers only
+simple paths that start and end with a strong link, alternate strong and weak
+links, and contain three or five links. If both endpoints see another
+candidate for the same digit, that candidate can be eliminated.
+
+Search order is deterministic by digit, cell index, link type, and neighbor
+index. Paths cannot repeat a candidate node, and the five-link maximum is part
+of the MVP contract.
+
+### Consequences
+
+- Player-facing Expert hints remain finite, reproducible, and explainable as
+  one highlighted chain plus its eliminated candidates.
+- Backtracking, forcing chains, multi-digit alternating inference chains, and
+  chains longer than five links remain outside player-facing classification.
+- The preparation pipeline may reject otherwise valid puzzles that require a
+  broader chain catalog; bundled Expert puzzles must solve within this bound.
