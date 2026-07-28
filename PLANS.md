@@ -75,3 +75,43 @@ source requires explicit approval.
 
 Implementation details, acceptance criteria, and verification results belong in
 `docs/plans/2026-07-26-2048-mvp.md`.
+
+## Phase 10 — Sudoku product planning
+
+- [x] Confirm difficulty names and definitions.
+- [x] Decide puzzle generation, uniqueness, and classification rules.
+- [x] Decide input validation, mistakes, notes, hints, and undo behavior.
+- [x] Decide timer, best-time eligibility, autosave, and resume behavior.
+- [x] Finalize `docs/game-specs/sudoku.md` and its acceptance criteria before
+  implementation.
+
+The collaborative planning record is
+`docs/plans/2026-07-27-sudoku-mvp.md`. Sudoku implementation has not started.
+
+## Phase 11 — Sudoku puzzle foundation
+
+- [x] Implement pure board, candidate, conflict, completion, parsing, and
+  uniqueness-validation modules.
+- [ ] Implement the approved logical-solving technique catalog and difficulty
+  classification.
+- [ ] Create the ahead-of-time puzzle preparation and validation pipeline.
+- [ ] Bundle 100 uniquely solvable, correctly classified puzzles per
+  difficulty.
+- [ ] Cover engine rules, every approved technique, uniqueness, classification,
+  and invalid puzzle data with deterministic tests.
+
+## Phase 12 — Sudoku play experience
+
+- [ ] Build difficulty selection, the responsive semantic board, input controls,
+  notes, undo/redo, hints, pause, and completion flows.
+- [ ] Add versioned autosave, best times, puzzle-cycle history, and safe
+  recovery.
+- [ ] Add bilingual gameplay, guide, control, and FAQ content.
+- [ ] Integrate the route, metadata, sitemap, recent games, and catalog status.
+
+## Phase 13 — Sudoku release quality
+
+- [ ] Complete automated interaction and storage tests.
+- [ ] Audit keyboard, screen-reader, reduced-motion, contrast, and touch use.
+- [ ] Verify mobile and desktop layouts and route-specific SEO.
+- [ ] Run test, lint, typecheck, and production build before release.

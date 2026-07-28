@@ -52,3 +52,18 @@ storage schema, accessibility, dependency, and SEO changes.
 
 Never commit secrets. Treat localStorage as untrusted input: version keys,
 validate every field, recover safely, and handle quota or parse failures.
+
+## 컨텍스트 관리
+
+- 진행 상황은 짧고 명확하게 보고한다.
+- 요청이 없으면 파일 전체나 긴 명령 실행 로그를 대화에 출력하지 않는다.
+- 테스트 결과와 오류는 원인 및 관련 내용만 요약한다.
+- 중요한 구조 결정은 docs/DECISIONS.md에 기록한다.
+- 의미 있는 기능을 완료했거나 새 작업을 권장하기 전에는 NEXT_TASK.md를 갱신한다.
+
+## 계획 작업
+
+- 사용자가 계획만 요청한 경우에는 제품 결정과 문서만 갱신하고 구현 파일은 수정하지 않는다.
+- 확정된 게임 규칙은 `docs/game-specs/`에, 미결정 질문과 실행 순서는
+  `docs/plans/`의 날짜별 계획에 기록한다.
+- 사용자 결정이 필요한 항목을 임의로 확정하지 않는다.
