@@ -9,7 +9,17 @@ export type Cell = Digit | null;
 export type Board = readonly Cell[];
 export type Difficulty = "easy" | "medium" | "hard" | "expert";
 export type UnitKind = "row" | "column" | "box";
-export type LogicalTechnique = "naked-single" | "hidden-single";
+export type LogicalTechnique =
+  | "naked-single"
+  | "hidden-single"
+  | "locked-candidates"
+  | "candidate-pair";
+export type LogicalPattern =
+  | "pointing"
+  | "claiming"
+  | "naked"
+  | "hidden";
+export type CandidateGrid = readonly (readonly Digit[] | null)[];
 
 export interface CellPosition {
   row: number;
@@ -60,6 +70,7 @@ export interface LogicalUnit {
 
 export interface LogicalStep {
   technique: LogicalTechnique;
+  pattern?: LogicalPattern;
   placements: readonly LogicalPlacement[];
   eliminations: readonly LogicalCandidateHighlight[];
   highlights: readonly LogicalCandidateHighlight[];
@@ -69,9 +80,16 @@ export interface LogicalStep {
 
 export type LogicalSolveStatus = "solved" | "stuck" | "invalid";
 
+export interface LogicalState {
+  board: Board;
+  candidates: CandidateGrid;
+}
+
 export interface LogicalSolveResult {
   status: LogicalSolveStatus;
   board: Board;
+  candidates: CandidateGrid;
   steps: readonly LogicalStep[];
   hardestTechnique: LogicalTechnique | null;
+  difficulty: Difficulty | null;
 }

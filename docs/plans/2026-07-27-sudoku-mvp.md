@@ -213,3 +213,12 @@ This sequence is provisional until product decisions are complete:
 - Next: add persistent candidate-state eliminations for locked candidates and
   candidate pairs, then classify puzzles solved with those techniques as
   Medium.
+- Added immutable persistent candidate state, pointing and claiming locked
+  candidates, naked and hidden candidate pairs, and Easy/Medium classification
+  from the hardest technique actually used.
+- Added synthetic technique tests plus uniquely solvable Medium puzzle
+  regressions proving eliminations persist through completion.
+- `npm test`: 64 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- Next: implement candidate triples and X-Wing with Hard classification.

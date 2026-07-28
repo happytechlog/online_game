@@ -6,19 +6,18 @@ Sudoku Phase 11 is in progress. The pure board, candidate, conflict, completion,
 parsing, uniqueness search, and puzzle-definition validation foundation is
 implemented and covered by deterministic tests. Naked singles and hidden
 singles produce structured logical steps and can solve and identify Easy
-puzzles without guessing.
+puzzles without guessing. Persistent candidate eliminations now support
+pointing and claiming locked candidates, naked and hidden candidate pairs, and
+Medium classification.
 
 ## Next implementation
 
-Add a persistent candidate-state model, then implement locked candidates and
-candidate pairs. Eliminations must be represented as immutable structured steps
-and survive until a placement changes the candidate state. Extend logical
-solving so puzzles requiring these techniques can be classified as Medium.
+Implement candidate triples and X-Wing with immutable structured elimination
+steps. Extend logical solving so puzzles requiring either technique are
+classified as Hard, with uniquely solvable regression puzzles demonstrating
+that candidate eliminations persist through completion.
 
-After Medium coverage, continue in the approved order:
-
-1. Candidate triples and X-Wing.
-2. XY-Wing, Swordfish, and logical chains.
+After Hard coverage, continue with XY-Wing, Swordfish, and logical chains.
 
 Return structured explanation data and affected cells/candidates so the same
 engine result can power difficulty classification and player-facing hints.

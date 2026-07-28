@@ -94,8 +94,10 @@ The collaborative planning record is
   uniqueness-validation modules.
 - [x] Implement structured logical-step contracts plus naked-single and
   hidden-single discovery, application, and Easy solving.
-- [ ] Implement the remaining approved logical-solving technique catalog and
-  Medium-to-Expert difficulty classification.
+- [x] Implement persistent candidate eliminations, pointing and claiming
+  locked candidates, naked and hidden pairs, and Medium classification.
+- [ ] Implement the remaining approved Hard and Expert logical-solving
+  technique catalog and classification.
 - [ ] Create the ahead-of-time puzzle preparation and validation pipeline.
 - [ ] Bundle 100 uniquely solvable, correctly classified puzzles per
   difficulty.

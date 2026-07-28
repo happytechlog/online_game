@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   applyLogicalStep,
   CELL_COUNT,
+  createLogicalState,
   findNextLogicalStep,
   getCandidates,
   getCellPosition,
@@ -49,6 +50,46 @@ const hiddenSingleText =
   "...5..2.4" +
   "28.41...." +
   "3452.6...";
+
+const lockedCandidatesPuzzleText =
+  "5.....91." +
+  "..2.9..4." +
+  "..834..6." +
+  ".5976.4.3" +
+  ".2..5...." +
+  "..392.856" +
+  "96153..84" +
+  "..7.....5" +
+  "..52...7.";
+
+const candidatePairPuzzleText =
+  "53....9.2" +
+  "..2......" +
+  "......567" +
+  "8...6.423" +
+  "4.68....." +
+  "..39.4..." +
+  ".6.5.7..4" +
+  "28.41...." +
+  ".4......9";
+
+function createCandidateState(overrides) {
+  const board = parseBoard(".".repeat(CELL_COUNT));
+  const state = createLogicalState(board);
+  const candidates = state.candidates.map((cell) => [...cell]);
+
+  for (const [index, digits] of overrides) {
+    candidates[index] = digits;
+  }
+
+  return { board, candidates };
+}
+
+function withoutDigits(digits) {
+  return [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(
+    (digit) => !digits.includes(digit),
+  );
+}
 
 test("parses and serializes canonical 81-cell boards", () => {
   const board = parseBoard(puzzleText);
@@ -193,11 +234,13 @@ test("solves singles-only puzzles and reports the hardest used technique", () =>
   assert.equal(serializeBoard(solved.board), solutionText);
   assert.equal(solved.steps.length, 51);
   assert.equal(solved.hardestTechnique, "naked-single");
+  assert.equal(solved.difficulty, "easy");
 
   const stuck = solveLogically(parseBoard(hiddenSingleText));
   assert.equal(stuck.status, "stuck");
   assert.equal(stuck.steps.length > 0, true);
   assert.equal(stuck.hardestTechnique, "hidden-single");
+  assert.equal(stuck.difficulty, null);
 });
 
 test("reports conflicting boards as invalid without producing steps", () => {
@@ -208,4 +251,117 @@ test("reports conflicting boards as invalid without producing steps", () => {
   assert.equal(result.status, "invalid");
   assert.deepEqual(result.steps, []);
   assert.equal(result.hardestTechnique, null);
+  assert.equal(result.difficulty, null);
+});
+
+test("finds pointing locked candidates and preserves their eliminations", () => {
+  const overrides = [];
+  for (const index of [9, 10, 11, 18, 19, 20]) {
+    overrides.push([index, withoutDigits([1])]);
+  }
+  const state = createCandidateState(overrides);
+  const step = findNextLogicalStep(state);
+
+  assert.equal(step.technique, "locked-candidates");
+  assert.equal(step.pattern, "pointing");
+  assert.deepEqual(step.unit, { kind: "box", index: 0 });
+  assert.deepEqual(step.highlights, [
+    { index: 0, digits: [1] },
+    { index: 1, digits: [1] },
+    { index: 2, digits: [1] },
+  ]);
+  assert.deepEqual(step.eliminations, [3, 4, 5, 6, 7, 8].map(
+    (index) => ({ index, digits: [1] }),
+  ));
+
+  const next = applyLogicalStep(state, step);
+  assert.equal(state.candidates[3].includes(1), true);
+  assert.equal(next.candidates[3].includes(1), false);
+  assert.deepEqual(next.board, state.board);
+  assert.notEqual(next.board, state.board);
+  assert.notEqual(next.candidates, state.candidates);
+  assert.throws(() => applyLogicalStep(next, step), RangeError);
+});
+
+test("finds claiming locked candidates from a row into its box", () => {
+  const overrides = [];
+  for (const index of [2, 3, 4, 5, 6, 7, 8]) {
+    overrides.push([index, withoutDigits([2])]);
+  }
+  const step = findNextLogicalStep(createCandidateState(overrides));
+
+  assert.equal(step.technique, "locked-candidates");
+  assert.equal(step.pattern, "claiming");
+  assert.deepEqual(step.unit, { kind: "row", index: 0 });
+  assert.deepEqual(step.highlights, [
+    { index: 0, digits: [2] },
+    { index: 1, digits: [2] },
+  ]);
+  assert.deepEqual(step.eliminations, [9, 10, 11, 18, 19, 20].map(
+    (index) => ({ index, digits: [2] }),
+  ));
+});
+
+test("finds naked candidate pairs and removes both digits from the unit", () => {
+  const state = createCandidateState([
+    [0, [1, 2]],
+    [1, [1, 2]],
+  ]);
+  const step = findNextLogicalStep(state);
+
+  assert.equal(step.technique, "candidate-pair");
+  assert.equal(step.pattern, "naked");
+  assert.deepEqual(step.unit, { kind: "row", index: 0 });
+  assert.deepEqual(step.highlights, [
+    { index: 0, digits: [1, 2] },
+    { index: 1, digits: [1, 2] },
+  ]);
+  assert.deepEqual(step.eliminations, [2, 3, 4, 5, 6, 7, 8].map(
+    (index) => ({ index, digits: [1, 2] }),
+  ));
+});
+
+test("finds hidden candidate pairs and removes unrelated candidates", () => {
+  const overrides = [
+    [0, [1, 2, 3]],
+    [1, [1, 2, 4]],
+  ];
+  for (const index of [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18, 19, 20]) {
+    overrides.push([index, withoutDigits([1, 2])]);
+  }
+  const step = findNextLogicalStep(createCandidateState(overrides));
+
+  assert.equal(step.technique, "candidate-pair");
+  assert.equal(step.pattern, "hidden");
+  assert.deepEqual(step.unit, { kind: "row", index: 0 });
+  assert.deepEqual(step.eliminations, [
+    { index: 0, digits: [3] },
+    { index: 1, digits: [4] },
+  ]);
+});
+
+test("classifies logically solved locked-candidate puzzles as Medium", () => {
+  const result = solveLogically(parseBoard(lockedCandidatesPuzzleText));
+
+  assert.equal(result.status, "solved");
+  assert.equal(result.difficulty, "medium");
+  assert.equal(result.hardestTechnique, "locked-candidates");
+  assert.equal(
+    result.steps.some((step) => step.technique === "locked-candidates"),
+    true,
+  );
+  assert.equal(serializeBoard(result.board), solutionText);
+});
+
+test("retains pair eliminations through a complete Medium solution", () => {
+  const result = solveLogically(parseBoard(candidatePairPuzzleText));
+
+  assert.equal(result.status, "solved");
+  assert.equal(result.difficulty, "medium");
+  assert.equal(result.hardestTechnique, "candidate-pair");
+  assert.equal(
+    result.steps.some((step) => step.technique === "candidate-pair"),
+    true,
+  );
+  assert.equal(serializeBoard(result.board), solutionText);
 });

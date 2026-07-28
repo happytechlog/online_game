@@ -60,6 +60,13 @@ injected after a successful move, keeping compression, merging, scoring, win,
 and game-over tests deterministic. React components translate keyboard, WASD,
 and swipe input into engine directions but never implement movement rules.
 
+The Sudoku logical engine carries an immutable board plus persistent candidate
+grid. Placement and elimination steps return a new state and structured hint
+context, so the same deterministic technique order supports puzzle
+classification and player-facing explanations without React or browser APIs.
+Backtracking is isolated to ahead-of-time uniqueness validation and is not a
+logical hint or difficulty-classification technique.
+
 ## SEO and localization
 
 Each public route exports unique metadata. `src/config/site.ts` is the source

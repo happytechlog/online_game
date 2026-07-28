@@ -116,6 +116,8 @@ and completion detection, canonical puzzle parsing, exact-solution matching,
 bounded solution counting, and bundled-puzzle structural validation are
 implemented with deterministic tests. Structured naked-single and hidden-single
 steps now support deterministic Easy solving and expose placements, candidates,
-related cells, and unit context for future hints. Medium through Expert logical
-techniques and classification, the preparation pipeline, and the verified
-400-puzzle bundle remain before gameplay implementation.
+related cells, and unit context for future hints. Persistent candidate state,
+pointing and claiming locked candidates, naked and hidden candidate pairs, and
+Medium classification are also implemented. Hard and Expert logical
+techniques, the preparation pipeline, and the verified 400-puzzle bundle remain
+before gameplay implementation.
