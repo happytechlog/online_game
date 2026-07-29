@@ -429,6 +429,20 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .sudoku-primary { background: #4b3d69; border: 0; color: white; cursor: pointer; }
 .sudoku-primary:hover { background: #332945; }
 .sudoku-new-game { gap: 8px; width: 100%; }
+.sudoku-guide { background: white; border-top: 1px solid var(--line); }
+.sudoku-guide h2 { font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -0.055em; line-height: 1.1; margin: -8px 0 24px; }
+.sudoku-control-guide { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); margin-top: 42px; }
+.sudoku-control-guide article { border: 1px solid var(--line); border-radius: 16px; min-height: 190px; padding: 24px; }
+.sudoku-control-guide article > span { color: #7659ac; font-weight: 900; }
+.sudoku-control-guide h3 { font-size: 1rem; margin: 36px 0 10px; }
+.sudoku-control-guide p { color: var(--muted); font-size: 0.76rem; line-height: 1.65; margin: 0; }
+.sudoku-difficulty-guide { background: #4b3d69; color: white; }
+.sudoku-difficulty-guide .guide-number { color: #d9ccef; display: block; margin-bottom: 22px; }
+.sudoku-difficulty-guide .guide-lead { color: #d7cde8; max-width: 760px; }
+.sudoku-difficulty-guide .shell > div { display: grid; gap: 12px; grid-template-columns: repeat(4, 1fr); margin-top: 38px; }
+.sudoku-difficulty-guide article { background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 14px; min-height: 160px; padding: 22px; }
+.sudoku-difficulty-guide h3 { margin: 0 0 28px; }
+.sudoku-difficulty-guide article p { color: #d7cde8; font-size: 0.75rem; line-height: 1.6; margin: 0; }
 
 @media (max-width: 900px) {
   .hero { gap: 20px; grid-template-columns: 1fr 0.8fr; }
@@ -439,6 +453,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .othello-game-layout { grid-template-columns: minmax(0, 1fr) 250px; }
   .game-2048-layout { grid-template-columns: minmax(0, 1fr) 230px; }
   .sudoku-layout { grid-template-columns: minmax(396px, 1fr) 230px; }
+  .sudoku-difficulty-guide .shell > div { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 680px) {
@@ -495,6 +510,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .sudoku-number-pad { grid-row: span 2; }
   .sudoku-controls-hint { margin: 0; }
   .sudoku-new-game { height: 100%; }
+  .sudoku-control-guide { grid-template-columns: repeat(2, 1fr); }
   .guide-intro { gap: 20px; grid-template-columns: 1fr; padding-block: 72px; }
   .guide-section { padding-block: 72px; }
   .rule-grid, .difficulty-guide-grid { grid-template-columns: 1fr; }
@@ -522,6 +538,8 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .sudoku-difficulty { min-height: 152px; }
   .sudoku-difficulty strong { margin-top: 24px; }
   .sudoku-sidebar { display: flex; }
+  .sudoku-control-guide, .sudoku-difficulty-guide .shell > div { grid-template-columns: 1fr; }
+  .sudoku-control-guide article, .sudoku-difficulty-guide article { min-height: auto; }
   .control-guide-grid { grid-template-columns: 1fr; }
   .control-guide-grid article, .difficulty-guide-grid article, .game-2048-control-guide article { min-height: auto; }
 }

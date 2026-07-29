@@ -110,7 +110,7 @@ and gameplay remains understandable with reduced motion enabled.
 
 ## Implementation status
 
-Phase 11 is in progress. Pure board contracts, candidate calculation, conflict
+Phase 12 is complete. Pure board contracts, candidate calculation, conflict
 and completion detection, canonical puzzle parsing, exact-solution matching,
 bounded solution counting, and bundled-puzzle structural validation are
 implemented with deterministic tests. Structured naked-single and hidden-single
@@ -151,4 +151,7 @@ Replacing progress requires confirmation. A third independent payload tracks
 used puzzle IDs per difficulty, validates them against the committed release
 bundle, uses all 100 before a repeat, and resets only the exhausted difficulty.
 Completion deletes only the active save. All three Sudoku payloads recover
-independently from malformed or unavailable browser storage.
+independently from malformed or unavailable browser storage. The route,
+catalog, sitemap, recent-game tracking, bilingual gameplay copy, semantic
+guide, controls, FAQs, metadata, and FAQ structured data are integrated.
+Phase 13 release-quality auditing is next.

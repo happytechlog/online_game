@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SudokuGame } from "@/src/features/sudoku/components/sudoku-game";
 import { siteConfig } from "@/src/config/site";
+import { sudokuContent } from "@/src/i18n/sudoku-content";
 
 export const metadata: Metadata = {
   title: "스도쿠",
@@ -19,5 +20,28 @@ export const metadata: Metadata = {
 };
 
 export default function SudokuRoute() {
-  return <SudokuGame />;
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: sudokuContent.ko.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
+  return (
+    <>
+      <SudokuGame />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqStructuredData).replace(/</g, "\\u003c"),
+        }}
+        type="application/ld+json"
+      />
+    </>
+  );
 }

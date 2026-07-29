@@ -11,6 +11,7 @@ import {
 import { useLanguage } from "@/src/components/providers/language-provider";
 import { markGameAsRecent } from "@/src/storage/recent-games";
 import type { MessageKey } from "@/src/i18n/messages";
+import { SudokuGuide } from "./sudoku-guide";
 import {
   DIGITS,
   createEmptySudokuBestTimes,
@@ -1091,6 +1092,7 @@ export function SudokuGame() {
           </p>
         </section>
       )}
+      <SudokuGuide />
     </main>
   );
 }

@@ -358,3 +358,15 @@ The implementation follows this delivery sequence:
 - `npm run build`: passed.
 - Next: add the bilingual Sudoku guide, controls, FAQ content, and FAQ
   structured data to finish Phase 12 product integration.
+- Added bilingual semantic guide sections for rules, controls, assistance,
+  difficulty classification, autosave, pause, and records.
+- Added five Korean and English FAQs plus route-level FAQ structured data.
+- Confirmed the Sudoku route, metadata, sitemap, recent-game tracking, and
+  available catalog entry remain aligned.
+- Phase 12 play experience and integration are complete.
+- `npm test`: 109 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed.
+- Next: Phase 13 interaction, accessibility, layout, SEO, and release-quality
+  audits.

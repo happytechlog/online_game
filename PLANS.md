@@ -101,9 +101,9 @@ The collaborative planning record is
 - [x] Implement the remaining approved Expert logical-solving technique
   catalog and classification.
 - [x] Create the ahead-of-time puzzle preparation and validation pipeline.
-- [ ] Bundle 100 uniquely solvable, correctly classified puzzles per
+- [x] Bundle 100 uniquely solvable, correctly classified puzzles per
   difficulty.
-- [ ] Cover engine rules, every approved technique, uniqueness, classification,
+- [x] Cover engine rules, every approved technique, uniqueness, classification,
   and invalid puzzle data with deterministic tests.
 
 ## Phase 12 — Sudoku play experience
@@ -112,8 +112,8 @@ The collaborative planning record is
   notes, undo/redo, hints, pause, and completion flows.
 - [x] Add versioned autosave, best times, puzzle-cycle history, and safe
   recovery.
-- [ ] Add bilingual gameplay, guide, control, and FAQ content.
-- [ ] Integrate the route, metadata, sitemap, recent games, and catalog status.
+- [x] Add bilingual gameplay, guide, control, and FAQ content.
+- [x] Integrate the route, metadata, sitemap, recent games, and catalog status.
 
 ## Phase 13 — Sudoku release quality
 

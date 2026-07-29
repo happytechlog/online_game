@@ -133,6 +133,27 @@ test("keeps the 2048 board accessible for keyboard and touch play", async () => 
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
 });
 
+test("provides bilingual Sudoku guide and FAQ SEO content", async () => {
+  const [guide, content, page] = await Promise.all([
+    source("src/features/sudoku/components/sudoku-guide.tsx"),
+    source("src/i18n/sudoku-content.ts"),
+    source("app/games/sudoku/page.tsx"),
+  ]);
+
+  assert.match(guide, /<section/);
+  assert.match(guide, /<h2/);
+  assert.match(guide, /<ol/);
+  assert.match(guide, /<details/);
+  assert.match(content, /introTitle/);
+  assert.match(content, /difficultyTitle/);
+  assert.match(content, /faqTitle/);
+  assert.match(content, /자동저장/);
+  assert.match(content, /Autosave/);
+  assert.match(page, /FAQPage/);
+  assert.match(page, /application\/ld\+json/);
+  assert.match(page, /canonical/);
+});
+
 test("exposes the Sudoku board state and controls accessibly", async () => {
   const [game, styles] = await Promise.all([
     source("src/features/sudoku/components/sudoku-game.tsx"),
