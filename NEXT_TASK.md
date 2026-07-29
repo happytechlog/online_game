@@ -2,7 +2,8 @@
 
 ## Current focus
 
-Sudoku Phase 11 is in progress. The pure board, candidate, conflict, completion,
+Sudoku Phase 11 puzzle infrastructure is complete. The pure board, candidate,
+conflict, completion,
 parsing, uniqueness search, and puzzle-definition validation foundation is
 implemented and covered by deterministic tests. Naked singles and hidden
 singles produce structured logical steps and can solve and identify Easy
@@ -20,17 +21,16 @@ A lightweight gameplay loader now validates the generated artifact's version,
 exact shape, canonical grids, solution consistency, duplicates, and exactly
 100 entries per difficulty without rerunning uniqueness search or logical
 classification in the browser.
+The reproducible release source and generated gameplay artifact now contain
+400 fully accepted puzzles: 100 each for Easy, Medium, Hard, and Expert.
 
 ## Next implementation
 
-Assemble the 400-puzzle release source: 100 uniquely solvable, correctly
-classified puzzles for each of Easy, Medium, Hard, and Expert. Run the complete
-source through the preparation command and commit the generated stable local
-bundle only after all entries pass atomically.
-
-After the generated bundle passes both preparation and gameplay loading, start
-the accessible board UI and new-game difficulty flow described in the finalized
-specification.
+Start the accessible Sudoku board UI and new-game difficulty flow described in
+the finalized specification. Load puzzles only through the committed release
+entry point, present Easy, Medium, Hard, and Expert choices in both languages,
+and establish the semantic grid, selection, digit entry, erase, note mode, and
+conflict-highlighting interaction model before adding persistence and timing.
 
 ## Constraints
 
@@ -42,4 +42,6 @@ specification.
 - Keep candidate sources and the generated gameplay bundle clearly separated.
 - Do not weaken validation or silently drop rejected entries to reach the
   required per-difficulty counts.
+- Keep puzzle selection history and unfinished-game persistence out of the
+  first board interaction slice; add them in their planned dedicated phase.
 - Record any product-rule change in the dated plan before implementation.

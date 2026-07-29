@@ -267,3 +267,17 @@ The implementation follows this delivery sequence:
 - `npm run build`: passed.
 - Next: assemble and validate 100 release puzzles per difficulty and commit the
   generated stable bundle before starting the board UI.
+- Added a deterministic release-source assembler with separate verified seeds,
+  assembled candidate source, and generated gameplay artifact.
+- Generated and atomically accepted 400 puzzles: 100 each for Easy, Medium,
+  Hard, and Expert, with zero rejected entries.
+- Added a runtime release entry point and regression coverage proving the
+  committed gameplay artifact passes the lightweight loader.
+- Repeated assembly and preparation produced byte-identical source and bundle
+  hashes.
+- `npm test`: 86 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed.
+- Next: build the accessible board interaction slice and bilingual difficulty
+  selection before timer and persistence work.

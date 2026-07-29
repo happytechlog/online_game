@@ -5,6 +5,9 @@ import {
   SUDOKU_PUZZLE_BUNDLE_VERSION,
   SUDOKU_PUZZLES_PER_DIFFICULTY,
 } from "../src/features/sudoku/puzzles/index.ts";
+import {
+  sudokuPuzzleBundle,
+} from "../src/features/sudoku/puzzles/release.ts";
 
 const solution =
   "534678912672195348198342567859761423426853791713924856961537284287419635345286179";
@@ -58,6 +61,19 @@ test("loads a lightweight bundle with exactly 100 puzzles per difficulty", () =>
   assert.equal(result.bundle.version, SUDOKU_PUZZLE_BUNDLE_VERSION);
   assert.equal(result.bundle.puzzles.length, 400);
   assert.deepEqual(result.bundle, source);
+});
+
+test("loads the generated 400-puzzle release artifact", () => {
+  assert.equal(sudokuPuzzleBundle.puzzles.length, 400);
+
+  for (const difficulty of difficulties) {
+    assert.equal(
+      sudokuPuzzleBundle.puzzles.filter(
+        (puzzle) => puzzle.difficulty === difficulty,
+      ).length,
+      SUDOKU_PUZZLES_PER_DIFFICULTY,
+    );
+  }
 });
 
 test("rejects invalid bundle versions and envelope shapes", () => {

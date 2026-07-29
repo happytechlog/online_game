@@ -76,3 +76,25 @@ IDs and grids, and exactly 100 entries for each difficulty.
 The gameplay loader intentionally does not rerun solution search, logical
 solving, or difficulty classification. Those expensive checks remain the
 responsibility of the ahead-of-time preparation command.
+
+## Release assembly
+
+The version 1 release data is separated into:
+
+- `sources/release-seeds-v1.json`: four verified difficulty seeds;
+- `sources/release-v1.json`: the assembled 400-entry candidate source;
+- `generated/release-v1.json`: the stable gameplay artifact.
+
+Run `npm run assemble:sudoku` to reproduce the candidate source. The assembler
+creates deterministic clue variants and Sudoku-preserving transformations,
+retains only candidates with the declared logical difficulty, and validates the
+complete 400-entry source atomically.
+
+Then regenerate the gameplay artifact:
+
+```text
+npm run prepare:sudoku -- src/features/sudoku/puzzles/sources/release-v1.json src/features/sudoku/puzzles/generated/release-v1.json
+```
+
+The committed gameplay entry point imports only the generated artifact and
+passes it through the lightweight loader.

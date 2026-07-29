@@ -124,5 +124,7 @@ deterministic single-digit X-Chains bounded to five links. The preparation
 pipeline and lightweight gameplay bundle loader are complete. The loader
 rejects malformed or wrongly versioned artifacts, duplicate definitions, and
 any bundle without exactly 100 entries per difficulty without rerunning
-uniqueness or classification in the browser. The verified 400-puzzle release
-source and generated bundle remain before gameplay implementation.
+uniqueness or classification in the browser. The verified release source and
+generated gameplay bundle now contain 100 accepted puzzles for each of Easy,
+Medium, Hard, and Expert. The accessible board UI and new-game difficulty flow
+are next.

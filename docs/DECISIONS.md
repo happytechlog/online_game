@@ -92,3 +92,27 @@ sort accepted puzzles by difficulty and ID before serialization.
 - A partially valid source cannot accidentally become a partial release set.
 - Validation reports remain deterministic and include per-difficulty counts
   for accepted entries.
+
+## 2026-07-28 — Assemble the Sudoku release set reproducibly
+
+### Decision
+
+Build the first 400-puzzle release source from four already verified
+difficulty seeds. Deterministically add or exchange givens, apply
+Sudoku-preserving row, column, transpose, and digit permutations, and retain
+only candidates that still match the seed's declared logical difficulty.
+After assembly, pass the complete source through the atomic preparation
+pipeline again before producing the gameplay artifact.
+
+Keep the small seed source, assembled release source, generated gameplay
+bundle, and assembly command as separate committed inputs and outputs.
+
+### Consequences
+
+- The release source and gameplay bundle can be reproduced without a remote
+  generator or external service.
+- Every shipped grid is distinct and receives full uniqueness, solution,
+  logical-completion, and difficulty validation.
+- Variants share ancestry with one verified seed per difficulty. Future bundle
+  revisions can add independently sourced seeds without changing the gameplay
+  format or loader.
