@@ -281,3 +281,19 @@ The implementation follows this delivery sequence:
 - `npm run build`: passed.
 - Next: build the accessible board interaction slice and bilingual difficulty
   selection before timer and persistence work.
+- Added the bilingual Easy, Medium, Hard, and Expert new-game flow backed only
+  by the committed 400-puzzle release entry point.
+- Added a semantic 9×9 grid with roving keyboard focus, digit and erase
+  shortcuts, note mode, peer and matching-digit emphasis, non-color conflict
+  indicators, touch controls of at least 44×44px, and polite announcements.
+- Added pure game-state transitions and deterministic tests for given-cell
+  protection, bounded movement, notes, peer-note removal, provisional
+  conflicts, erase, and exact-solution completion.
+- Published Sudoku in the central game catalog and sitemap with bilingual
+  player copy and route metadata.
+- `npm test`: 91 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed with the Sudoku route included.
+- Next: add the timer and pause lifecycle plus versioned per-difficulty best
+  times before unfinished-game persistence and assistance history.

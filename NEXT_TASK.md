@@ -2,35 +2,25 @@
 
 ## Current focus
 
-Sudoku Phase 11 puzzle infrastructure is complete. The pure board, candidate,
-conflict, completion,
-parsing, uniqueness search, and puzzle-definition validation foundation is
-implemented and covered by deterministic tests. Naked singles and hidden
-singles produce structured logical steps and can solve and identify Easy
-puzzles without guessing. Persistent candidate eliminations now support
-pointing and claiming locked candidates, naked and hidden candidate pairs, and
-Medium classification. Naked and hidden candidate triples plus row- and
-column-based X-Wing support Hard classification. XY-Wing, row- and column-based
-Swordfish, and bounded single-digit X-Chains now complete the approved Expert
-catalog and classification.
-The ahead-of-time preparation pipeline now rejects malformed definitions,
-duplicate IDs or grids, invalid uniqueness or solutions, puzzles outside the
-approved logical catalog, and difficulty mismatches. Valid sources produce a
-canonical, stably sorted local bundle plus per-difficulty counts.
-A lightweight gameplay loader now validates the generated artifact's version,
-exact shape, canonical grids, solution consistency, duplicates, and exactly
-100 entries per difficulty without rerunning uniqueness search or logical
-classification in the browser.
-The reproducible release source and generated gameplay artifact now contain
-400 fully accepted puzzles: 100 each for Easy, Medium, Hard, and Expert.
+Sudoku Phase 11 now has its first playable UI slice. The verified local release
+bundle contains 400 accepted puzzles, and the new-game flow offers bilingual
+Easy, Medium, Hard, and Expert choices through that release entry point only.
+The semantic 9×9 board supports selection, bounded arrow-key movement, digit
+entry, erase, note mode, automatic peer-note removal, peer and matching-digit
+highlighting, provisional conflict highlighting, and exact-solution
+completion. Given cells are immutable, touch controls meet the 44×44px target,
+and focus, conflict, cell state, and status announcements have accessible
+non-color treatment. The Sudoku route is available from the central catalog
+and included in the sitemap.
 
 ## Next implementation
 
-Start the accessible Sudoku board UI and new-game difficulty flow described in
-the finalized specification. Load puzzles only through the committed release
-entry point, present Easy, Medium, Hard, and Expert choices in both languages,
-and establish the semantic grid, selection, digit entry, erase, note mode, and
-conflict-highlighting interaction model before adding persistence and timing.
+Add the timer and pause lifecycle plus versioned best times per difficulty.
+Start timing when a selected puzzle appears, pause manually or on page
+visibility loss, hide the board during manual pause, format elapsed time as
+specified, and show current and best times on valid completion. Keep unfinished
+game persistence, selection history, hints, and undo/redo for their later
+dedicated slices.
 
 ## Constraints
 
@@ -43,5 +33,7 @@ conflict-highlighting interaction model before adding persistence and timing.
 - Do not weaken validation or silently drop rejected entries to reach the
   required per-difficulty counts.
 - Keep puzzle selection history and unfinished-game persistence out of the
-  first board interaction slice; add them in their planned dedicated phase.
+  timer slice; add them in their planned dedicated phase.
+- Validate best-time storage as untrusted, versioned device-local data without
+  coupling it to the unfinished-game save.
 - Record any product-rule change in the dated plan before implementation.

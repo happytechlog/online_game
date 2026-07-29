@@ -9,21 +9,24 @@ async function source(path) {
 }
 
 test("defines all public routes with unique metadata", async () => {
-  const [home, games, othello, game2048] = await Promise.all([
+  const [home, games, othello, game2048, sudoku] = await Promise.all([
     source("app/page.tsx"),
     source("app/games/page.tsx"),
     source("app/games/othello/page.tsx"),
     source("app/games/2048/page.tsx"),
+    source("app/games/sudoku/page.tsx"),
   ]);
 
   assert.match(home, /title:\s*"무료 온라인 브라우저 게임"/);
   assert.match(games, /title:\s*"모든 게임"/);
   assert.match(othello, /title:\s*"오델로"/);
   assert.match(game2048, /title:\s*"2048"/);
+  assert.match(sudoku, /title:\s*"스도쿠"/);
   assert.match(home, /<HomePage \/>/);
   assert.match(games, /<GamesPage \/>/);
   assert.match(othello, /<OthelloGame \/>/);
   assert.match(game2048, /<Game2048 \/>/);
+  assert.match(sudoku, /<SudokuGame \/>/);
 });
 
 test("keeps the game catalog centralized and extensible", async () => {
@@ -39,6 +42,10 @@ test("keeps the game catalog centralized and extensible", async () => {
   assert.match(
     catalog,
     /id:\s*"2048"[\s\S]*?href:\s*"\/games\/2048"[\s\S]*?status:\s*"available"/,
+  );
+  assert.match(
+    catalog,
+    /id:\s*"sudoku"[\s\S]*?href:\s*"\/games\/sudoku"[\s\S]*?status:\s*"available"/,
   );
 });
 
@@ -68,6 +75,7 @@ test("publishes crawler discovery files and social artwork", async () => {
   assert.match(robots, /sitemap/);
   assert.match(sitemap, /games\/othello/);
   assert.match(sitemap, /games\/2048/);
+  assert.match(sitemap, /games\/sudoku/);
   assert.ok(image.byteLength > 100_000);
 });
 
@@ -123,6 +131,26 @@ test("keeps the 2048 board accessible for keyboard and touch play", async () => 
   assert.match(styles, /\.game-2048-board \{[^}]*touch-action: none;/);
   assert.match(styles, /\.game-2048-row \{ display: contents; \}/);
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
+});
+
+test("exposes the Sudoku board state and controls accessibly", async () => {
+  const [game, styles] = await Promise.all([
+    source("src/features/sudoku/components/sudoku-game.tsx"),
+    source("app/globals.css"),
+  ]);
+
+  assert.match(game, /role="grid"/);
+  assert.match(game, /role="row"/);
+  assert.match(game, /role="gridcell"/);
+  assert.match(game, /aria-rowindex=/);
+  assert.match(game, /aria-colindex=/);
+  assert.match(game, /aria-keyshortcuts=/);
+  assert.match(game, /aria-live="polite"/);
+  assert.match(game, /sudokuGivenCell/);
+  assert.match(game, /sudokuConflict/);
+  assert.match(styles, /\.sudoku-gridcell \{[^}]*min-height: 44px;[^}]*min-width: 44px;/);
+  assert.match(styles, /\.sudoku-cell:focus-visible/);
+  assert.match(styles, /\.sudoku-cell\.conflict[^}]*text-decoration:/);
 });
 
 test("keeps every standard 2048 tile above large-text contrast minimums", async () => {

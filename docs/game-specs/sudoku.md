@@ -126,5 +126,10 @@ rejects malformed or wrongly versioned artifacts, duplicate definitions, and
 any bundle without exactly 100 entries per difficulty without rerunning
 uniqueness or classification in the browser. The verified release source and
 generated gameplay bundle now contain 100 accepted puzzles for each of Easy,
-Medium, Hard, and Expert. The accessible board UI and new-game difficulty flow
-are next.
+Medium, Hard, and Expert. The first accessible board interaction slice is now
+available: bilingual difficulty selection loads only the committed release
+entry point, and the semantic grid supports cell selection, keyboard movement,
+digit entry, notes, erase, peer and matching-digit highlighting, immediate
+conflict highlighting, and exact-solution completion. Timer, pause, records,
+undo/redo, hints, and versioned gameplay persistence remain in their dedicated
+phases.
