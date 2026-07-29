@@ -108,7 +108,7 @@ The collaborative planning record is
 
 ## Phase 12 — Sudoku play experience
 
-- [ ] Build difficulty selection, the responsive semantic board, input controls,
+- [x] Build difficulty selection, the responsive semantic board, input controls,
   notes, undo/redo, hints, pause, and completion flows.
 - [ ] Add versioned autosave, best times, puzzle-cycle history, and safe
   recovery.

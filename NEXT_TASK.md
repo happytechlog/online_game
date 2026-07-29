@@ -2,35 +2,34 @@
 
 ## Current focus
 
-Sudoku Phase 11 now includes playable board interactions, in-session timing,
-per-difficulty best records, and unlimited undo/redo. Player value, erase, and
-note changes are recorded by a pure history module. A final placement and all
-peer notes removed by that placement form one atomic action, so undo restores
-the exact prior board and notes and redo reapplies them together. Selection and
-note-mode toggles do not pollute history, rejected edits are ignored, and any
-divergent input clears the redo branch. Accessible touch buttons and the agreed
-`Ctrl`/`Cmd` keyboard shortcuts are connected. History remains session-only.
+The complete in-session Sudoku interaction flow is now implemented: difficulty
+selection, responsive semantic board, values, notes, erase, atomic undo/redo,
+three-use explanatory hints, pause, timing, records, and completion actions.
+Hints reuse the deterministic logical solver, highlight cells and candidates
+without applying a step, and leave timing and history untouched. Unavailable
+hints do not consume a use, while any subsequent player board change clears
+stale highlighting.
 
 ## Next implementation
 
-Add the three-use explanatory logical hint flow. Ask the existing deterministic
-solver for the next available approved technique, explain it in both languages,
-and highlight the relevant cells or candidates without entering a digit.
-Expose an accessible touch action and announcement, decrement the remaining
-count only when a valid hint is shown, and clear stale highlighting after a
-player board change. Hint use must not alter timer or best-time eligibility.
+Complete Phase 12 persistence. Add one versioned unfinished-game autosave that
+stores puzzle identity, board values, notes, remaining hints, and accumulated
+elapsed time after every meaningful change. Restore it paused without restoring
+undo/redo or active hint highlighting, and offer Continue or New Game. Add a
+separate validated per-difficulty puzzle-cycle history so all 100 puzzles are
+used before that difficulty resets. Selecting a new puzzle while unfinished
+progress exists must require confirmation before replacement.
 
 ## Constraints
 
-- Treat `docs/game-specs/sudoku.md` as the finalized MVP behavior.
-- Do not use guessing or backtracking for player-facing hints or difficulty
-  classification.
-- Keep hint derivation React-independent and deterministic by reusing the
-  existing logical-step contract.
-- Do not fill a value, remove a candidate, or add undo history when showing a
-  hint.
-- Keep unfinished-game persistence and puzzle selection history out of the
-  hint slice; add them after the active-game shape includes remaining hints.
-- Keep undo and redo history session-only and exclude it from future persisted
-  payloads.
+- Treat every local payload as untrusted: require exact versions and shapes,
+  validate puzzle identity against the committed release bundle, and recover
+  without damaging best times or another valid payload.
+- Keep best times, unfinished game, and puzzle-cycle history in separate keys.
+- Persist only the latest board, notes, remaining hints, and elapsed time;
+  never persist undo/redo or active hint highlighting.
+- Restore every unfinished game paused and continue timing only after the
+  player explicitly resumes.
+- Clear only the unfinished save on valid completion.
+- Reset only the exhausted difficulty's puzzle cycle.
 - Record any product-rule change in the dated plan before implementation.

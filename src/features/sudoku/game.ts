@@ -8,6 +8,7 @@ import {
   type Digit,
   type PuzzleDefinition,
 } from "./engine/index.ts";
+import { SUDOKU_HINT_LIMIT } from "./hint.ts";
 
 export type SudokuDirection = "up" | "down" | "left" | "right";
 
@@ -18,6 +19,7 @@ export interface SudokuGameState {
   notes: readonly (readonly Digit[])[];
   selectedIndex: number | null;
   noteMode: boolean;
+  hintsRemaining: number;
   complete: boolean;
 }
 
@@ -54,6 +56,7 @@ export function createSudokuGame(
     notes: emptyNotes(),
     selectedIndex: null,
     noteMode: false,
+    hintsRemaining: SUDOKU_HINT_LIMIT,
     complete: false,
   };
 }

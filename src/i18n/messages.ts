@@ -154,6 +154,40 @@ export const messages = {
     sudokuRedo: "다시 실행",
     sudokuStatusUndone: "이전 입력을 되돌렸습니다.",
     sudokuStatusRedone: "되돌린 입력을 다시 실행했습니다.",
+    sudokuHint: "힌트",
+    sudokuHintsRemaining: "남은 횟수 {count}",
+    sudokuHintsExhausted: "이번 게임의 힌트를 모두 사용했습니다.",
+    sudokuHintUnavailable:
+      "현재 상태에서는 설명할 수 있는 논리 힌트를 찾지 못했습니다. 충돌한 숫자가 있는지 확인해 보세요.",
+    sudokuHintAnnouncement:
+      "{technique} 힌트를 표시했습니다. 힌트가 {remaining}회 남았습니다.",
+    sudokuHintNakedSingle: "유일 후보",
+    sudokuHintNakedSingleBody:
+      "강조된 칸에는 들어갈 수 있는 숫자가 하나뿐입니다.",
+    sudokuHintHiddenSingle: "숨은 유일 후보",
+    sudokuHintHiddenSingleBody:
+      "강조된 행, 열 또는 박스에서 이 숫자가 들어갈 수 있는 칸은 하나뿐입니다.",
+    sudokuHintLockedCandidates: "잠긴 후보",
+    sudokuHintLockedCandidatesBody:
+      "한 박스와 행 또는 열에 갇힌 후보를 따라 다른 칸의 가능성을 좁혀 보세요.",
+    sudokuHintCandidatePair: "후보 쌍",
+    sudokuHintCandidatePairBody:
+      "두 칸에 같은 두 후보만 남아 있어 같은 영역의 다른 후보를 제외할 수 있습니다.",
+    sudokuHintCandidateTriple: "후보 트리플",
+    sudokuHintCandidateTripleBody:
+      "세 칸에 묶인 세 후보를 이용해 같은 영역의 다른 가능성을 좁혀 보세요.",
+    sudokuHintXWing: "X-Wing",
+    sudokuHintXWingBody:
+      "두 행 또는 열에 반복되는 직사각형 후보 패턴을 확인해 보세요.",
+    sudokuHintXyWing: "XY-Wing",
+    sudokuHintXyWingBody:
+      "세 개의 두-후보 칸이 만드는 연결을 따라 공통 후보를 좁혀 보세요.",
+    sudokuHintSwordfish: "Swordfish",
+    sudokuHintSwordfishBody:
+      "세 행과 세 열에 걸친 같은 숫자의 후보 패턴을 확인해 보세요.",
+    sudokuHintLogicalChain: "논리 체인",
+    sudokuHintLogicalChainBody:
+      "강조된 같은 숫자 후보의 강한 연결과 약한 연결을 차례로 따라가 보세요.",
   },
   en: {
     skip: "Skip to content",
@@ -309,6 +343,40 @@ export const messages = {
     sudokuRedo: "Redo",
     sudokuStatusUndone: "Undid the previous entry.",
     sudokuStatusRedone: "Redid the previous entry.",
+    sudokuHint: "Hint",
+    sudokuHintsRemaining: "{count} remaining",
+    sudokuHintsExhausted: "You have used all hints for this game.",
+    sudokuHintUnavailable:
+      "No explainable logical hint is available in this position. Check the board for conflicting digits.",
+    sudokuHintAnnouncement:
+      "Showing a {technique} hint. {remaining} hints remain.",
+    sudokuHintNakedSingle: "Naked single",
+    sudokuHintNakedSingleBody:
+      "The highlighted cell has only one possible digit.",
+    sudokuHintHiddenSingle: "Hidden single",
+    sudokuHintHiddenSingleBody:
+      "Only one cell in the highlighted row, column, or box can contain this digit.",
+    sudokuHintLockedCandidates: "Locked candidates",
+    sudokuHintLockedCandidatesBody:
+      "Follow the candidates confined to one box and row or column to narrow other cells.",
+    sudokuHintCandidatePair: "Candidate pair",
+    sudokuHintCandidatePairBody:
+      "Two cells share the same two candidates, excluding them elsewhere in the unit.",
+    sudokuHintCandidateTriple: "Candidate triple",
+    sudokuHintCandidateTripleBody:
+      "Three candidates are confined to three cells, narrowing the rest of the unit.",
+    sudokuHintXWing: "X-Wing",
+    sudokuHintXWingBody:
+      "Look for the highlighted rectangular candidate pattern across two rows or columns.",
+    sudokuHintXyWing: "XY-Wing",
+    sudokuHintXyWingBody:
+      "Follow the three linked two-candidate cells to narrow their shared candidate.",
+    sudokuHintSwordfish: "Swordfish",
+    sudokuHintSwordfishBody:
+      "Trace the same candidate across the highlighted three rows and three columns.",
+    sudokuHintLogicalChain: "Logical chain",
+    sudokuHintLogicalChainBody:
+      "Follow the highlighted strong and weak links for the same digit in order.",
   },
 } as const;
 

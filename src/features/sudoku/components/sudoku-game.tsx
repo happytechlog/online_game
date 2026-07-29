@@ -30,6 +30,7 @@ import {
   pauseSudokuTimer,
   recordSudokuAction,
   redoSudokuAction,
+  requestSudokuHint,
   resumeSudokuTimer,
   saveSudokuBestTimes,
   selectSudokuCell,
@@ -39,10 +40,12 @@ import {
   updateSudokuBestTime,
   type Difficulty,
   type Digit,
+  type LogicalTechnique,
   type SudokuBestTimes,
   type SudokuDirection,
   type SudokuGameState,
   type SudokuHistory,
+  type SudokuHint,
   type SudokuTimer,
 } from "../index.ts";
 
@@ -72,6 +75,50 @@ const DIFFICULTIES: readonly {
     description: "sudokuExpertDescription",
   },
 ];
+
+const HINT_TECHNIQUE_MESSAGES: Readonly<
+  Record<
+    LogicalTechnique,
+    { name: MessageKey; description: MessageKey }
+  >
+> = {
+  "naked-single": {
+    name: "sudokuHintNakedSingle",
+    description: "sudokuHintNakedSingleBody",
+  },
+  "hidden-single": {
+    name: "sudokuHintHiddenSingle",
+    description: "sudokuHintHiddenSingleBody",
+  },
+  "locked-candidates": {
+    name: "sudokuHintLockedCandidates",
+    description: "sudokuHintLockedCandidatesBody",
+  },
+  "candidate-pair": {
+    name: "sudokuHintCandidatePair",
+    description: "sudokuHintCandidatePairBody",
+  },
+  "candidate-triple": {
+    name: "sudokuHintCandidateTriple",
+    description: "sudokuHintCandidateTripleBody",
+  },
+  "x-wing": {
+    name: "sudokuHintXWing",
+    description: "sudokuHintXWingBody",
+  },
+  "xy-wing": {
+    name: "sudokuHintXyWing",
+    description: "sudokuHintXyWingBody",
+  },
+  swordfish: {
+    name: "sudokuHintSwordfish",
+    description: "sudokuHintSwordfishBody",
+  },
+  "logical-chain": {
+    name: "sudokuHintLogicalChain",
+    description: "sudokuHintLogicalChainBody",
+  },
+};
 
 function formatMessage(
   template: string,
@@ -136,6 +183,7 @@ export function SudokuGame() {
   const [completion, setCompletion] =
     useState<CompletionSummary | null>(null);
   const [showCompletion, setShowCompletion] = useState(false);
+  const [activeHint, setActiveHint] = useState<SudokuHint | null>(null);
   const cellRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const pauseActionRef = useRef<HTMLButtonElement | null>(null);
   const completionActionRef = useRef<HTMLButtonElement | null>(null);
@@ -161,6 +209,23 @@ export function SudokuGame() {
   const elapsedMs = timer ? getSudokuElapsedMs(timer, clockMs) : 0;
   const bestTimeMs = game
     ? bestTimes.times[game.puzzle.difficulty]
+    : null;
+  const hintCellIndices = useMemo(
+    () => new Set(activeHint?.cellIndices ?? []),
+    [activeHint],
+  );
+  const hintCandidates = useMemo(
+    () =>
+      new Map(
+        activeHint?.candidates.map(({ index, digits }) => [
+          index,
+          new Set(digits),
+        ]) ?? [],
+      ),
+    [activeHint],
+  );
+  const activeHintMessages = activeHint
+    ? HINT_TECHNIQUE_MESSAGES[activeHint.step.technique]
     : null;
 
   const updateGame = useCallback(
@@ -200,6 +265,7 @@ export function SudokuGame() {
       const nextGame = enterSudokuDigit(game, digit);
       setHistory(recordSudokuAction(history, game, nextGame));
       setGame(nextGame);
+      if (nextGame !== game) setActiveHint(null);
       setAnnouncement(
         formatMessage(t("sudokuStatusEntered"), { digit }),
       );
@@ -215,6 +281,7 @@ export function SudokuGame() {
     const nextGame = eraseSudokuCell(game);
     setHistory(recordSudokuAction(history, game, nextGame));
     setGame(nextGame);
+    if (nextGame !== game) setActiveHint(null);
     setAnnouncement(t("sudokuStatusErased"));
   }, [game, history, t]);
 
@@ -224,6 +291,7 @@ export function SudokuGame() {
     if (!result.changed) return;
     setGame(result.state);
     setHistory(result.history);
+    setActiveHint(null);
     setAnnouncement(t("sudokuStatusUndone"));
   }, [game, history, t, timer?.status]);
 
@@ -233,8 +301,33 @@ export function SudokuGame() {
     if (!result.changed) return;
     setGame(result.state);
     setHistory(result.history);
+    setActiveHint(null);
     setAnnouncement(t("sudokuStatusRedone"));
   }, [game, history, t, timer?.status]);
+
+  const showHint = useCallback(() => {
+    if (!game || timer?.status !== "running") return;
+    const result = requestSudokuHint(game);
+    if (result.hint === null) {
+      setAnnouncement(
+        game.hintsRemaining <= 0
+          ? t("sudokuHintsExhausted")
+          : t("sudokuHintUnavailable"),
+      );
+      return;
+    }
+
+    const messages =
+      HINT_TECHNIQUE_MESSAGES[result.hint.step.technique];
+    setGame(result.state);
+    setActiveHint(result.hint);
+    setAnnouncement(
+      formatMessage(t("sudokuHintAnnouncement"), {
+        technique: t(messages.name),
+        remaining: result.state.hintsRemaining,
+      }),
+    );
+  }, [game, t, timer?.status]);
 
   const togglePause = useCallback(() => {
     if (!timer || timer.status === "finished") return;
@@ -385,6 +478,7 @@ export function SudokuGame() {
     setClockMs(now);
     setCompletion(null);
     setShowCompletion(false);
+    setActiveHint(null);
     setAnnouncement("");
     markGameAsRecent(window.localStorage, "sudoku");
   }
@@ -395,6 +489,7 @@ export function SudokuGame() {
     setTimer(null);
     setCompletion(null);
     setShowCompletion(false);
+    setActiveHint(null);
   }
 
   function selectCell(index: number) {
@@ -515,6 +610,8 @@ export function SudokuGame() {
                         const related = peerIndices.has(index);
                         const matching =
                           selectedDigit !== null && value === selectedDigit;
+                        const hinted = hintCellIndices.has(index);
+                        const hintedDigits = hintCandidates.get(index);
                         const content =
                           value !== null
                             ? formatMessage(t("sudokuPlacedDigit"), {
@@ -541,6 +638,7 @@ export function SudokuGame() {
                           related ? "related" : "",
                           matching ? "matching" : "",
                           conflict ? "conflict" : "",
+                          hinted ? "hint-cell" : "",
                         ]
                           .filter(Boolean)
                           .join(" ");
@@ -574,8 +672,18 @@ export function SudokuGame() {
                               ) : (
                                 <span aria-hidden="true" className="sudoku-notes">
                                   {DIGITS.map((digit) => (
-                                    <i key={digit}>
-                                      {notes.includes(digit) ? digit : ""}
+                                    <i
+                                      className={
+                                        hintedDigits?.has(digit)
+                                          ? "hint-candidate"
+                                          : ""
+                                      }
+                                      key={digit}
+                                    >
+                                      {notes.includes(digit) ||
+                                      hintedDigits?.has(digit)
+                                        ? digit
+                                        : ""}
                                     </i>
                                   ))}
                                 </span>
@@ -738,6 +846,24 @@ export function SudokuGame() {
                 {t("sudokuRedo")}
               </button>
               <button
+                className="sudoku-hint-action"
+                disabled={
+                  game.complete ||
+                  timer?.status !== "running" ||
+                  game.hintsRemaining <= 0
+                }
+                onClick={showHint}
+                type="button"
+              >
+                <span aria-hidden="true">?</span>
+                {t("sudokuHint")}
+                <small>
+                  {formatMessage(t("sudokuHintsRemaining"), {
+                    count: game.hintsRemaining,
+                  })}
+                </small>
+              </button>
+              <button
                 className="sudoku-pause-action"
                 disabled={game.complete}
                 onClick={togglePause}
@@ -751,6 +877,13 @@ export function SudokuGame() {
                   : t("sudokuPause")}
               </button>
             </div>
+            {activeHint && activeHintMessages && (
+              <div className="sudoku-hint-panel" role="status">
+                <span>{t("sudokuHint")}</span>
+                <strong>{t(activeHintMessages.name)}</strong>
+                <p>{t(activeHintMessages.description)}</p>
+              </div>
+            )}
             <p className="sudoku-controls-hint">
               {t("sudokuControlsHint")}
             </p>

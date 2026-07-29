@@ -327,3 +327,17 @@ The implementation follows this delivery sequence:
 - `npm run build`: passed.
 - Next: add the three-use explanatory logical hint flow and its accessible
   cell/candidate highlighting before persisting the complete active-game shape.
+- Added a pure hint request contract backed by the existing deterministic
+  logical-step finder, limited to three successful hints per game.
+- Each supported technique has bilingual naming and explanation. Related cells
+  use a dashed non-color marker and candidate digits receive distinct visual
+  emphasis without applying the solver step.
+- Conflicting, exhausted, or otherwise unavailable positions do not spend a
+  hint. Player value, note, erase, undo, or redo changes clear stale hint
+  highlights, while hint use leaves timer and best-time eligibility unchanged.
+- `npm test`: 103 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed.
+- Next: add validated active-game autosave/resume and per-difficulty puzzle
+  cycles, then persist the remaining-hint count with the active snapshot.

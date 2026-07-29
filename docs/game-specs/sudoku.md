@@ -139,7 +139,11 @@ keyboard pause, dialog focus, and best-time storage failure recovery are
 covered by tests. Unlimited in-session undo and redo now cover value, erase,
 and note changes. Each final placement and every automatic peer-note removal
 is one atomic history entry; divergent input clears redo, while selection and
-note-mode toggles do not create history noise. Reload restoration of paused
-elapsed time remains coupled to the later unfinished-game persistence phase.
-Hints, selection history, and versioned gameplay persistence remain in their
-dedicated phases.
+note-mode toggles do not create history noise. Players can now request at most
+three deterministic logical hints. A successful hint names and explains the
+next approved technique and highlights its related cells and candidates without
+changing the board, history, timer, or record eligibility; unavailable hints
+do not consume a use. Player changes clear stale hint highlighting. Reload
+restoration of paused elapsed time remains coupled to the later unfinished-game
+persistence phase. Selection history and versioned gameplay persistence remain
+in their dedicated phases.
