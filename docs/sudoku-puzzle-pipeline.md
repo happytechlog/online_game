@@ -65,3 +65,14 @@ Puzzles are normalized and sorted by Easy, Medium, Hard, Expert, then by ID.
 The same accepted definitions therefore always produce byte-stable JSON
 regardless of source order. Invalid input exits unsuccessfully and does not
 write a partial bundle.
+
+## Gameplay loading
+
+Gameplay loads the generated artifact with `loadSudokuPuzzleBundle`. This
+lightweight boundary validates the bundle version and exact JSON shape,
+canonical puzzle and solution strings, clue/solution consistency, duplicate
+IDs and grids, and exactly 100 entries for each difficulty.
+
+The gameplay loader intentionally does not rerun solution search, logical
+solving, or difficulty classification. Those expensive checks remain the
+responsibility of the ahead-of-time preparation command.

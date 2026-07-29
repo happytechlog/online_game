@@ -16,6 +16,10 @@ The ahead-of-time preparation pipeline now rejects malformed definitions,
 duplicate IDs or grids, invalid uniqueness or solutions, puzzles outside the
 approved logical catalog, and difficulty mismatches. Valid sources produce a
 canonical, stably sorted local bundle plus per-difficulty counts.
+A lightweight gameplay loader now validates the generated artifact's version,
+exact shape, canonical grids, solution consistency, duplicates, and exactly
+100 entries per difficulty without rerunning uniqueness search or logical
+classification in the browser.
 
 ## Next implementation
 
@@ -24,10 +28,9 @@ classified puzzles for each of Easy, Medium, Hard, and Expert. Run the complete
 source through the preparation command and commit the generated stable local
 bundle only after all entries pass atomically.
 
-Add a lightweight gameplay-facing bundle loader that validates the generated
-artifact's version and shape without rerunning uniqueness search or logical
-classification in the browser. Cover invalid artifact versions, malformed
-entries, and exact per-difficulty counts before starting the board UI.
+After the generated bundle passes both preparation and gameplay loading, start
+the accessible board UI and new-game difficulty flow described in the finalized
+specification.
 
 ## Constraints
 

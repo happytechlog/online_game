@@ -121,4 +121,8 @@ Medium classification are also implemented. Naked and hidden candidate triples,
 row- and column-based X-Wing, and Hard classification are complete. Expert
 classification is complete with XY-Wing, row- and column-based Swordfish, and
 deterministic single-digit X-Chains bounded to five links. The preparation
-pipeline and verified 400-puzzle bundle remain before gameplay implementation.
+pipeline and lightweight gameplay bundle loader are complete. The loader
+rejects malformed or wrongly versioned artifacts, duplicate definitions, and
+any bundle without exactly 100 entries per difficulty without rerunning
+uniqueness or classification in the browser. The verified 400-puzzle release
+source and generated bundle remain before gameplay implementation.

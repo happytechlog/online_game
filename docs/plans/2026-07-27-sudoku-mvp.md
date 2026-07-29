@@ -256,3 +256,14 @@ The implementation follows this delivery sequence:
 - `npm run lint`: passed without warnings.
 - Next: assemble and validate 100 release puzzles per difficulty, then add the
   lightweight gameplay bundle loader.
+- Added a lightweight gameplay-facing bundle loader that validates the version,
+  exact artifact shape, canonical grids, solution consistency, duplicates, and
+  exactly 100 puzzles per difficulty.
+- Kept uniqueness search, logical solving, and difficulty classification
+  exclusively in the ahead-of-time preparation pipeline.
+- `npm test`: 85 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed.
+- Next: assemble and validate 100 release puzzles per difficulty and commit the
+  generated stable bundle before starting the board UI.
