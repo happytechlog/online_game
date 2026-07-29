@@ -40,7 +40,13 @@ remain in `docs/plans/2026-07-27-sudoku-mvp.md` until decided.
 - Players can toggle note mode, enter candidate digits, erase entries, and use
   unlimited undo and redo within the current game.
 - Selecting a cell highlights its row, column, and 3×3 box. Selecting or
-  entering a digit also highlights matching placed digits.
+  entering a digit also highlights matching placed digits and matching note
+  candidates with the same strong background treatment.
+- With no editable empty cell selected and note mode off, selecting a number
+  activates matching-digit emphasis without changing the board.
+- When nine instances of a digit are on the board, hide that number in its
+  number-pad slot. Keep the slot reserved so the 1 through 9 positions do not
+  move; erase and undo make the number visible again when its count drops.
 - Placing a final digit automatically removes that digit from notes in peer
   cells. Undoing the placement restores both the prior cell value and any notes
   removed by that action.
@@ -71,14 +77,21 @@ remain in `docs/plans/2026-07-27-sudoku-mvp.md` until decided.
 - Format times as `MM:SS` below one hour and `H:MM:SS` at one hour or above.
 - Completion actions are New Game at the Same Difficulty, Choose Another
   Difficulty, and View Completed Board.
+- Do not show an in-game difficulty-selection action. Initial new-game
+  difficulty selection and completion actions remain available.
 - Do not include completion count, average time, or other extended statistics
   in the MVP.
 - Arrow keys move the selected cell. Digits 1 through 9 enter values,
   `Backspace`, `Delete`, or `0` erase, and `N` toggles note mode.
 - `P` pauses or resumes. `Ctrl`/`Cmd`+`Z` undoes, and
   `Ctrl`/`Cmd`+`Shift`+`Z` or `Ctrl`+`Y` redoes.
-- Touch controls expose digit, note, erase, and hint actions with targets of at
-  least 44×44px.
+- On mobile, fit the entire board without horizontal scrolling; dense board
+  cells and one-row digit controls may be approximately 38–42px wide. Keep
+  digit controls at least 44px high and the less-dense action controls at least
+  44×44px.
+- On mobile, show digits 1 through 9 in one row, place Pause in the timer area,
+  and place Undo, Redo, Notes, Erase, and Hint in one compact row visible
+  without page scrolling on the agreed target phone layout.
 - A completed puzzle shows the current completion time.
 - A completed puzzle also shows the locally stored best completion time for
   that difficulty.

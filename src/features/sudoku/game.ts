@@ -71,6 +71,13 @@ export function selectSudokuCell(
   return { ...state, selectedIndex: index };
 }
 
+export function clearSudokuSelection(
+  state: SudokuGameState,
+): SudokuGameState {
+  if (state.selectedIndex === null) return state;
+  return { ...state, selectedIndex: null };
+}
+
 export function moveSudokuSelection(
   state: SudokuGameState,
   direction: SudokuDirection,
@@ -98,6 +105,26 @@ export function toggleSudokuNoteMode(
   state: SudokuGameState,
 ): SudokuGameState {
   return { ...state, noteMode: !state.noteMode };
+}
+
+export function hasSudokuDigitEntryTarget(
+  state: SudokuGameState,
+): boolean {
+  const index = state.selectedIndex;
+  return (
+    index !== null &&
+    !state.givens[index] &&
+    state.board[index] === null &&
+    !state.complete
+  );
+}
+
+export function getCompletedSudokuDigits(
+  board: Board,
+): readonly Digit[] {
+  return DIGITS.filter(
+    (digit) => board.filter((cell) => cell === digit).length >= 9,
+  );
 }
 
 export function enterSudokuDigit(

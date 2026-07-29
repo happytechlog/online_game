@@ -134,6 +134,8 @@ export const messages = {
     sudokuStartAnother: "다른 퍼즐 시작",
     sudokuStatusSelected: "{row}행 {column}열을 선택했습니다.",
     sudokuStatusEntered: "숫자 {digit}을 입력했습니다.",
+    sudokuStatusDigitHighlighted:
+      "숫자 {digit}과 같은 숫자와 메모를 강조했습니다.",
     sudokuStatusErased: "선택한 칸을 지웠습니다.",
     sudokuElapsedTime: "진행 시간",
     sudokuBestTime: "최고 기록",
@@ -333,6 +335,8 @@ export const messages = {
     sudokuStartAnother: "Start another puzzle",
     sudokuStatusSelected: "Selected row {row}, column {column}.",
     sudokuStatusEntered: "Entered digit {digit}.",
+    sudokuStatusDigitHighlighted:
+      "Highlighted digit {digit} and matching notes.",
     sudokuStatusErased: "Erased the selected cell.",
     sudokuElapsedTime: "Elapsed time",
     sudokuBestTime: "Best time",

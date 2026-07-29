@@ -178,7 +178,15 @@ test("exposes the Sudoku board state and controls accessibly", async () => {
   assert.match(game, /sudokuHint/);
   assert.match(game, /loadSudokuGame/);
   assert.match(game, /sudokuReplaceTitle/);
+  assert.match(game, /matching-note/);
+  assert.match(game, /completedDigits\.has\(digit\)/);
+  assert.match(game, /aria-pressed=\{activeDigit === digit\}/);
+  assert.doesNotMatch(game, /t\("sudokuSelectDifficulty"\)/);
   assert.match(styles, /\.sudoku-cell\.hint-cell/);
+  assert.match(styles, /\.sudoku-notes i\.matching-note/);
+  assert.match(styles, /\.sudoku-number-pad button\.completed:disabled \{ opacity: 0; \}/);
+  assert.match(styles, /grid-template-columns: repeat\(9, 1fr\)/);
+  assert.match(styles, /\.sudoku-page\.has-active-game \.sudoku-heading \{ display: none; \}/);
   assert.match(game, /sudokuGivenCell/);
   assert.match(game, /sudokuConflict/);
   assert.match(styles, /\.sudoku-gridcell \{[^}]*min-height: 44px;[^}]*min-width: 44px;/);
@@ -191,7 +199,6 @@ test("keeps Sudoku digit and state colors above text contrast minimums", () => {
   const pairs = [
     ["#7659ac", "#ffffff"],
     ["#4b3d69", "#c9b5ed"],
-    ["#4b3d69", "#e1d5f5"],
     ["#a43d32", "#fff0ec"],
     ["#6e5210", "#fff7d6"],
     ["#ffffff", "#4b3d69"],

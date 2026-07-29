@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  clearSudokuSelection,
   createSudokuGame,
   enterSudokuDigit,
   eraseSudokuCell,
+  getCompletedSudokuDigits,
   getConflictIndices,
+  hasSudokuDigitEntryTarget,
   moveSudokuSelection,
   selectSudokuCell,
   toggleSudokuNoteMode,
@@ -62,4 +65,38 @@ test("marks completion only when the board matches the stored solution", () => {
   game = selectSudokuCell(game, 4);
   game = enterSudokuDigit(game, 7);
   assert.equal(game.complete, true);
+});
+
+test("reports whether a selected cell can accept a new digit", () => {
+  const game = createSudokuGame(puzzle);
+
+  assert.equal(hasSudokuDigitEntryTarget(game), false);
+  assert.equal(
+    hasSudokuDigitEntryTarget(selectSudokuCell(game, 1)),
+    false,
+  );
+  assert.equal(
+    hasSudokuDigitEntryTarget(selectSudokuCell(game, 0)),
+    true,
+  );
+});
+
+test("clears a selected cell when number-pad filtering takes over", () => {
+  const selected = selectSudokuCell(createSudokuGame(puzzle), 1);
+  const cleared = clearSudokuSelection(selected);
+
+  assert.equal(cleared.selectedIndex, null);
+  assert.equal(clearSudokuSelection(cleared), cleared);
+});
+
+test("reports digits with nine or more placed instances", () => {
+  const game = createSudokuGame(puzzle);
+  const board = [...game.board];
+  assert.deepEqual(getCompletedSudokuDigits(board), [1, 2, 3, 4, 6, 8, 9]);
+
+  board[0] = 5;
+  assert.deepEqual(
+    getCompletedSudokuDigits(board),
+    [1, 2, 3, 4, 5, 6, 8, 9],
+  );
 });
