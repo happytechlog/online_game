@@ -110,7 +110,7 @@ The collaborative planning record is
 
 - [x] Build difficulty selection, the responsive semantic board, input controls,
   notes, undo/redo, hints, pause, and completion flows.
-- [ ] Add versioned autosave, best times, puzzle-cycle history, and safe
+- [x] Add versioned autosave, best times, puzzle-cycle history, and safe
   recovery.
 - [ ] Add bilingual gameplay, guide, control, and FAQ content.
 - [ ] Integrate the route, metadata, sitemap, recent games, and catalog status.

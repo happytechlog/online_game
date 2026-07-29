@@ -21,6 +21,19 @@ export function createSudokuTimer(nowMs: number): SudokuTimer {
   };
 }
 
+export function createPausedSudokuTimer(
+  elapsedMs: number,
+): SudokuTimer {
+  if (!Number.isSafeInteger(elapsedMs) || elapsedMs < 0) {
+    throw new RangeError("Sudoku elapsed time must be a non-negative integer.");
+  }
+  return {
+    status: "paused",
+    elapsedMs,
+    startedAtMs: null,
+  };
+}
+
 export function getSudokuElapsedMs(
   timer: SudokuTimer,
   nowMs: number,

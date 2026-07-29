@@ -14,9 +14,11 @@ import type { MessageKey } from "@/src/i18n/messages";
 import {
   DIGITS,
   createEmptySudokuBestTimes,
+  createPausedSudokuTimer,
   createSudokuHistory,
   createSudokuGame,
   createSudokuTimer,
+  deleteSudokuGame,
   enterSudokuDigit,
   eraseSudokuCell,
   finishSudokuTimer,
@@ -26,6 +28,7 @@ import {
   getPeerIndices,
   getSudokuElapsedMs,
   loadSudokuBestTimes,
+  loadSudokuGame,
   moveSudokuSelection,
   pauseSudokuTimer,
   recordSudokuAction,
@@ -33,7 +36,9 @@ import {
   requestSudokuHint,
   resumeSudokuTimer,
   saveSudokuBestTimes,
+  saveSudokuGame,
   selectSudokuCell,
+  selectSudokuPuzzle,
   sudokuPuzzleBundle,
   toggleSudokuNoteMode,
   undoSudokuAction,
@@ -47,6 +52,7 @@ import {
   type SudokuHistory,
   type SudokuHint,
   type SudokuTimer,
+  type RestoredSudokuGame,
 } from "../index.ts";
 
 const DIFFICULTIES: readonly {
@@ -149,13 +155,8 @@ function isEditableTarget(target: EventTarget | null) {
   );
 }
 
-function choosePuzzle(difficulty: Difficulty) {
-  const matchingPuzzles = sudokuPuzzleBundle.puzzles.filter(
-    (puzzle) => puzzle.difficulty === difficulty,
-  );
-  return matchingPuzzles[
-    Math.floor(Math.random() * matchingPuzzles.length)
-  ];
+function randomValue() {
+  return Math.random();
 }
 
 function currentTimestamp() {
@@ -169,7 +170,7 @@ interface CompletionSummary {
 }
 
 export function SudokuGame() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [game, setGame] = useState<SudokuGameState | null>(null);
   const [history, setHistory] = useState<SudokuHistory>(
     createSudokuHistory,
@@ -184,9 +185,17 @@ export function SudokuGame() {
     useState<CompletionSummary | null>(null);
   const [showCompletion, setShowCompletion] = useState(false);
   const [activeHint, setActiveHint] = useState<SudokuHint | null>(null);
+  const [restoredGame, setRestoredGame] =
+    useState<RestoredSudokuGame | null>(null);
+  const [hasUnfinishedGame, setHasUnfinishedGame] = useState(false);
+  const [choosingNewGame, setChoosingNewGame] = useState(false);
+  const [pendingDifficulty, setPendingDifficulty] =
+    useState<Difficulty | null>(null);
+  const [hydrated, setHydrated] = useState(false);
   const cellRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const pauseActionRef = useRef<HTMLButtonElement | null>(null);
   const completionActionRef = useRef<HTMLButtonElement | null>(null);
+  const confirmationActionRef = useRef<HTMLButtonElement | null>(null);
 
   const conflictIndices = useMemo(
     () => new Set(game ? getConflictIndices(game.board) : []),
@@ -255,6 +264,9 @@ export function SudokuGame() {
         isNewBest: result.isNewBest,
       });
       setShowCompletion(true);
+      deleteSudokuGame(window.localStorage);
+      setHasUnfinishedGame(false);
+      setRestoredGame(null);
     },
     [bestTimes, timer],
   );
@@ -348,9 +360,43 @@ export function SudokuGame() {
   useEffect(() => {
     const hydrationTimer = window.setTimeout(() => {
       setBestTimes(loadSudokuBestTimes(window.localStorage));
+      const saved = loadSudokuGame(
+        window.localStorage,
+        sudokuPuzzleBundle.puzzles,
+      );
+      setRestoredGame(saved);
+      setHasUnfinishedGame(saved !== null);
+      setHydrated(true);
     }, 0);
     return () => window.clearTimeout(hydrationTimer);
   }, []);
+
+  useEffect(() => {
+    if (!game || !timer || game.complete) return;
+    const now = currentTimestamp();
+    saveSudokuGame(
+      window.localStorage,
+      game,
+      Math.floor(getSudokuElapsedMs(timer, now)),
+      new Date(now),
+    );
+  }, [game, timer]);
+
+  useEffect(() => {
+    if (!game || !timer || game.complete) return;
+    const saveBeforeUnload = () => {
+      const now = currentTimestamp();
+      saveSudokuGame(
+        window.localStorage,
+        game,
+        Math.floor(getSudokuElapsedMs(timer, now)),
+        new Date(now),
+      );
+    };
+    window.addEventListener("beforeunload", saveBeforeUnload);
+    return () =>
+      window.removeEventListener("beforeunload", saveBeforeUnload);
+  }, [game, timer]);
 
   useEffect(() => {
     if (timer?.status !== "running") return;
@@ -458,7 +504,9 @@ export function SudokuGame() {
   ]);
 
   useEffect(() => {
-    if (showCompletion) {
+    if (pendingDifficulty) {
+      confirmationActionRef.current?.focus();
+    } else if (showCompletion) {
       completionActionRef.current?.focus();
     } else if (timer?.status === "paused") {
       pauseActionRef.current?.focus();
@@ -468,28 +516,83 @@ export function SudokuGame() {
     ) {
       cellRefs.current[game.selectedIndex]?.focus();
     }
-  }, [game?.selectedIndex, showCompletion, timer?.status]);
+  }, [
+    game?.selectedIndex,
+    pendingDifficulty,
+    showCompletion,
+    timer?.status,
+  ]);
 
-  function startGame(difficulty: Difficulty) {
+  function beginNewGame(difficulty: Difficulty) {
     const now = currentTimestamp();
-    setGame(createSudokuGame(choosePuzzle(difficulty)));
+    deleteSudokuGame(window.localStorage);
+    const puzzle = selectSudokuPuzzle(
+      window.localStorage,
+      sudokuPuzzleBundle.puzzles,
+      difficulty,
+      randomValue,
+    );
+    setGame(createSudokuGame(puzzle));
     setHistory(createSudokuHistory());
     setTimer(createSudokuTimer(now));
     setClockMs(now);
     setCompletion(null);
     setShowCompletion(false);
     setActiveHint(null);
+    setRestoredGame(null);
+    setHasUnfinishedGame(true);
+    setChoosingNewGame(false);
+    setPendingDifficulty(null);
     setAnnouncement("");
     markGameAsRecent(window.localStorage, "sudoku");
   }
 
+  function startGame(difficulty: Difficulty) {
+    if (hasUnfinishedGame) {
+      setPendingDifficulty(difficulty);
+      return;
+    }
+    beginNewGame(difficulty);
+  }
+
+  function resumeSavedGame() {
+    if (!restoredGame) return;
+    const now = currentTimestamp();
+    setGame(restoredGame.game);
+    setHistory(createSudokuHistory());
+    setTimer(createPausedSudokuTimer(restoredGame.elapsedMs));
+    setClockMs(now);
+    setCompletion(null);
+    setShowCompletion(false);
+    setActiveHint(null);
+    setChoosingNewGame(false);
+    setAnnouncement(t("sudokuSavedGamePaused"));
+  }
+
   function chooseAnotherDifficulty() {
+    if (game && timer && !game.complete) {
+      const now = currentTimestamp();
+      saveSudokuGame(
+        window.localStorage,
+        game,
+        Math.floor(getSudokuElapsedMs(timer, now)),
+        new Date(now),
+      );
+      setHasUnfinishedGame(true);
+      setRestoredGame(
+        loadSudokuGame(
+          window.localStorage,
+          sudokuPuzzleBundle.puzzles,
+        ),
+      );
+    }
     setGame(null);
     setHistory(createSudokuHistory());
     setTimer(null);
     setCompletion(null);
     setShowCompletion(false);
     setActiveHint(null);
+    setChoosingNewGame(true);
   }
 
   function selectCell(index: number) {
@@ -529,7 +632,57 @@ export function SudokuGame() {
         </div>
       </header>
 
-      {!game ? (
+      {!hydrated ? (
+        <div className="shell sudoku-hydrating" role="status">
+          {t("sudokuLoadingSave")}
+        </div>
+      ) : !game &&
+        restoredGame &&
+        hasUnfinishedGame &&
+        !choosingNewGame ? (
+        <section
+          aria-labelledby="sudoku-saved-title"
+          className="shell sudoku-saved-panel"
+        >
+          <span className="sudoku-panel-kicker">{t("savedGame")}</span>
+          <h2 id="sudoku-saved-title">{t("sudokuSavedTitle")}</h2>
+          <p>{t("sudokuSavedBody")}</p>
+          <dl>
+            <div>
+              <dt>{t("sudokuCurrentDifficulty")}</dt>
+              <dd>
+                {difficultyLabel(restoredGame.game.puzzle.difficulty)}
+              </dd>
+            </div>
+            <div>
+              <dt>{t("sudokuElapsedTime")}</dt>
+              <dd>{formatSudokuTime(restoredGame.elapsedMs)}</dd>
+            </div>
+            <div>
+              <dt>{t("savedAt")}</dt>
+              <dd>
+                {new Date(restoredGame.savedAt).toLocaleString(language)}
+              </dd>
+            </div>
+          </dl>
+          <div className="sudoku-saved-actions">
+            <button
+              className="button sudoku-primary"
+              onClick={resumeSavedGame}
+              type="button"
+            >
+              {t("resumeGame")}
+            </button>
+            <button
+              className="button"
+              onClick={() => setChoosingNewGame(true)}
+              type="button"
+            >
+              {t("newGame")}
+            </button>
+          </div>
+        </section>
+      ) : !game ? (
         <section
           aria-labelledby="sudoku-difficulty-title"
           className="shell sudoku-difficulty-panel"
@@ -555,6 +708,42 @@ export function SudokuGame() {
               </button>
             ))}
           </div>
+          {pendingDifficulty && (
+            <div
+              aria-labelledby="sudoku-replace-title"
+              aria-modal="true"
+              className="sudoku-confirm-dialog"
+              role="dialog"
+            >
+              <div>
+                <span>{t("newGame")}</span>
+                <strong id="sudoku-replace-title">
+                  {t("sudokuReplaceTitle")}
+                </strong>
+                <p>{t("sudokuReplaceBody")}</p>
+                <div>
+                  <button
+                    className="button sudoku-primary"
+                    onClick={() => beginNewGame(pendingDifficulty)}
+                    ref={confirmationActionRef}
+                    type="button"
+                  >
+                    {t("sudokuReplaceConfirm")}
+                  </button>
+                  <button
+                    className="button"
+                    onClick={() => {
+                      setPendingDifficulty(null);
+                      setChoosingNewGame(false);
+                    }}
+                    type="button"
+                  >
+                    {t("sudokuCancel")}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </section>
       ) : (
         <section

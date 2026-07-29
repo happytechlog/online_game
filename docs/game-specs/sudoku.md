@@ -143,7 +143,12 @@ note-mode toggles do not create history noise. Players can now request at most
 three deterministic logical hints. A successful hint names and explains the
 next approved technique and highlights its related cells and candidates without
 changing the board, history, timer, or record eligibility; unavailable hints
-do not consume a use. Player changes clear stale hint highlighting. Reload
-restoration of paused elapsed time remains coupled to the later unfinished-game
-persistence phase. Selection history and versioned gameplay persistence remain
-in their dedicated phases.
+do not consume a use. Player changes clear stale hint highlighting. A separately keyed,
+versioned active-game payload now autosaves the validated puzzle identity,
+board, notes, remaining hints, and elapsed time. Reload restores it paused
+without history or active hint highlighting and offers Continue or New Game.
+Replacing progress requires confirmation. A third independent payload tracks
+used puzzle IDs per difficulty, validates them against the committed release
+bundle, uses all 100 before a repeat, and resets only the exhausted difficulty.
+Completion deletes only the active save. All three Sudoku payloads recover
+independently from malformed or unavailable browser storage.

@@ -341,3 +341,20 @@ The implementation follows this delivery sequence:
 - `npm run build`: passed.
 - Next: add validated active-game autosave/resume and per-difficulty puzzle
   cycles, then persist the remaining-hint count with the active snapshot.
+- Added a separately keyed, exact-shape active-game save containing release
+  puzzle identity, board, notes, remaining hints, elapsed time, and timestamp.
+- Restore validates every field and original given against the current release
+  bundle, resets selection/note mode/history/hint highlighting, and always
+  resumes into a paused board.
+- Added Continue/New Game return flow and replacement confirmation. Completion
+  clears only the active save, preserving records and puzzle history.
+- Added an independent per-difficulty puzzle-cycle payload that selects every
+  one of the 100 release puzzles before resetting only that difficulty.
+- Malformed, blocked, parse-failed, and quota-limited storage paths recover
+  independently without deleting unrelated valid data.
+- `npm test`: 108 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed.
+- Next: add the bilingual Sudoku guide, controls, FAQ content, and FAQ
+  structured data to finish Phase 12 product integration.

@@ -154,6 +154,8 @@ test("exposes the Sudoku board state and controls accessibly", async () => {
   assert.match(game, /sudokuUndo/);
   assert.match(game, /sudokuRedo/);
   assert.match(game, /sudokuHint/);
+  assert.match(game, /loadSudokuGame/);
+  assert.match(game, /sudokuReplaceTitle/);
   assert.match(styles, /\.sudoku-cell\.hint-cell/);
   assert.match(game, /sudokuGivenCell/);
   assert.match(game, /sudokuConflict/);

@@ -188,6 +188,17 @@ export const messages = {
     sudokuHintLogicalChain: "논리 체인",
     sudokuHintLogicalChainBody:
       "강조된 같은 숫자 후보의 강한 연결과 약한 연결을 차례로 따라가 보세요.",
+    sudokuLoadingSave: "저장된 스도쿠 게임을 확인하고 있습니다.",
+    sudokuSavedTitle: "진행 중인 게임이 있습니다",
+    sudokuSavedBody:
+      "저장된 게임은 일시정지 상태입니다. 이어하거나 새 게임을 선택할 수 있습니다.",
+    sudokuSavedGamePaused:
+      "저장된 게임을 불러왔습니다. 계속하기를 누르면 타이머가 시작됩니다.",
+    sudokuReplaceTitle: "진행 중인 게임을 바꿀까요?",
+    sudokuReplaceBody:
+      "새 퍼즐을 시작하면 현재 보드와 메모, 진행 시간이 삭제됩니다.",
+    sudokuReplaceConfirm: "현재 게임 바꾸기",
+    sudokuCancel: "취소",
   },
   en: {
     skip: "Skip to content",
@@ -377,6 +388,17 @@ export const messages = {
     sudokuHintLogicalChain: "Logical chain",
     sudokuHintLogicalChainBody:
       "Follow the highlighted strong and weak links for the same digit in order.",
+    sudokuLoadingSave: "Checking for a saved Sudoku game.",
+    sudokuSavedTitle: "You have a game in progress",
+    sudokuSavedBody:
+      "Your saved game is paused. Continue it or choose a new game.",
+    sudokuSavedGamePaused:
+      "Saved game restored. Resume when you are ready to restart the timer.",
+    sudokuReplaceTitle: "Replace the game in progress?",
+    sudokuReplaceBody:
+      "Starting a new puzzle deletes the current board, notes, and elapsed time.",
+    sudokuReplaceConfirm: "Replace current game",
+    sudokuCancel: "Cancel",
   },
 } as const;
 

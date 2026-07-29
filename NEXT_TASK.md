@@ -2,34 +2,30 @@
 
 ## Current focus
 
-The complete in-session Sudoku interaction flow is now implemented: difficulty
-selection, responsive semantic board, values, notes, erase, atomic undo/redo,
-three-use explanatory hints, pause, timing, records, and completion actions.
-Hints reuse the deterministic logical solver, highlight cells and candidates
-without applying a step, and leave timing and history untouched. Unavailable
-hints do not consume a use, while any subsequent player board change clears
-stale highlighting.
+Sudoku Phase 12 gameplay and persistence are implemented. The complete
+in-session experience includes difficulty selection, semantic board input,
+notes, erase, atomic undo/redo, three explanatory hints, pause, timing, records,
+and completion flows. Separate validated local payloads now own best times, one
+unfinished game, and per-difficulty puzzle cycles. Reload restores the active
+game paused without undo history or hint highlighting. New games require
+replacement confirmation, and each difficulty uses all 100 release puzzles
+before its own cycle resets.
 
 ## Next implementation
 
-Complete Phase 12 persistence. Add one versioned unfinished-game autosave that
-stores puzzle identity, board values, notes, remaining hints, and accumulated
-elapsed time after every meaningful change. Restore it paused without restoring
-undo/redo or active hint highlighting, and offer Continue or New Game. Add a
-separate validated per-difficulty puzzle-cycle history so all 100 puzzles are
-used before that difficulty resets. Selecting a new puzzle while unfinished
-progress exists must require confirmation before replacement.
+Finish the Phase 12 content surface. Add a bilingual Sudoku guide covering the
+rules, difficulty model, controls, hints, pause, autosave, and records. Add
+bilingual FAQs and route-level FAQ structured data, while keeping route
+metadata, sitemap, recent-games tracking, and catalog availability aligned.
+Then update Phase 12 status and run the complete verification suite.
 
 ## Constraints
 
-- Treat every local payload as untrusted: require exact versions and shapes,
-  validate puzzle identity against the committed release bundle, and recover
-  without damaging best times or another valid payload.
-- Keep best times, unfinished game, and puzzle-cycle history in separate keys.
-- Persist only the latest board, notes, remaining hints, and elapsed time;
-  never persist undo/redo or active hint highlighting.
-- Restore every unfinished game paused and continue timing only after the
-  player explicitly resumes.
-- Clear only the unfinished save on valid completion.
-- Reset only the exhausted difficulty's puzzle cycle.
-- Record any product-rule change in the dated plan before implementation.
+- Keep all visible guide and FAQ content in Korean and English.
+- Use semantic sections, ordered rules, control cards, and native FAQ details.
+- Keep explanations consistent with the finalized Sudoku specification and
+  current device-local behavior.
+- Do not claim online accounts, remote saving, or guessing-based hints.
+- Preserve existing route metadata, catalog, sitemap, and recent-game wiring.
+- Update `PLANS.md`, the game specification, dated plan, and `NEXT_TASK.md`
+  after Phase 12 is complete.

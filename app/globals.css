@@ -349,6 +349,21 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
 .sudoku-difficulty-hard { background: #f5f0fc; }
 .sudoku-difficulty-expert { background: #4b3d69; border-color: #4b3d69; color: white; }
 .sudoku-difficulty-expert > span, .sudoku-difficulty-expert small { color: #d9ccef; }
+.sudoku-hydrating { color: var(--muted); min-height: 280px; padding-block: 72px; text-align: center; }
+.sudoku-saved-panel { background: white; border: 1px solid #ddd3ed; border-radius: 22px; box-shadow: 0 22px 60px rgba(73, 54, 108, 0.1); margin-block: 60px 110px; max-width: 720px; padding: 38px; }
+.sudoku-saved-panel h2 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.05em; margin: 14px 0 12px; }
+.sudoku-saved-panel > p { color: var(--muted); line-height: 1.7; margin: 0; }
+.sudoku-saved-panel dl { display: grid; gap: 8px; grid-template-columns: repeat(3, 1fr); margin: 28px 0 0; }
+.sudoku-saved-panel dl > div { background: #f6f2fa; border-radius: 12px; padding: 14px; }
+.sudoku-saved-panel dt { color: var(--muted); font-size: 0.62rem; font-weight: 800; }
+.sudoku-saved-panel dd { color: #4b3d69; font-size: 0.82rem; font-weight: 900; margin: 5px 0 0; }
+.sudoku-saved-actions { display: flex; gap: 10px; margin-top: 22px; }
+.sudoku-confirm-dialog { align-items: center; background: rgba(39, 32, 52, 0.64); display: flex; inset: 0; justify-content: center; padding: 20px; position: fixed; z-index: 30; }
+.sudoku-confirm-dialog > div { background: white; border-radius: 18px; box-shadow: 0 24px 70px rgba(20, 16, 29, 0.3); max-width: 420px; padding: 28px; width: 100%; }
+.sudoku-confirm-dialog span { color: #7659ac; font-size: 0.65rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+.sudoku-confirm-dialog strong { display: block; font-size: 1.4rem; margin-top: 8px; }
+.sudoku-confirm-dialog p { color: var(--muted); line-height: 1.6; margin: 10px 0 20px; }
+.sudoku-confirm-dialog > div > div { display: grid; gap: 8px; grid-template-columns: 1fr 1fr; }
 .sudoku-layout { align-items: start; display: grid; gap: 32px; grid-template-columns: minmax(396px, 594px) 270px; justify-content: center; padding-block: 54px 110px; }
 .sudoku-play { min-width: 0; }
 .sudoku-game-meta { align-items: stretch; display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 12px; }
@@ -474,6 +489,7 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .sudoku-title-row h1 { font-size: 5rem; }
   .sudoku-badge { order: -1; }
   .sudoku-difficulty-panel { grid-template-columns: 1fr; padding-block: 48px 76px; }
+  .sudoku-saved-panel { margin-block: 40px 76px; }
   .sudoku-layout { grid-template-columns: 1fr; padding-block: 38px 76px; }
   .sudoku-sidebar { display: grid; grid-template-columns: 1fr 1fr; padding-top: 0; }
   .sudoku-number-pad { grid-row: span 2; }
@@ -500,6 +516,9 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .game-2048-cell { border-radius: 8px; }
   .game-2048-sidebar { display: flex; }
   .sudoku-difficulty-grid { grid-template-columns: 1fr; }
+  .sudoku-saved-panel { border-radius: 16px; padding: 24px; }
+  .sudoku-saved-panel dl { grid-template-columns: 1fr; }
+  .sudoku-saved-actions { flex-direction: column; }
   .sudoku-difficulty { min-height: 152px; }
   .sudoku-difficulty strong { margin-top: 24px; }
   .sudoku-sidebar { display: flex; }
