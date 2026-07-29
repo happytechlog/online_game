@@ -370,3 +370,32 @@ The implementation follows this delivery sequence:
 - `npm run build`: passed.
 - Next: Phase 13 interaction, accessibility, layout, SEO, and release-quality
   audits.
+- Added a pure keyboard-command resolver covering movement, digits, erase,
+  notes, pause, cross-platform undo/redo, editable targets, modifiers, and
+  paused or finished timers.
+- Added a pure page-visibility pause predicate and storage coverage confirming
+  completion removes only the active game while preserving best times and
+  puzzle-cycle history.
+- Browser interaction QA passed for keyboard entry and undo, manual pause,
+  board inertness, focus movement, autosave reload and paused resume, and
+  replacement confirmation and cancellation.
+- Screen-reader semantics expose row, column, editability, content, conflict,
+  and selected grid-cell state. Focus remains visible and status changes use a
+  polite live region.
+- Fixed selected and matching digit foreground contrast while retaining
+  non-color selection and conflict indicators. Automated contrast pairs meet
+  the 4.5:1 normal-text threshold.
+- Responsive browser QA passed at 390×844 and 1440×900. Mobile cells remain at
+  least 44×44px within the board's dedicated horizontal scroll area, desktop
+  cells render at 64×64px, and neither layout introduces page-level horizontal
+  overflow.
+- Route SEO QA confirmed one H1, the Sudoku title and description, canonical
+  URL, and valid FAQPage structured data. No browser warnings or errors were
+  observed.
+- Phase 13 release quality is complete.
+- `npm test`: 115 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed with `/games/sudoku` included.
+- Next: begin Minesweeper product planning as a separate phase; Sudoku
+  production publishing still requires explicit authorization.

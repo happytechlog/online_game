@@ -117,7 +117,10 @@ The collaborative planning record is
 
 ## Phase 13 — Sudoku release quality
 
-- [ ] Complete automated interaction and storage tests.
-- [ ] Audit keyboard, screen-reader, reduced-motion, contrast, and touch use.
-- [ ] Verify mobile and desktop layouts and route-specific SEO.
-- [ ] Run test, lint, typecheck, and production build before release.
+- [x] Complete automated interaction and storage tests.
+- [x] Audit keyboard, screen-reader, reduced-motion, contrast, and touch use.
+- [x] Verify mobile and desktop layouts and route-specific SEO.
+- [x] Run test, lint, typecheck, and production build before release.
+
+The Sudoku MVP is release-ready locally. Production publishing remains a
+separate operation and requires explicit authorization.
