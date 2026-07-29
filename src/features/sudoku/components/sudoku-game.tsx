@@ -35,11 +35,13 @@ import {
   recordSudokuAction,
   redoSudokuAction,
   requestSudokuHint,
+  resolveSudokuKeyboardCommand,
   resumeSudokuTimer,
   saveSudokuBestTimes,
   saveSudokuGame,
   selectSudokuCell,
   selectSudokuPuzzle,
+  shouldAutoPauseSudoku,
   sudokuPuzzleBundle,
   toggleSudokuNoteMode,
   undoSudokuAction,
@@ -48,7 +50,6 @@ import {
   type Digit,
   type LogicalTechnique,
   type SudokuBestTimes,
-  type SudokuDirection,
   type SudokuGameState,
   type SudokuHistory,
   type SudokuHint,
@@ -136,14 +137,6 @@ function formatMessage(
       message.replaceAll(`{${key}}`, String(value)),
     template,
   );
-}
-
-function directionFromKey(key: string): SudokuDirection | null {
-  if (key === "ArrowUp") return "up";
-  if (key === "ArrowDown") return "down";
-  if (key === "ArrowLeft") return "left";
-  if (key === "ArrowRight") return "right";
-  return null;
 }
 
 function isEditableTarget(target: EventTarget | null) {
@@ -411,7 +404,15 @@ export function SudokuGame() {
     if (!game || !timer || timer.status !== "running") return;
 
     const handleVisibilityChange = () => {
-      if (!document.hidden) return;
+      if (
+        !shouldAutoPauseSudoku(
+          true,
+          timer.status,
+          document.hidden,
+        )
+      ) {
+        return;
+      }
       const now = currentTimestamp();
       setTimer((current) =>
         current ? pauseSudokuTimer(current, now) : current,
@@ -429,65 +430,33 @@ export function SudokuGame() {
     if (!game) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        event.defaultPrevented ||
-        event.altKey ||
-        isEditableTarget(event.target)
-      ) {
-        return;
+      const command = resolveSudokuKeyboardCommand(
+        {
+          key: event.key,
+          altKey: event.altKey,
+          ctrlKey: event.ctrlKey,
+          metaKey: event.metaKey,
+          shiftKey: event.shiftKey,
+          defaultPrevented: event.defaultPrevented,
+          editableTarget: isEditableTarget(event.target),
+        },
+        timer?.status ?? "finished",
+      );
+      if (!command) return;
+
+      event.preventDefault();
+      if (command.type === "undo") undo();
+      if (command.type === "redo") redo();
+      if (command.type === "toggle-pause") togglePause();
+      if (command.type === "move") {
+        updateGame((current) =>
+          moveSudokuSelection(current, command.direction),
+        );
       }
-
-      const modifier = event.ctrlKey || event.metaKey;
-      const key = event.key.toLowerCase();
-      if (modifier && key === "z") {
-        event.preventDefault();
-        if (event.shiftKey) {
-          redo();
-        } else {
-          undo();
-        }
-        return;
-      }
-      if (event.ctrlKey && key === "y") {
-        event.preventDefault();
-        redo();
-        return;
-      }
-
-      if (!event.ctrlKey && !event.metaKey) {
-        if (event.key.toLowerCase() === "p") {
-          event.preventDefault();
-          togglePause();
-          return;
-        }
-
-        if (timer?.status !== "running") return;
-
-        const direction = directionFromKey(event.key);
-        if (direction) {
-          event.preventDefault();
-          updateGame((current) =>
-            moveSudokuSelection(current, direction),
-          );
-          return;
-        }
-
-        if (/^[1-9]$/.test(event.key)) {
-          event.preventDefault();
-          enterDigit(Number(event.key) as Digit);
-          return;
-        }
-
-        if (event.key === "Backspace" || event.key === "Delete" || event.key === "0") {
-          event.preventDefault();
-          erase();
-          return;
-        }
-
-        if (event.key.toLowerCase() === "n") {
-          event.preventDefault();
-          updateGame(toggleSudokuNoteMode);
-        }
+      if (command.type === "enter") enterDigit(command.digit);
+      if (command.type === "erase") erase();
+      if (command.type === "toggle-notes") {
+        updateGame(toggleSudokuNoteMode);
       }
     };
 
