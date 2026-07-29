@@ -45,7 +45,7 @@ export const games: readonly GameCatalogItem[] = [
     id: "sudoku",
     href: "/games/sudoku",
     status: "available",
-    featured: false,
+    featured: true,
     accent: "violet",
     icon: "9×9",
     title: { ko: "스도쿠", en: "Sudoku" },

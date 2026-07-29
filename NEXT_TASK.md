@@ -2,22 +2,13 @@
 
 ## Current focus
 
-The approved Sudoku interaction and mobile layout revisions are complete.
-Matching placed digits and matching note candidates receive stronger emphasis,
-the number pad supports digit filtering and hides completed digits without
-shifting positions, and the in-game difficulty action is removed.
-
-The mobile play view now fits the board without horizontal scrolling, shows
-digits 1 through 9 in one row, places Pause beside the timer, and keeps Undo,
-Redo, Notes, Erase, and Hint in one compact row.
-
-A follow-up selection regression is fixed: choosing a different number-pad
-digit now clears the previously selected board cell before applying the new
-digit highlight.
+Sudoku is now included in the home page's featured game grid alongside Othello
+and 2048. The centralized catalog marks all three available games as featured,
+and the foundation test protects the Sudoku home-page visibility setting.
 
 ## Next implementation
 
-Wait for player review of the revised Sudoku experience. If no further
+Wait for player review of the three-card home-page layout. If no further
 adjustments are requested, the next product task can be planned separately.
 
 ## Constraints

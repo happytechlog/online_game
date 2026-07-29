@@ -45,7 +45,7 @@ test("keeps the game catalog centralized and extensible", async () => {
   );
   assert.match(
     catalog,
-    /id:\s*"sudoku"[\s\S]*?href:\s*"\/games\/sudoku"[\s\S]*?status:\s*"available"/,
+    /id:\s*"sudoku"[\s\S]*?href:\s*"\/games\/sudoku"[\s\S]*?status:\s*"available"[\s\S]*?featured:\s*true/,
   );
 });
 
