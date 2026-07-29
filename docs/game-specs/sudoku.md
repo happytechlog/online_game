@@ -130,6 +130,16 @@ Medium, Hard, and Expert. The first accessible board interaction slice is now
 available: bilingual difficulty selection loads only the committed release
 entry point, and the semantic grid supports cell selection, keyboard movement,
 digit entry, notes, erase, peer and matching-digit highlighting, immediate
-conflict highlighting, and exact-solution completion. Timer, pause, records,
-undo/redo, hints, and versioned gameplay persistence remain in their dedicated
-phases.
+conflict highlighting, and exact-solution completion. The in-session timer now
+starts with the puzzle, supports manual and page-visibility pause, hides the
+board while paused, and freezes on completion. Completion shows the current
+time and the validated device-local best time for that difficulty, including a
+New Best marker and all three agreed follow-up actions. Time formatting,
+keyboard pause, dialog focus, and best-time storage failure recovery are
+covered by tests. Unlimited in-session undo and redo now cover value, erase,
+and note changes. Each final placement and every automatic peer-note removal
+is one atomic history entry; divergent input clears redo, while selection and
+note-mode toggles do not create history noise. Reload restoration of paused
+elapsed time remains coupled to the later unfinished-game persistence phase.
+Hints, selection history, and versioned gameplay persistence remain in their
+dedicated phases.

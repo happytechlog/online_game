@@ -297,3 +297,33 @@ The implementation follows this delivery sequence:
 - `npm run build`: passed with the Sudoku route included.
 - Next: add the timer and pause lifecycle plus versioned per-difficulty best
   times before unfinished-game persistence and assistance history.
+- Added a deterministic timer model with `MM:SS` and `H:MM:SS` formatting,
+  manual pause/resume, automatic page-visibility pause, and completion freeze.
+- The paused experience hides and removes the board from interaction, supports
+  the `P` shortcut, announces state changes, and moves focus to Resume.
+- Added a separately keyed, versioned, exact-shape best-time payload with
+  per-difficulty monotonic updates and safe recovery from malformed, blocked,
+  or quota-limited storage.
+- Completion now shows current time, updated best time, and New Best state, with
+  same-difficulty restart, another-difficulty selection, and completed-board
+  viewing actions.
+- `npm test`: 96 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed.
+- Next: add atomic undo/redo history for board values and notes, including
+  restoration of notes removed by a final-digit placement.
+- Added a pure, unlimited snapshot history for player values and notes while
+  preserving current selection and note-mode preference outside history.
+- Final placements and their automatic peer-note removals are recorded as one
+  action; undo restores all affected notes and redo reapplies the full action.
+- Rejected given-cell edits and selection changes create no history, while a
+  new action after undo clears the redo branch.
+- Added accessible Undo and Redo touch controls plus `Ctrl`/`Cmd`+`Z`,
+  `Ctrl`/`Cmd`+`Shift`+`Z`, and `Ctrl`+`Y` keyboard handling.
+- `npm test`: 100 passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed without warnings.
+- `npm run build`: passed.
+- Next: add the three-use explanatory logical hint flow and its accessible
+  cell/candidate highlighting before persisting the complete active-game shape.

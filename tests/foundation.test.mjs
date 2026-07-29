@@ -146,6 +146,13 @@ test("exposes the Sudoku board state and controls accessibly", async () => {
   assert.match(game, /aria-colindex=/);
   assert.match(game, /aria-keyshortcuts=/);
   assert.match(game, /aria-live="polite"/);
+  assert.match(game, /visibilitychange/);
+  assert.match(game, /inert=/);
+  assert.match(game, /sudoku-pause-panel/);
+  assert.match(game, /sudokuCompletionTime/);
+  assert.match(game, /Control\+Z/);
+  assert.match(game, /sudokuUndo/);
+  assert.match(game, /sudokuRedo/);
   assert.match(game, /sudokuGivenCell/);
   assert.match(game, /sudokuConflict/);
   assert.match(styles, /\.sudoku-gridcell \{[^}]*min-height: 44px;[^}]*min-width: 44px;/);
