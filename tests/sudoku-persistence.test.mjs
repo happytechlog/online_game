@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   createPausedSudokuTimer,
   createSavedSudokuGame,
+  createEmptySudokuBestTimes,
   createSudokuGame,
   deleteSudokuGame,
   enterSudokuDigit,
@@ -10,10 +11,12 @@ import {
   loadSudokuPuzzleCycle,
   requestSudokuHint,
   saveSudokuGame,
+  saveSudokuBestTimes,
   selectSudokuCell,
   selectSudokuPuzzle,
   sudokuPuzzleBundle,
   SUDOKU_ACTIVE_GAME_STORAGE_KEY,
+  SUDOKU_BEST_TIMES_STORAGE_KEY,
   SUDOKU_PUZZLE_CYCLE_STORAGE_KEY,
   toggleSudokuNoteMode,
 } from "../src/features/sudoku/index.ts";
@@ -113,6 +116,34 @@ test("contains active-save storage failures and deletes only its own key", () =>
   });
   assert.equal(deleteSudokuGame(storage), true);
   assert.equal(storage.getItem("keep"), "value");
+});
+
+test("completion cleanup removes only the active save and keeps records and cycles", () => {
+  const storage = createMemoryStorage();
+  const game = createSudokuGame(easyPuzzle);
+  const bestTimes = {
+    ...createEmptySudokuBestTimes(),
+    times: {
+      ...createEmptySudokuBestTimes().times,
+      easy: 42_000,
+    },
+  };
+
+  assert.equal(saveSudokuGame(storage, game, 9_000), true);
+  selectSudokuPuzzle(storage, puzzles, "easy", () => 0);
+  assert.equal(saveSudokuBestTimes(storage, bestTimes), true);
+  const cycleBefore = storage.getItem(SUDOKU_PUZZLE_CYCLE_STORAGE_KEY);
+
+  assert.equal(deleteSudokuGame(storage), true);
+  assert.equal(storage.getItem(SUDOKU_ACTIVE_GAME_STORAGE_KEY), null);
+  assert.equal(
+    storage.getItem(SUDOKU_BEST_TIMES_STORAGE_KEY),
+    JSON.stringify(bestTimes),
+  );
+  assert.equal(
+    storage.getItem(SUDOKU_PUZZLE_CYCLE_STORAGE_KEY),
+    cycleBefore,
+  );
 });
 
 test("selects all 100 puzzles before resetting only that difficulty", () => {

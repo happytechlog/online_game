@@ -806,13 +806,13 @@ export function SudokuGame() {
                           <div
                             aria-colindex={column + 1}
                             aria-rowindex={row + 1}
+                            aria-selected={selected}
                             className="sudoku-gridcell"
                             key={column}
                             role="gridcell"
                           >
                             <button
                               aria-label={label}
-                              aria-pressed={selected}
                               className={className}
                               onClick={() => selectCell(index)}
                               ref={(element) => {
