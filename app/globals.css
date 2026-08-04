@@ -580,3 +580,75 @@ a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform:
   .thinking-dots i { animation: none; opacity: 0.7; }
   .game-2048-cell { transition: none; }
 }
+
+/* Minesweeper */
+.minesweeper-page { background: #edf4f7; min-height: 100vh; overflow-x: hidden; padding-bottom: 72px; }
+.minesweeper-heading { padding-top: 48px; }
+.minesweeper-heading h1 { font-size: clamp(3rem, 7vw, 5.5rem); letter-spacing: -0.06em; margin: 10px 0; }
+.minesweeper-heading p { color: var(--muted); margin: 0; }
+.minesweeper-layout { align-items: start; display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr) 260px; padding-top: 38px; }
+.minesweeper-play { background: #c9d7dc; border: 3px solid #f9ffff; box-shadow: inset 2px 2px #7d9299, inset -2px -2px #fff, 0 16px 36px rgba(27, 56, 68, .13); min-width: 0; padding: 12px; position: relative; }
+.minesweeper-toolbar { align-items: center; border: 3px inset #edf5f6; display: flex; gap: 10px; justify-content: space-between; margin-bottom: 12px; padding: 7px; }
+.minesweeper-presets { border: 0; display: flex; gap: 3px; margin: 0; min-width: 0; padding: 0; }
+.minesweeper-presets legend { font-size: .62rem; font-weight: 800; padding: 0; position: absolute; }
+.minesweeper-toolbar button, .minesweeper-mobile-actions button { background: #eef5f5; border: 2px outset #fff; color: #17323b; cursor: pointer; font: inherit; font-size: .7rem; font-weight: 800; min-height: 44px; padding: 6px 9px; }
+.minesweeper-toolbar button[aria-pressed="true"], .minesweeper-mobile-actions button[aria-pressed="true"] { background: #2f6e81; color: white; }
+.minesweeper-toolbar .minesweeper-face { border-radius: 50%; font-size: 1.45rem; min-width: 44px; padding: 0; }
+.minesweeper-toolbar > div { align-items: center; display: flex; flex-direction: column; font-size: .62rem; font-weight: 800; text-transform: uppercase; }
+.minesweeper-toolbar strong { background: #18242a; color: #f4484e; font-family: monospace; font-size: 1.35rem; letter-spacing: .07em; min-width: 3.2em; padding: 2px 4px; }
+.minesweeper-scroll { max-width: 100%; overflow: auto; padding-bottom: 4px; }
+.minesweeper-board { border: 3px inset #f6ffff; display: grid; width: max-content; }
+.minesweeper-cell { align-items: center; background: #c9d7dc; border: 2px outset #fff; color: #17323b; cursor: pointer; display: flex; font-family: system-ui, sans-serif; font-size: 1.05rem; font-weight: 900; height: 44px; justify-content: center; padding: 0; width: 44px; }
+.minesweeper-cell:focus-visible { outline: 3px solid #125f77; outline-offset: -3px; position: relative; z-index: 2; }
+.minesweeper-cell.revealed { background: #e7eef0; border: 1px solid #96a9ae; }
+.minesweeper-cell.number-1 { color: #1763a7; }
+.minesweeper-cell.number-2 { color: #16733b; }
+.minesweeper-cell.number-3 { color: #b0302f; }
+.minesweeper-cell.number-4 { color: #503f9a; }
+.minesweeper-cell.number-5 { color: #833428; }
+.minesweeper-cell.number-6 { color: #0e7076; }
+.minesweeper-cell.number-7 { color: #242424; }
+.minesweeper-cell.number-8 { color: #5c6970; }
+.minesweeper-cell.flagged { color: #b21f32; }
+.minesweeper-cell.mine { background: #29383d; color: #fff; }
+.minesweeper-cell.exploded { background: #e95850; }
+.minesweeper-cell.wrong { color: #8b1730; text-decoration: line-through; }
+.minesweeper-mobile-actions { display: flex; gap: 8px; margin-top: 12px; }
+.minesweeper-mobile-actions button { flex: 1; }
+.minesweeper-mobile-actions button:disabled { cursor: not-allowed; opacity: .55; }
+.minesweeper-sidebar, .minesweeper-saved { background: white; border: 1px solid #d4e1e4; border-radius: 16px; color: #35545e; padding: 22px; }
+.minesweeper-sidebar p { font-size: .78rem; line-height: 1.65; margin: 0 0 20px; }
+.minesweeper-sidebar dl { border-block: 1px solid #dbe7e9; margin: 0 0 20px; padding-block: 12px; }
+.minesweeper-sidebar dl div { display: flex; justify-content: space-between; padding: 5px 0; }
+.minesweeper-sidebar dd { font-family: monospace; font-weight: 900; margin: 0; }
+.minesweeper-saved { margin-top: 42px; max-width: 580px; }
+.minesweeper-saved h2 { margin-top: 0; }
+.minesweeper-saved > div { display: flex; gap: 8px; }
+.minesweeper-primary { background: #28677c; border: 0; color: white; }
+.minesweeper-result { align-items: center; background: rgba(255,255,255,.96); border: 1px solid white; bottom: 26px; box-shadow: 0 8px 28px rgba(0,0,0,.18); display: flex; flex-direction: column; gap: 12px; left: 50%; padding: 18px; position: absolute; transform: translateX(-50%); z-index: 4; }
+.minesweeper-result strong { font-size: 1.35rem; }
+.minesweeper-resume { background: #28677c; border: 0; color: white; cursor: pointer; margin: 0 0 10px; min-height: 44px; padding: 8px 14px; width: 100%; }
+.minesweeper-guide { margin-top: 52px; max-width: 850px; }
+.minesweeper-guide h2 { font-size: 2rem; margin-bottom: 8px; }
+.minesweeper-guide p, .minesweeper-guide li { color: var(--muted); line-height: 1.65; }
+.minesweeper-guide ol { display: grid; gap: 10px; margin: 20px 0 30px; padding-left: 24px; }
+.minesweeper-guide details { border-top: 1px solid #d4e1e4; padding: 14px 0; }
+.minesweeper-guide summary { cursor: pointer; font-weight: 800; }
+.minesweeper-guide details p { margin-bottom: 0; }
+
+@media (max-width: 760px) {
+  .minesweeper-heading { padding-top: 34px; }
+  .minesweeper-layout { grid-template-columns: 1fr; padding-top: 24px; }
+  .minesweeper-sidebar { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+  .minesweeper-sidebar p { margin: 0; }
+  .minesweeper-sidebar dl { margin: 0; }
+}
+
+@media (max-width: 450px) {
+  .minesweeper-toolbar { gap: 4px; padding: 4px; }
+  .minesweeper-presets { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .minesweeper-presets button { font-size: .57rem; min-width: 0; padding-inline: 4px; }
+  .minesweeper-toolbar > div > span { display: none; }
+  .minesweeper-play { border-width: 2px; padding: 7px; }
+  .minesweeper-sidebar { display: block; }
+}

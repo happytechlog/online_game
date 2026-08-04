@@ -2,15 +2,18 @@
 
 ## Current focus
 
-Sudoku is now included in the home page's featured game grid alongside Othello
-and 2048. The centralized catalog marks all three available games as featured,
-and the foundation test protects the Sudoku home-page visibility setting.
+Minesweeper is now available at `/games/minesweeper`. It includes the pure
+first-click-safe engine, versioned local active-game and best-time storage,
+responsive keyboard/touch board controls, and catalog, sitemap, metadata, and
+recent-game integration.
 
 ## Next implementation
 
-Implement Minesweeper from the finalized product contract in
-`docs/game-specs/minesweeper.md`, starting with the pure engine and versioned
-local persistence before building the responsive accessible board.
+Complete device-level QA for the 550ms long-press gesture and page-visibility
+timer pause on a touch device before publishing the branch. Investigate the
+local `vinext start` static-asset 404 if production-preview parity is required;
+the application build itself succeeds and the built client was exercised with
+a temporary local asset proxy.
 
 ## Constraints
 
@@ -22,11 +25,12 @@ local persistence before building the responsive accessible board.
 
 ## Verification
 
-- `npm test`: 118 passed.
+- `npm test`: 130 passed.
 - `npm run lint`: passed.
 - `npm run typecheck`: passed.
 - `npm run build`: passed.
-- Browser QA: 360×800, 390×844, 430×932, and 1440×900 passed without
+- Browser QA: desktop play and 390×844 responsive layout passed without page
   horizontal overflow or browser warnings.
-- Follow-up interaction QA confirmed `9` board selection followed by number-pad
-  `4` leaves zero selected board cells and highlights only digit `4`.
+- Browser interaction QA covered first-click safety, keyboard and secondary-click
+  flagging, bilingual content, roving focus, active-game restore and timer resume.
+- The Advanced board preserved 44×44 cells and scrolled internally at 390px.

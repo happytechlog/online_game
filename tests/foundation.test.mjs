@@ -9,12 +9,13 @@ async function source(path) {
 }
 
 test("defines all public routes with unique metadata", async () => {
-  const [home, games, othello, game2048, sudoku] = await Promise.all([
+  const [home, games, othello, game2048, sudoku, minesweeper] = await Promise.all([
     source("app/page.tsx"),
     source("app/games/page.tsx"),
     source("app/games/othello/page.tsx"),
     source("app/games/2048/page.tsx"),
     source("app/games/sudoku/page.tsx"),
+    source("app/games/minesweeper/page.tsx"),
   ]);
 
   assert.match(home, /title:\s*"무료 온라인 브라우저 게임"/);
@@ -27,6 +28,7 @@ test("defines all public routes with unique metadata", async () => {
   assert.match(othello, /<OthelloGame \/>/);
   assert.match(game2048, /<Game2048 \/>/);
   assert.match(sudoku, /<SudokuGame \/>/);
+  assert.match(minesweeper, /<MinesweeperGame \/>/);
 });
 
 test("keeps the game catalog centralized and extensible", async () => {
@@ -37,7 +39,6 @@ test("keeps the game catalog centralized and extensible", async () => {
   }
 
   assert.match(catalog, /status:\s*"available"/);
-  assert.match(catalog, /status:\s*"coming-soon"/);
   assert.match(catalog, /title:\s*\{\s*ko:/);
   assert.match(
     catalog,
@@ -46,6 +47,10 @@ test("keeps the game catalog centralized and extensible", async () => {
   assert.match(
     catalog,
     /id:\s*"sudoku"[\s\S]*?href:\s*"\/games\/sudoku"[\s\S]*?status:\s*"available"[\s\S]*?featured:\s*true/,
+  );
+  assert.match(
+    catalog,
+    /id:\s*"minesweeper"[\s\S]*?href:\s*"\/games\/minesweeper"[\s\S]*?status:\s*"available"/,
   );
 });
 
@@ -152,6 +157,26 @@ test("provides bilingual Sudoku guide and FAQ SEO content", async () => {
   assert.match(page, /FAQPage/);
   assert.match(page, /application\/ld\+json/);
   assert.match(page, /canonical/);
+});
+
+test("provides bilingual Minesweeper guide, FAQ SEO, and accessible grid contracts", async () => {
+  const [route, component, content] = await Promise.all([
+    source("app/games/minesweeper/page.tsx"),
+    source("src/features/minesweeper/components/minesweeper-game.tsx"),
+    source("src/i18n/minesweeper-content.ts"),
+  ]);
+
+  assert.match(route, /FAQPage/);
+  assert.match(route, /minesweeperContent\.ko\.faqs/);
+  assert.match(component, /aria-rowcount/);
+  assert.match(component, /aria-colcount/);
+  assert.match(component, /aria-rowindex/);
+  assert.match(component, /aria-colindex/);
+  assert.match(component, /aria-keyshortcuts/);
+  assert.match(component, /<fieldset/);
+  assert.match(component, /<details/);
+  assert.match(content, /faqTitle/);
+  assert.match(content, /steps:/);
 });
 
 test("exposes the Sudoku board state and controls accessibly", async () => {

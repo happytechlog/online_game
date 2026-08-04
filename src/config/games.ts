@@ -57,8 +57,8 @@ export const games: readonly GameCatalogItem[] = [
   },
   {
     id: "minesweeper",
-    href: "/games",
-    status: "coming-soon",
+    href: "/games/minesweeper",
+    status: "available",
     featured: false,
     accent: "sky",
     icon: "✦",
