@@ -8,8 +8,9 @@ and the foundation test protects the Sudoku home-page visibility setting.
 
 ## Next implementation
 
-Wait for player review of the three-card home-page layout. If no further
-adjustments are requested, the next product task can be planned separately.
+Implement Minesweeper from the finalized product contract in
+`docs/game-specs/minesweeper.md`, starting with the pure engine and versioned
+local persistence before building the responsive accessible board.
 
 ## Constraints
 

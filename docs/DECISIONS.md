@@ -4,6 +4,30 @@ Record important structural decisions here after they are agreed. Product rules
 belong in `docs/game-specs/`, and temporary options belong in dated files under
 `docs/plans/`.
 
+## 2026-08-03 — Keep Minesweeper progress and records device-local
+
+### Decision
+
+Minesweeper keeps one unfinished game and per-preset best times in validated,
+versioned local storage. The gameplay model otherwise follows the classic
+Windows interaction pattern: fixed Beginner, Intermediate, and Advanced
+presets; first-click safety; right-click mark cycling; classic chording; and
+inline win/loss feedback. Mobile and assistive-technology adaptations use a
+Flag mode, an explicit surrounding-cells action, semantic cell state, and
+keyboard controls.
+
+### Consequences
+
+- Reload and return visits preserve an unfinished board without an account or
+  remote service.
+- Best times are device-local and cannot be presented as a global leaderboard.
+- The first reveal must be modeled separately from a generated board so the
+  clicked cell can be guaranteed safe and the ready state can be saved.
+- Narrow screens require an internally scrollable board to preserve 44px
+  interaction targets for the fixed Advanced preset.
+- The complete behavior contract, including the deliberate classic risk of an
+  incorrect-flag chord, lives in `docs/game-specs/minesweeper.md`.
+
 ## 2026-07-27 — Bundle pre-verified Sudoku puzzles
 
 ### Decision
