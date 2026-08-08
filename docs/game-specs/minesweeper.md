@@ -58,9 +58,12 @@ undo, sound, and remote services are out of scope.
 - Chording is replaced by an explicit `Open surrounding cells` action for a
   selected revealed number. The action is disabled when the flag count does
   not match the number.
-- The board is an internally scrollable region on narrow screens. The page
-  itself must not overflow horizontally. Interactive cell targets remain at
-  least 44x44px even if the classic tile face is visually smaller.
+- The full board scales down from a maximum 44x44px cell size to fit both the
+  available width and one viewport height. Intermediate and Advanced boards
+  must not require internal or horizontal page scrolling to reach a cell.
+- Dense presets may use targets below 44x44px when fitting the entire board is
+  required. Keyboard navigation and complete screen-reader labels remain
+  available at every size.
 
 ## Keyboard and assistive technology
 
@@ -68,8 +71,9 @@ undo, sound, and remote services are out of scope.
 - `Space` or `Enter` reveals the focused cell.
 - `F` cycles the focused cell's mark; `C` performs chording when available.
 - `M` cycles the question-mark state without revealing the cell.
-- A restart button, preset selector, mine counter, timer, and result status
-  are independently keyboard reachable.
+- A restart button, preset selector, mine counter, timer, and result dialog
+  are independently keyboard reachable. The result dialog is fixed to the
+  center of the viewport so it remains visible regardless of page scroll.
 - Each cell exposes its row, column, covered/revealed state, number or blank
   state, flag/question mark, and terminal mine state. The accessible name does
   not rely on color.

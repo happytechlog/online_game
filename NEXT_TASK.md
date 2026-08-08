@@ -5,15 +5,17 @@
 Minesweeper is now available at `/games/minesweeper`. It includes the pure
 first-click-safe engine, versioned local active-game and best-time storage,
 responsive keyboard/touch board controls, and catalog, sitemap, metadata, and
-recent-game integration.
+recent-game integration. Intermediate and Advanced boards now scale their
+cells to the available viewport instead of requiring internal board scrolling,
+and win/loss results remain fixed at the center of the viewport.
 
 ## Next implementation
 
-Complete device-level QA for the 550ms long-press gesture and page-visibility
-timer pause on a touch device before publishing the branch. Investigate the
-local `vinext start` static-asset 404 if production-preview parity is required;
-the application build itself succeeds and the built client was exercised with
-a temporary local asset proxy.
+Complete device-level QA for the responsive dense board, 550ms long-press
+gesture, and page-visibility timer pause on a touch device before publishing
+the branch. Investigate the local `vinext start` static-asset 404 if
+production-preview parity is required; the application build itself succeeds
+and the built client was exercised with a temporary local asset proxy.
 
 ## Constraints
 
@@ -25,12 +27,15 @@ a temporary local asset proxy.
 
 ## Verification
 
-- `npm test`: 130 passed.
+- `npm test`: 130 passed, including responsive-board and centered-result
+  regression assertions.
 - `npm run lint`: passed.
-- `npm run typecheck`: passed.
+- `npm run typecheck -- --incremental false`: passed.
 - `npm run build`: passed.
-- Browser QA: desktop play and 390×844 responsive layout passed without page
-  horizontal overflow or browser warnings.
+- Browser QA at 614×600: Intermediate rendered 26.6px cells and Advanced
+  rendered 17.5px cells with no internal or page horizontal overflow. The
+  Advanced game frame measured about 456px high.
+- Browser QA at 390×844: pending because local-page reload was blocked by the
+  browser security policy after applying the temporary viewport.
 - Browser interaction QA covered first-click safety, keyboard and secondary-click
   flagging, bilingual content, roving focus, active-game restore and timer resume.
-- The Advanced board preserved 44×44 cells and scrolled internally at 390px.

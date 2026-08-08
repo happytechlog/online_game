@@ -174,6 +174,8 @@ export function MinesweeperGame() {
   }, [game]);
 
   const record = records.times[game.preset];
+  const boardAspectRatio = game.columns / game.rows;
+  const boardWidth = `min(100%, calc(${boardAspectRatio * 100}svh - ${boardAspectRatio * 170}px), ${game.columns * 44 + 6}px)`;
   return <main className="minesweeper-page" id="main-content">
     <header className="shell minesweeper-heading"><Link className="back-link" href="/games">←</Link><span className="eyebrow">{copy.eyebrow}</span><h1>{copy.title}</h1><p>{copy.body}</p></header>
     {!hydrated ? <p className="shell" role="status">…</p> : savedGame ? <section className="shell minesweeper-saved"><h2>{copy.savedTitle}</h2><p>{copy.savedBody}</p><div><button className="button minesweeper-primary" onClick={continueSaved} type="button">{copy.continue}</button><button className="button" onClick={() => { setSavedGame(null); startNewGame(); }} type="button">{copy.newGame}</button></div></section> : <section className="shell minesweeper-layout">
@@ -187,7 +189,7 @@ export function MinesweeperGame() {
           <div><span>{copy.mineCounter}</span><strong aria-label={`${copy.mineCounter}: ${counter}; ${getFlagCount(game)} ${copy.flags}`}>{formatTime(counter)}</strong></div><div><span>{copy.timer}</span><strong>{formatTime(elapsedSeconds)}</strong></div>
         </div>
         {game.phase === "playing" && !running && <button className="minesweeper-resume" onClick={resumeTimer} type="button">{copy.continue}</button>}
-        <div className="minesweeper-scroll"><div aria-colcount={game.columns} aria-label={copy.board} aria-rowcount={game.rows} className="minesweeper-board" role="grid" style={{ gridTemplateColumns: `repeat(${game.columns}, 44px)` }}>
+        <div className="minesweeper-scroll"><div aria-colcount={game.columns} aria-label={copy.board} aria-rowcount={game.rows} className="minesweeper-board" role="grid" style={{ gridTemplateColumns: `repeat(${game.columns}, minmax(0, 1fr))`, width: boardWidth }}>
           {game.cells.map((cell, index) => {
             const position = getCellPosition(game, index);
             return <button aria-colindex={position.column + 1} aria-disabled={!canInteract} aria-keyshortcuts="Enter Space F M C ArrowUp ArrowDown ArrowLeft ArrowRight" aria-label={cellLabel(index)} aria-rowindex={position.row + 1} className={classForCell(index)} disabled={!canInteract} key={index} onClick={() => {
@@ -200,7 +202,7 @@ export function MinesweeperGame() {
           })}
         </div></div>
         <div className="minesweeper-mobile-actions"><button aria-pressed={flagMode} onClick={() => setFlagMode((value) => !value)} type="button">⚑ {copy.flagMode}</button><button disabled={!canInteract || !canChord} onClick={() => { if (selectedIndex !== null) chord(selectedIndex); }} type="button">{copy.openAround}</button></div>
-        {(game.phase === "won" || game.phase === "lost") && <div className="minesweeper-result" role="status"><strong>{game.phase === "won" ? copy.won : copy.lost}</strong><button className="button minesweeper-primary" onClick={() => startNewGame()} type="button">{copy.playAgain}</button></div>}
+        {(game.phase === "won" || game.phase === "lost") && <div aria-label={game.phase === "won" ? copy.won : copy.lost} aria-modal="true" className="minesweeper-result" role="alertdialog"><strong>{game.phase === "won" ? copy.won : copy.lost}</strong><button className="button minesweeper-primary" onClick={() => startNewGame()} type="button">{copy.playAgain}</button></div>}
       </div>
       <aside className="minesweeper-sidebar"><p>{copy.controls}</p><dl><div><dt>{copy.best}</dt><dd>{record === null ? copy.noRecord : formatTime(record)}</dd></div><div><dt>{copy.mineCounter}</dt><dd>{counter}</dd></div></dl><p>{copy.storage}</p></aside>
       <p aria-live="polite" className="sr-only">{announcement}</p>

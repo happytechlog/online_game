@@ -160,10 +160,11 @@ test("provides bilingual Sudoku guide and FAQ SEO content", async () => {
 });
 
 test("provides bilingual Minesweeper guide, FAQ SEO, and accessible grid contracts", async () => {
-  const [route, component, content] = await Promise.all([
+  const [route, component, content, styles] = await Promise.all([
     source("app/games/minesweeper/page.tsx"),
     source("src/features/minesweeper/components/minesweeper-game.tsx"),
     source("src/i18n/minesweeper-content.ts"),
+    source("app/globals.css"),
   ]);
 
   assert.match(route, /FAQPage/);
@@ -175,8 +176,12 @@ test("provides bilingual Minesweeper guide, FAQ SEO, and accessible grid contrac
   assert.match(component, /aria-keyshortcuts/);
   assert.match(component, /<fieldset/);
   assert.match(component, /<details/);
+  assert.match(component, /boardAspectRatio/);
+  assert.match(component, /role="alertdialog"/);
   assert.match(content, /faqTitle/);
   assert.match(content, /steps:/);
+  assert.match(styles, /\.minesweeper-cell \{[^}]*aspect-ratio: 1;/);
+  assert.match(styles, /\.minesweeper-result \{[^}]*position: fixed;[^}]*top: 50%;/);
 });
 
 test("exposes the Sudoku board state and controls accessibly", async () => {
