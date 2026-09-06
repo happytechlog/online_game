@@ -14,6 +14,7 @@ const dataset = () => ({
     city: { ko: "테스트 도시", en: "Test city" },
     sourceUrl: "https://example.org/photo", author: "Fixture", license: "Test only",
     coordinateSource: "https://example.org/coordinates",
+    attribution: { title: "Test photo", licenseUrl: "https://example.org/license", changes: { ko: "테스트", en: "Test" } },
   })),
 });
 const response = () => ({
@@ -59,6 +60,8 @@ test("geo dataset validation rejects bad counts, mix, duplicate IDs and malforme
     (d) => { d.places[0].coordinateSource = ""; },
     (d) => { d.places[0].license = " "; },
     (d) => { d.version = ""; },
+    (d) => { d.places[0].attribution.licenseUrl = "javascript:alert(1)"; },
+    (d) => { d.places[0].attribution.changes.ko = ""; },
   ]) {
     const input = dataset(); mutate(input);
     assert.throws(() => parseDataset(input));

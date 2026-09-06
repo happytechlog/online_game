@@ -10,6 +10,11 @@ export type Place = Readonly<{
   author: string;
   license: string;
   coordinateSource: string;
+  attribution: Readonly<{
+    title: string;
+    licenseUrl: string;
+    changes: Readonly<{ ko: string; en: string }>;
+  }>;
 }>;
 export type Dataset = Readonly<{ version: string; places: readonly Place[] }>;
 
@@ -60,6 +65,8 @@ export function parseDataset(input: unknown): Dataset {
         !localized(place.country) || !localized(place.city) ||
         !source(place.sourceUrl) || !source(place.coordinateSource) ||
         !text(place.author) || !text(place.license) ||
+        !record(place.attribution) || !text(place.attribution.title) ||
+        !source(place.attribution.licenseUrl) || !localized(place.attribution.changes) ||
         (place.difficulty !== "easy" && place.difficulty !== "medium" && place.difficulty !== "hard")) {
       throw new Error("INVALID_PLACE");
     }

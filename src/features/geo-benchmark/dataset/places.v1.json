@@ -1,0 +1,150 @@
+{
+  "version": "geo-mvp-2026-09-06-v1",
+  "places": [
+    {
+      "id": "location-01",
+      "imagePath": "/images/geo-benchmark/location-01.jpg",
+      "difficulty": "easy",
+      "coordinates": {
+        "latitude": 48.857083,
+        "longitude": 2.296306
+      },
+      "country": {
+        "ko": "프랑스",
+        "en": "France"
+      },
+      "city": {
+        "ko": "파리",
+        "en": "Paris"
+      },
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AEiffel_Tower_from_Champ_de_Mars.jpg",
+      "author": "SElefant (Sean H. Yu)",
+      "license": "CC BY-SA 3.0",
+      "coordinateSource": "https://commons.wikimedia.org/w/index.php?oldid=1225377672",
+      "attribution": {
+        "title": "Eiffel Tower from Champ de Mars.jpg",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+        "changes": {
+          "ko": "원본 크기 유지. 위치·설명 메타데이터 제거. 크롭·보정 없음.",
+          "en": "Original dimensions retained. Location and descriptive metadata removed; no cropping or retouching."
+        }
+      }
+    },
+    {
+      "id": "location-02",
+      "imagePath": "/images/geo-benchmark/location-02.jpg",
+      "difficulty": "medium",
+      "coordinates": {
+        "latitude": 34.995649,
+        "longitude": 135.781928
+      },
+      "country": {
+        "ko": "일본",
+        "en": "Japan"
+      },
+      "city": {
+        "ko": "교토",
+        "en": "Kyoto"
+      },
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3AKyoto_street_(51794209130).jpg",
+      "author": "Radek Kucharski",
+      "license": "CC BY 2.0",
+      "coordinateSource": "https://commons.wikimedia.org/w/index.php?oldid=971123630",
+      "attribution": {
+        "title": "Kyoto street (51794209130).jpg",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "changes": {
+          "ko": "Wikimedia의 1280px 축소본 사용. 위치·설명 메타데이터 제거. 추가 크롭·보정 없음.",
+          "en": "Wikimedia 1280px rendition. Location and descriptive metadata removed; no further cropping or retouching."
+        }
+      }
+    },
+    {
+      "id": "location-03",
+      "imagePath": "/images/geo-benchmark/location-03.jpg",
+      "difficulty": "medium",
+      "coordinates": {
+        "latitude": 38.709744,
+        "longitude": -9.137375
+      },
+      "country": {
+        "ko": "포르투갈",
+        "en": "Portugal"
+      },
+      "city": {
+        "ko": "리스본",
+        "en": "Lisbon"
+      },
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ARua_Augusta%2C_Lisbon.jpg",
+      "author": "Jolly Janner",
+      "license": "Public domain",
+      "coordinateSource": "https://commons.wikimedia.org/w/index.php?oldid=1017718814",
+      "attribution": {
+        "title": "Rua Augusta, Lisbon.jpg",
+        "licenseUrl": "https://commons.wikimedia.org/w/index.php?oldid=1017718814#Licensing",
+        "changes": {
+          "ko": "Wikimedia의 1280px 축소본 사용. 위치·설명 메타데이터 제거. 추가 크롭·보정 없음.",
+          "en": "Wikimedia 1280px rendition. Location and descriptive metadata removed; no further cropping or retouching."
+        }
+      }
+    },
+    {
+      "id": "location-04",
+      "imagePath": "/images/geo-benchmark/location-04.jpg",
+      "difficulty": "medium",
+      "coordinates": {
+        "latitude": -33.918223,
+        "longitude": 18.414252
+      },
+      "country": {
+        "ko": "남아프리카 공화국",
+        "en": "South Africa"
+      },
+      "city": {
+        "ko": "케이프타운",
+        "en": "Cape Town"
+      },
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3A120-130_Chiappini_Street%2C_Bo-Kaap_(04).jpg",
+      "author": "PIERRE ANDRE LECLERCQ",
+      "license": "CC BY-SA 4.0",
+      "coordinateSource": "https://commons.wikimedia.org/w/index.php?oldid=1226032290",
+      "attribution": {
+        "title": "120-130 Chiappini Street, Bo-Kaap (04).jpg",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "changes": {
+          "ko": "원본 크기 유지. 위치·설명 메타데이터 제거. 크롭·보정 없음.",
+          "en": "Original dimensions retained. Location and descriptive metadata removed; no cropping or retouching."
+        }
+      }
+    },
+    {
+      "id": "location-05",
+      "imagePath": "/images/geo-benchmark/location-05.jpg",
+      "difficulty": "hard",
+      "coordinates": {
+        "latitude": 58.378876,
+        "longitude": 26.724168
+      },
+      "country": {
+        "ko": "에스토니아",
+        "en": "Estonia"
+      },
+      "city": {
+        "ko": "타르투",
+        "en": "Tartu"
+      },
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ATartu._K%C3%BC%C3%BCni_street_-_panoramio.jpg",
+      "author": "Guntars Mednis",
+      "license": "CC BY-SA 3.0",
+      "coordinateSource": "https://commons.wikimedia.org/w/index.php?oldid=718212957",
+      "attribution": {
+        "title": "Tartu. Küüni street - panoramio.jpg",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "changes": {
+          "ko": "Wikimedia의 1280px 축소본 사용. 위치·설명 메타데이터 제거. 추가 크롭·보정 없음.",
+          "en": "Wikimedia 1280px rendition. Location and descriptive metadata removed; no further cropping or retouching."
+        }
+      }
+    }
+  ]
+}

@@ -1,33 +1,38 @@
 # Next Task
 
-## Current focus — Geo Benchmark phase 1 (2026-09-06)
+## Current focus — Geo Benchmark phase 2 (2026-09-06)
 
-Completed the pure TypeScript foundation:
-- data.ts: validates five-place JSON objects, 1/3/1 difficulty mix, coordinates,
-  bilingual names, local image paths, source and attribution fields.
-- scoring.ts: Haversine distance and 2000km exponential scoring.
-- session.ts: required inputs, unknown names as null, immutable round transitions,
-  duplicate-submit prevention, immediate scores and final-only answer projection.
-- tests/geo-benchmark.test.mjs: six regression tests using synthetic fixtures.
+Phase 1 committed as 5d5c2fe (pure engine, scoring, round lifecycle and tests).
+Phase 2 now includes five locally bundled photos, versioned places.v1.json,
+a runtime loader, validated attribution metadata, source/coordinate evidence,
+and a hash-pinned JPEG metadata-removal preparation command.
 
-No browser route, real photo dataset, storage, dependencies or deployment changes
-in this phase. Synthetic test coordinates are not verified photo locations.
+The dataset is 1 easy / 3 medium / 1 hard (Paris, Kyoto, Lisbon, Cape Town, Tartu).
+Difficulty is editorial, not model-calibrated. Coordinates are checked against
+publisher camera-location templates, not independently field-surveyed.
+See docs/datasets/geo-benchmark-v1.md for licensing, accuracy and reproduction.
+No browser route, database, authentication, external model calls or deployment
+changes are included yet.
 
-## Next Geo Benchmark work
+## Next Geo Benchmark work — phase 3
 
-Phase 2: select five redistributable photos and verify camera coordinates, sources
-and license terms; bundle images and versioned JSON. Phase 3: connect the desktop
-photo/map/form/results UI, bilingual copy, keyboard controls and browser QA.
-The existing app builds through vinext; static hosting compatibility still needs
-verification before delivery. Follow the dated plan and game specification.
+Connect the desktop photo/map/form/round-score/final-results UI to the local
+dataset and pure engine. Keep actual locations and source/title attribution
+out of the intermediate round display and show complete credits with final
+answers. Provide bilingual copy, keyboard controls and browser QA, then register
+the route and game catalog entry.
+Inspect vinext/static hosting compatibility before declaring static delivery.
+Follow docs/plans/2026-09-05-geo-benchmark-mvp.md and docs/game-specs/geo-benchmark.md.
 
 ## Geo Benchmark verification
 
-- npm test: 136 passed (including 6 new Geo Benchmark tests).
+- npm test: 139 passed (9 Geo Benchmark tests).
+- npm run lint: passed.
 - npm run typecheck -- --incremental false: passed.
 - npm run build: passed.
-- npm run lint: passed.
-- Browser QA: deferred until the UI phase.
+- node scripts/prepare-geo-benchmark-images.mjs: reproduced all five output hashes.
+- All five decoded pixel hashes match the corresponding downloads after metadata removal.
+- Source photo previews visually inspected; browser gameplay QA awaits phase 3.
 
 ## Previous focus — Minesweeper (preserved)
 
