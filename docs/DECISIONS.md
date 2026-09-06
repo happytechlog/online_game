@@ -140,3 +140,19 @@ bundle, and assembly command as separate committed inputs and outputs.
 - Variants share ancestry with one verified seed per difficulty. Future bundle
   revisions can add independently sourced seeds without changing the gameplay
   format or loader.
+
+
+## 2026-09-06 — Geo Benchmark: manual responses and fixed local data
+
+Use manually entered model responses and a fixed photo dataset managed as JSON.
+Do not introduce login, a database, a backend, Street View APIs, or automatic
+external model calls for this MVP. Prefer static delivery and verify compatibility
+with the existing build before finalizing integration.
+
+Photo redistribution terms, sources, and camera coordinates must be verified.
+Show round scores immediately and reveal actual locations and answers only
+after five rounds. Client-delivered answers are inspectable; delayed display
+is a UI rule, not secret-answer security.
+
+Product rules: [Geo Benchmark](game-specs/geo-benchmark.md).
+Execution plan: [MVP plan](plans/2026-09-05-geo-benchmark-mvp.md).
