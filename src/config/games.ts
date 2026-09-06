@@ -1,7 +1,7 @@
 export type GameStatus = "available" | "coming-soon";
 
 export interface GameCatalogItem {
-  id: "othello" | "2048" | "sudoku" | "minesweeper";
+  id: "othello" | "2048" | "sudoku" | "minesweeper" | "geo-benchmark";
   href: string;
   status: GameStatus;
   featured: boolean;
@@ -68,6 +68,17 @@ export const games: readonly GameCatalogItem[] = [
       en: "Use number clues to reveal every safe tile",
     },
     category: { ko: "퍼즐 · 추리", en: "Puzzle · Deduction" },
+  },
+  {
+    id: "geo-benchmark",
+    href: "/games/geo-benchmark",
+    status: "available",
+    featured: false,
+    accent: "sky",
+    icon: "◎",
+    title: { ko: "Geo 벤치마크", en: "Geo Benchmark" },
+    description: { ko: "사진 다섯 장으로 테스트하는 위치 추론 능력", en: "Test visual location reasoning with five photos" },
+    category: { ko: "AI · 지리", en: "AI · Geography" },
   },
 ] as const;
 

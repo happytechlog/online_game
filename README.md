@@ -36,3 +36,9 @@ npm run build
 
 전체 로드맵은 `PLANS.md`를 참고하세요. 게임별 요구사항은
 `docs/game-specs/othello.md`와 `docs/game-specs/2048.md`에 있습니다.
+
+## Geo Benchmark
+
+`npm run dev` 후 `http://localhost:3000/games/geo-benchmark`에서 실행합니다. 사진 5장의 위치를 지도에서 선택하고 국가/도시(모름 허용), 확신도와 근거를 수동 입력합니다. 각 라운드 점수는 즉시, 정답과 사진 출처는 5라운드 종료 후 표시합니다. 결과 JSON 다운로드를 지원하며 새로고침하면 초기화됩니다.
+
+사진과 지도는 로컬 파일이며 API 키·로그인·DB가 필요 없습니다. 기존 vinext 빌드/실행 구조를 사용합니다. 호스팅 설정이나 배포는 수행하지 않았습니다.

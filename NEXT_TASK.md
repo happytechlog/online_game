@@ -1,38 +1,39 @@
 # Next Task
 
-## Current focus — Geo Benchmark phase 2 (2026-09-06)
+## Current focus — Geo Benchmark phase 3 (2026-09-06)
 
-Phase 1 committed as 5d5c2fe (pure engine, scoring, round lifecycle and tests).
-Phase 2 now includes five locally bundled photos, versioned places.v1.json,
-a runtime loader, validated attribution metadata, source/coordinate evidence,
-and a hash-pinned JPEG metadata-removal preparation command.
+Browser MVP implemented at /games/geo-benchmark: five local photos, local world
+map with click/pan/zoom/keyboard and numeric coordinates, bilingual manual input,
+unknown country/city, mandatory confidence/reasoning, immediate scores, final
+answers/credits, JSON export and restart. Game catalog and sitemap registered.
+No hosting configuration or deployment was changed.
 
-The dataset is 1 easy / 3 medium / 1 hard (Paris, Kyoto, Lisbon, Cape Town, Tartu).
-Difficulty is editorial, not model-calibrated. Coordinates are checked against
-publisher camera-location templates, not independently field-surveyed.
-See docs/datasets/geo-benchmark-v1.md for licensing, accuracy and reproduction.
-No browser route, database, authentication, external model calls or deployment
-changes are included yet.
+## Verification
 
-## Next Geo Benchmark work — phase 3
-
-Connect the desktop photo/map/form/round-score/final-results UI to the local
-dataset and pure engine. Keep actual locations and source/title attribution
-out of the intermediate round display and show complete credits with final
-answers. Provide bilingual copy, keyboard controls and browser QA, then register
-the route and game catalog entry.
-Inspect vinext/static hosting compatibility before declaring static delivery.
-Follow docs/plans/2026-09-05-geo-benchmark-mvp.md and docs/game-specs/geo-benchmark.md.
-
-## Geo Benchmark verification
-
-- npm test: 139 passed (9 Geo Benchmark tests).
+- npm test: 143 passed, including 13 Geo Benchmark tests.
 - npm run lint: passed.
 - npm run typecheck -- --incremental false: passed.
-- npm run build: passed.
-- node scripts/prepare-geo-benchmark-images.mjs: reproduced all five output hashes.
-- All five decoded pixel hashes match the corresponding downloads after metadata removal.
-- Source photo previews visually inspected; browser gameplay QA awaits phase 3.
+- npm run build: passed after final JSON export changes.
+- Headless Edge at 1440x1000: five rounds, map selection, immediate scores,
+  no intermediate credits, five final results, download and restart passed.
+- English, keyboard map selection, zoom, whitespace-only rejection, export
+  structure/totals and 390px viewport overflow checks passed. No page errors.
+- Desktop screenshot visually inspected. QA artifacts are in ignored
+  work/geo-benchmark/ (ui-desktop.png, ui-results.png, result-test.json).
+
+## Delivery notes
+
+Run npm run dev and open http://localhost:3000/games/geo-benchmark.
+The existing vinext runtime remains; a standalone static HTML export was not
+created. Core benchmark logic/data run in the browser without a backend API.
+Reload resets progress. Answers are inspectable in bundled data; screen reveal
+timing is not an exam security boundary. Photo coordinates use publisher evidence
+and difficulty is editorial. See docs/datasets/geo-benchmark-v1.md.
+
+## Remaining optional work
+
+Model integration and deployment require a new user request. No hosting work is
+authorized. The requested local manual benchmark MVP is ready for user review.
 
 ## Previous focus — Minesweeper (preserved)
 

@@ -94,3 +94,6 @@ hashes, dimensions, size budgets, attribution completeness, metadata stripping,
 truncated JPEG rejection, unchanged encoded scans and a perfect five-round run.
 Real dataset tests also verify that source links and answer coordinates are not
 exposed by the pre-completion view. Browser gameplay QA follows in phase 3.
+
+## Local world map
+`public/images/geo-benchmark/world.svg` derives from Natural Earth v5.1.2, public domain. Source: https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_110m_admin_0_countries.geojson . Save the source as `work/geo-benchmark/world.geojson`, then run `node scripts/prepare-geo-benchmark-map.mjs` to reproduce the equirectangular map. License: https://www.naturalearthdata.com/about/terms-of-use/ . This coarse map supports location selection; coordinates can also be entered numerically.
