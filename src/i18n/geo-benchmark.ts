@@ -1,5 +1,6 @@
 export const geoMessages = {
   ko: {
+    preparing: "새 게임을 준비하고 있습니다…", roundPlan: "25장 중 무작위 선택 · 쉬움 1장 → 보통 3장 → 어려움 1장",
     title: "Geo Benchmark", eyebrow: "이미지 위치 추론 · 수동 평가",
     intro: "사진의 단서를 읽고 지도에 추측 위치를 표시하세요.",
     round: "라운드", total: "총점", photo: "위치 추론용 사진", enlarge: "사진 크게 보기",
@@ -21,6 +22,7 @@ export const geoMessages = {
     dataset: "데이터셋", roundScores: "라운드별 점수",
   },
   en: {
+    preparing: "Preparing a new game…", roundPlan: "Random draw from 25 photos · 1 easy → 3 medium → 1 hard",
     title: "Geo Benchmark", eyebrow: "Visual geolocation · Manual evaluation",
     intro: "Read the clues in the photo and place your guess on the map.",
     round: "Round", total: "Total", photo: "Photo for location inference", enlarge: "View full-size photo",

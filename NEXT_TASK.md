@@ -1,3 +1,11 @@
+# Latest update — 25-photo random pool (2026-09-06)
+
+Completed dataset v2: 5 easy / 15 medium / 5 hard, retaining the previous five photos and adding 20 reviewed Commons photos with license/camera-location evidence, neutral local assets, metadata stripping and hash-pinned reproduction. Detailed provenance: docs/datasets/geo-benchmark-v2.md.
+Each game draws 1 easy → 3 distinct medium → 1 hard. Browser crypto supplies a fresh seed after hydration and on restart; the pure seeded selector fixes the five rounds for the session. Final JSON records seed, selection version and selected IDs for reproduction. Different games can repeat photos.
+Validation: 146 tests, lint, typecheck and build passed. Image preparation reproduced all 25 matching files. Tests cover 1,000 seeds, tier counts/order, uniqueness, pool coverage, input isolation and final-only seed disclosure. Browser QA completed two perfect games (seeds 42 and 43), verified different draws after restart, no early answers, matching exported IDs and reproducible final JSON; no page errors. Artifacts: work/geo-benchmark/pool-v2-qa.mjs, pool-v2-run-0.json, pool-v2-run-1.json and pool-v2-desktop.png (ignored).
+All 20 additions were visually reviewed. Coordinates are publisher-provided camera locations, not survey measurements; Vienna uses its camera template instead of the separate object coordinates reported in API metadata. Difficulty remains editorial.
+No required work remains for this request. No Sites configuration changes or deployment. Country/city reverse geocoding remains unimplemented; its interaction choice was not finalized.
+
 # Latest update — map controls (2026-09-06)
 
 Added bilingual Clear selection for editable guesses, clearing marker and coordinate inputs together. Both maps zoom around the current viewport center with buttons and mouse wheel. Submitted responses remain locked.

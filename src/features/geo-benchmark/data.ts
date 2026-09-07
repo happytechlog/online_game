@@ -52,7 +52,7 @@ function source(value: unknown): boolean {
 // still require evidence review before a dataset is released.
 export function parseDataset(input: unknown): Dataset {
   if (!record(input) || !text(input.version) ||
-      !Array.isArray(input.places) || input.places.length !== 5) {
+      !Array.isArray(input.places) || ![5, 25].includes(input.places.length)) {
     throw new Error("INVALID_DATASET");
   }
   const ids = new Set<string>();
@@ -75,7 +75,8 @@ export function parseDataset(input: unknown): Dataset {
     // Clone so caller mutations cannot change the validated dataset.
     return structuredClone(place) as Place;
   });
-  if (counts.easy !== 1 || counts.medium !== 3 || counts.hard !== 1) {
+  const multiplier = places.length / 5;
+  if (counts.easy !== multiplier || counts.medium !== 3 * multiplier || counts.hard !== multiplier) {
     throw new Error("INVALID_DIFFICULTY_MIX");
   }
   return { version: input.version, places };

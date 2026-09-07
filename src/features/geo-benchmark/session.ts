@@ -1,5 +1,7 @@
-import { isCoordinates, parseDataset, type Coordinates, type Dataset } from "./data.ts";
+import { isCoordinates, type Coordinates, type Dataset } from "./data.ts";
 import { distanceKm, scoreDistance, SCORING_VERSION } from "./scoring.ts";
+
+import { selectRounds, SELECTION_VERSION } from "./selection.ts";
 
 export type Response = Readonly<{
   coordinates: Coordinates;
@@ -10,12 +12,13 @@ export type Response = Readonly<{
 }>;
 export type Session = Readonly<{
   dataset: Dataset;
+  seed: number;
   phase: "guessing" | "scored" | "finished";
   responses: readonly Response[];
 }>;
 
-export function createSession(dataset: unknown): Session {
-  return { dataset: parseDataset(dataset), phase: "guessing", responses: [] };
+export function createSession(dataset: unknown, seed = 0): Session {
+  return { dataset: selectRounds(dataset, seed), seed, phase: "guessing", responses: [] };
 }
 
 export function submitResponse(session: Session, input: Response): Session {
@@ -66,6 +69,9 @@ export function getSessionView(session: Session) {
   if (session.phase !== "finished") return { ...publicView, results: null };
   return {
     ...publicView,
+    selectionVersion: SELECTION_VERSION,
+    seed: session.seed,
+    selectedPlaceIds: session.dataset.places.map(place => place.id),
     results: session.responses.map((response, index) => ({
       answer: structuredClone(session.dataset.places[index]),
       response: structuredClone(response),

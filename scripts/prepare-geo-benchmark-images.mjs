@@ -10,7 +10,7 @@ const manifest = JSON.parse(await readFile(join(root, "docs/datasets/geo-benchma
 const sha256 = (data) => createHash("sha256").update(data).digest("hex");
 const prepared = [];
 for (const asset of manifest.assets) {
-  if (!/^location-0[1-5]\.jpg$/.test(asset.filename)) throw new Error("INVALID_ASSET_NAME");
+  if (!/^location-(?:0[1-9]|1[0-9]|2[0-5])\.jpg$/.test(asset.filename)) throw new Error("INVALID_ASSET_NAME");
   const original = await readFile(join(inputDir, asset.filename));
   if (sha256(original) !== asset.downloadSha256) throw new Error("SOURCE_HASH_MISMATCH: " + asset.filename);
   const output = stripJpegMetadata(original);

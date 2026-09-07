@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useLanguage } from "@/src/components/providers/language-provider";
 import { geoMessages, type GeoCopy } from "@/src/i18n/geo-benchmark";
 import { loadGeoBenchmarkDataset } from "./dataset";
-import { createSession, getSessionView, nextRound, submitResponse, type Response } from "./session";
+import { createSession, getSessionView, nextRound, submitResponse, type Response, type Session } from "./session";
 import { isCoordinates } from "./data";
 import { parseResponseDraft } from "./response-form";
 import { WorldMap } from "./world-map";
@@ -54,18 +54,31 @@ function GuessForm({ copy, locked, onSubmit }: { copy: GeoCopy; locked: boolean;
   </form>;
 }
 
+function newRandomSession() {
+  if (typeof window === "undefined") throw new Error("BROWSER_REQUIRED");
+  const seed = window.crypto.getRandomValues(new Uint32Array(1))[0];
+  return createSession(loadGeoBenchmarkDataset(), seed);
+}
+
 export function GeoBenchmark() {
   const { language } = useLanguage();
   const copy = geoMessages[language];
-  const [session, setSession] = useState(() => createSession(loadGeoBenchmarkDataset()));
+  const [session, setSession] = useState<Session | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    // Draw after hydration; SSR and the first client render show the same loading state.
+    const frame = window.requestAnimationFrame(() => setSession(newRandomSession()));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
   const [imageError, setImageError] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
-  const view = getSessionView(session);
-  useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [view.round, view.phase]);
+  const view = session ? getSessionView(session) : null;
+  useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [view?.round, view?.phase]);
+  if (!view) return <section className="geo-shell" aria-busy="true"><p>{copy.preparing}</p></section>;
   const format = (value: number) => value.toLocaleString(language === "ko" ? "ko-KR" : "en-US", { maximumFractionDigits: 1 });
   return <section className="geo-shell">
     <header className="geo-header">
-      <div><p className="eyebrow">{copy.eyebrow}</p><h1>{copy.title}</h1><p>{copy.intro}</p></div>
+      <div><p className="eyebrow">{copy.eyebrow}</p><h1>{copy.title}</h1><p>{copy.intro}</p><p>{copy.roundPlan}</p></div>
       <div className="geo-total"><span>{copy.total}</span><strong>{format(view.total)}<small> / 25,000</small></strong></div>
     </header>
     <ol className="geo-progress" aria-label={copy.roundScores}>
@@ -86,11 +99,11 @@ export function GeoBenchmark() {
         <p>{copy.withheld}</p>
         {view.phase === "scored" && <div className="geo-round-result" role="status">
           <span>{copy.score}</span><strong>{format(view.scores[view.round - 1])}<small> / 5,000</small></strong>
-          <button className="button button-primary" onClick={() => { setImageError(false); setSession(current => nextRound(current)); }}>{copy.next} →</button>
+          <button className="button button-primary" onClick={() => { setImageError(false); setSession(current => current ? nextRound(current) : current); }}>{copy.next} →</button>
         </div>}
       </div>
       <GuessForm key={view.round} copy={copy} locked={view.phase !== "guessing" || imageError} onSubmit={response => {
-        setSession(current => current.phase === "guessing" ? submitResponse(current, response) : current);
+        setSession(current => current?.phase === "guessing" ? submitResponse(current, response) : current);
       }} />
     </div>}
     {view.results && <div className="geo-results">
@@ -127,7 +140,7 @@ export function GeoBenchmark() {
         link.click();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       }}>{copy.exportResults}</button>
-      <button className="button button-primary" onClick={() => { setImageError(false); setSession(createSession(loadGeoBenchmarkDataset())); }}>{copy.restart}</button>
+      <button className="button button-primary" onClick={() => { setImageError(false); setSession(newRandomSession()); }}>{copy.restart}</button>
     </div>}
     <footer className="geo-footnote"><p>{copy.scoring}</p><p>{copy.reload}</p><small>{copy.dataset}: {view.datasetVersion}</small></footer>
   </section>;

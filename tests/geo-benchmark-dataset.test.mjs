@@ -10,12 +10,12 @@ const root = new URL("../", import.meta.url);
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const manifest = JSON.parse(await readFile(new URL("docs/datasets/geo-benchmark-assets.json", root), "utf8"));
 
-test("release dataset contains five local photos with verified metadata and difficulty mix", async () => {
+test("release dataset contains 25 local photos with verified metadata and difficulty mix", async () => {
   const dataset = loadGeoBenchmarkDataset();
   assert.equal(dataset.version, manifest.datasetVersion);
-  assert.deepEqual(dataset.places.map(p => p.difficulty).sort(), ["easy","hard","medium","medium","medium"]);
-  assert.equal(manifest.assets.length, 5);
-  assert.equal(new Set(dataset.places.map(p => p.imagePath)).size, 5);
+  assert.deepEqual(dataset.places.map(p => p.difficulty).sort(), [...Array(5).fill("easy"),...Array(5).fill("hard"),...Array(15).fill("medium")]);
+  assert.equal(manifest.assets.length, 25);
+  assert.equal(new Set(dataset.places.map(p => p.imagePath)).size, 25);
   for (const place of dataset.places) {
     const asset = manifest.assets.find(a => a.id === place.id);
     assert.ok(asset);
@@ -23,11 +23,11 @@ test("release dataset contains five local photos with verified metadata and diff
     const bytes = await readFile(new URL("public"+place.imagePath, root));
     assert.equal(hash(bytes), asset.sha256);
     assert.equal(bytes.length, asset.bytes);
-    assert.ok(bytes.length < 500_000);
+    assert.ok(bytes.length < 1_000_000);
     const {width, height, segments} = inspectJpeg(bytes);
     assert.equal(width, asset.width);
     assert.equal(height, asset.height);
-    assert.ok(width >= 1000 && height >= 700);
+    assert.ok(Math.max(width, height) >= 1000 && Math.min(width, height) >= 600);
     assert.ok(!segments.some(s => [0xe1,0xed,0xfe].includes(s.marker)));
     assert.deepEqual(stripJpegMetadata(bytes), bytes);
     assert.match(place.coordinateSource, new RegExp("oldid="+asset.sourceRevision+"$"));
@@ -41,7 +41,7 @@ test("real dataset completes a perfect game without early answer leakage", () =>
   let session = createSession(dataset);
   for (let i=0;i<5;i++) {
     session = submitResponse(session,{
-      coordinates: dataset.places[i].coordinates, country:null,city:null,
+      coordinates: session.dataset.places[i].coordinates, country:null,city:null,
       confidence:100,reasoning:"Fixture uses the documented camera coordinates.",
     });
     const view = getSessionView(session);

@@ -1,5 +1,7 @@
 # Geo Benchmark dataset v1
 
+Historical v1 record. The active 25-photo pool is documented in [dataset v2](geo-benchmark-v2.md); the shared asset manifest now covers v2.
+
 Reviewed: 2026-09-06. Dataset: geo-mvp-2026-09-06-v1.
 
 ## Accepted photos
