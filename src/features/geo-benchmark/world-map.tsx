@@ -35,8 +35,9 @@ function DetailMap({ value, answer, onChange, copy }: Props) {
         worldCopyJump: true, scrollWheelZoom: "center", doubleClickZoom: "center", touchZoom: "center" }).setView([20, 0], 2);
       const markers = L.layerGroup().addTo(map);
       runtime.current = { map, L, markers };
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.esri.com" target="_blank" rel="noopener noreferrer">Esri</a> — Sources: Esri, TomTom, Garmin, Foursquare, FAO, NOAA, USGS, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>, and the GIS User Community'
       }).on("tileerror", () => { if (!disposed) setFailed(true); }).addTo(map);
       map.on("click", (event: Leaflet.LeafletMouseEvent) => {
         const point = event.latlng.wrap();

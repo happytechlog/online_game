@@ -1,3 +1,6 @@
+## Latest update — English detailed-map labels (2026-09-06)
+
+Changed the network detail-map tiles from OpenStreetMap standard raster tiles to Esri World Street Map so country, city and road labels prioritize English. The local offline map, map controls, answer markers and tile-failure fallback are unchanged. Validate the English labels in the browser and run typecheck/lint/tests before the next commit.
 # Latest update — 25-photo random pool (2026-09-06)
 
 Completed dataset v2: 5 easy / 15 medium / 5 hard, retaining the previous five photos and adding 20 reviewed Commons photos with license/camera-location evidence, neutral local assets, metadata stripping and hash-pinned reproduction. Detailed provenance: docs/datasets/geo-benchmark-v2.md.
@@ -14,7 +17,7 @@ No hosting changes or deployment.
 
 # Latest update — detailed map (2026-09-06)
 
-Implemented Leaflet/OpenStreetMap detail map with city, road and building tiles, zoom up to 19, click and keyboard selection, numeric-coordinate sync, localized instructions and tile-failure notice. Local Natural Earth map remains available via the offline toggle.
+Implemented Leaflet detail map with city, road and building tiles, zoom up to 19, click and keyboard selection, numeric-coordinate sync, localized instructions and tile-failure notice. Local Natural Earth map remains available via the offline toggle.
 Validation: 143 tests, lint, typecheck and build passed. Headless Edge verified real loaded OSM tiles at zoom 14, click/numeric/keyboard selection, switching map modes, 390px overflow and simulated tile failure. Screenshot: work/geo-benchmark/detail-map.png (ignored).
 No Sites changes or deployment. Detailed map requires internet; no API key needed. No required implementation remains for this request.
 
