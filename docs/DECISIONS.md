@@ -159,3 +159,6 @@ Execution plan: [MVP plan](plans/2026-09-05-geo-benchmark-mvp.md).
 
 ## 2026-09-06 — Geo Benchmark local browser UI
 Use the existing React/vinext app with client-only benchmark state and bundled photos/JSON. Bundle a Natural Earth v5.1.2 SVG instead of a remote map SDK or tile API. Provide click, pan, zoom, keyboard and numeric coordinate input. Reveal answers and attribution only after five submissions; allow final JSON download with dataset/scoring versions. Reload resets progress. No backend, login, persistence or model API is added. Hosting configuration and deployment remain outside the user-authorized scope.
+
+## 2026-09-06 — Geo Benchmark detailed map
+User requested readable details when zooming. Use client-loaded Leaflet 1.9.4 and HTTPS OpenStreetMap standard raster tiles, with visible linked attribution and normal browser caching. No prefetch, bulk download, tile proxy, API keys or server added. See https://operations.osmfoundation.org/policies/tiles/ and https://leafletjs.com/reference.html . Keep the local Natural Earth map as a manual offline fallback. This changes the default map from offline to network-dependent; photo assets remain local. Public OSM tiles are suitable for this local MVP; review tile-provider capacity/policy before a wider release. Sites configuration and deployment remain untouched.

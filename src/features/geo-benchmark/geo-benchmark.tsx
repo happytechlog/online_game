@@ -31,7 +31,7 @@ function GuessForm({ copy, locked, onSubmit }: { copy: GeoCopy; locked: boolean;
     onSubmit(response);
   }
   return <form onSubmit={submit} className="geo-response">
-    <WorldMap value={point} copy={copy} onChange={locked ? undefined : (value) => {
+    <WorldMap value={point} copy={copy} onClear={locked ? undefined : () => { setLatitude(""); setLongitude(""); }} onChange={locked ? undefined : (value) => {
       setLatitude(value.latitude.toFixed(6)); setLongitude(value.longitude.toFixed(6));
     }} />
     <fieldset disabled={locked}>

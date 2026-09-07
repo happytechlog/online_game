@@ -1,82 +1,87 @@
 "use client";
 
-import { useRef, useState, type PointerEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+import type * as Leaflet from "leaflet";
+import "leaflet/dist/leaflet.css";
 import type { Coordinates } from "./data";
 import type { GeoCopy } from "@/src/i18n/geo-benchmark";
-import { mapWindow, project, unproject } from "./map";
+import { OfflineMap } from "./offline-map";
 
-export function WorldMap({ value, answer, onChange, copy }: {
-  value: Coordinates | null; answer?: Coordinates; onChange?: (point: Coordinates) => void; copy: GeoCopy;
-}) {
-  const [viewport, setViewport] = useState({ x: 0, y: 0, zoom: 1 });
-  const drag = useRef<{ x: number; y: number; originX: number; originY: number; moved: boolean } | null>(null);
-  const box = mapWindow(viewport.x, viewport.y, viewport.zoom);
-  const guess = value && project(value);
-  const actual = answer && project(answer);
-  function zoom(factor: number) {
-    const next = Math.max(1, Math.min(32, viewport.zoom * factor));
-    const center = guess ?? { x: box.x + box.width / 2, y: box.y + box.height / 2 };
-    const nextBox = mapWindow(center.x - 360 / next, center.y - 180 / next, next);
-    setViewport({ x: nextBox.x, y: nextBox.y, zoom: next });
-  }
-  function pointerPoint(event: PointerEvent<SVGSVGElement>) {
-    const rect = event.currentTarget.getBoundingClientRect();
-    return { x: (event.clientX - rect.left) / rect.width * box.width + box.x,
-      y: (event.clientY - rect.top) / rect.height * box.height + box.y };
-  }
+type Props = { value: Coordinates | null; answer?: Coordinates; onChange?: (point: Coordinates) => void; onClear?: () => void; copy: GeoCopy };
+
+export function WorldMap(props: Props) {
+  const [offline, setOffline] = useState(false);
+  return <div>
+    <div className="geo-map-mode">{props.onClear && <button type="button" disabled={!props.value} onClick={props.onClear}>{props.copy.clearSelection}</button>}<button type="button" onClick={() => setOffline(!offline)}>
+      {offline ? props.copy.detailMap : props.copy.basicMap}
+    </button></div>
+    {offline ? <OfflineMap {...props} /> : <DetailMap {...props} />}
+  </div>;
+}
+
+function DetailMap({ value, answer, onChange, copy }: Props) {
+  const container = useRef<HTMLDivElement>(null);
+  const runtime = useRef<{ map: Leaflet.Map; L: typeof Leaflet; markers: Leaflet.LayerGroup } | null>(null);
+  const latest = useRef({ value, answer, onChange, copy });
+  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => { latest.current = { value, answer, onChange, copy }; }, [value, answer, onChange, copy]);
+  useEffect(() => {
+    let disposed = false;
+    let observer: ResizeObserver | undefined;
+    import("leaflet").then(L => {
+      if (disposed || !container.current) return;
+      const map = L.map(container.current, { zoomControl: false, minZoom: 1, maxZoom: 19,
+        worldCopyJump: true, scrollWheelZoom: "center", doubleClickZoom: "center", touchZoom: "center" }).setView([20, 0], 2);
+      const markers = L.layerGroup().addTo(map);
+      runtime.current = { map, L, markers };
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+      }).on("tileerror", () => { if (!disposed) setFailed(true); }).addTo(map);
+      map.on("click", (event: Leaflet.LeafletMouseEvent) => {
+        const point = event.latlng.wrap();
+        latest.current.onChange?.({ latitude: Math.max(-90, Math.min(90, point.lat)), longitude: point.lng });
+      });
+      observer = new ResizeObserver(() => map.invalidateSize());
+      observer.observe(container.current);
+      setReady(true);
+    }).catch(() => { if (!disposed) setFailed(true); });
+    return () => { disposed = true; observer?.disconnect(); runtime.current?.map.remove(); runtime.current = null; };
+  }, []);
+  useEffect(() => {
+    const current = runtime.current;
+    if (!ready || !current) return;
+    const { L, map, markers } = current;
+    markers.clearLayers();
+    if (value) L.circleMarker([value.latitude, value.longitude], {
+      radius: 8, color: "white", weight: 3, fillColor: "#9c390e", fillOpacity: 1, interactive: false,
+    }).bindTooltip(copy.guess).addTo(markers);
+    if (answer) {
+      L.marker([answer.latitude, answer.longitude], {
+        icon: L.divIcon({ className: "geo-actual-marker", html: "◆", iconSize: [24, 24], iconAnchor: [12, 12] }),
+        title: copy.answer, keyboard: false, interactive: false,
+      }).addTo(markers);
+      map.fitBounds(L.latLngBounds(value ? [[value.latitude, value.longitude], [answer.latitude, answer.longitude]]
+        : [[answer.latitude, answer.longitude]]), { padding: [35, 35], maxZoom: 13, animate: false });
+    } else if (value && !map.getBounds().contains([value.latitude, value.longitude])) {
+      map.panTo([value.latitude, value.longitude], { animate: false });
+    }
+  }, [value, answer, copy, ready]);
   return <div className="geo-map-wrap">
-    <div className="geo-map-tools">
-      <strong>{copy.map}</strong>
-      <div>
-        <button type="button" aria-label={copy.zoomOut} onClick={() => zoom(0.5)} disabled={viewport.zoom === 1}>−</button>
-        <button type="button" aria-label={copy.zoomIn} onClick={() => zoom(2)} disabled={viewport.zoom === 32}>+</button>
-        <button type="button" onClick={() => setViewport({ x: 0, y: 0, zoom: 1 })}>{copy.resetMap}</button>
-      </div>
-    </div>
-    <svg className="geo-map" viewBox={`${box.x} ${box.y} ${box.width} ${box.height}`} preserveAspectRatio="none"
-      role="img" aria-label={copy.map + (onChange ? ". " + copy.mapHint : "")} tabIndex={onChange ? 0 : undefined}
-      onKeyDown={(event) => {
-        if (!onChange || !["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    <div className="geo-map-tools"><strong>{copy.map}</strong><div>
+      <button type="button" aria-label={copy.zoomOut} disabled={!ready} onClick={() => runtime.current?.map.zoomOut()}>−</button>
+      <button type="button" aria-label={copy.zoomIn} disabled={!ready} onClick={() => runtime.current?.map.zoomIn()}>+</button>
+      <button type="button" disabled={!ready} onClick={() => runtime.current?.map.setView([20, 0], 2)}>{copy.resetMap}</button>
+    </div></div>
+    <div ref={container} className="geo-detail-map" role="region" aria-label={copy.map}
+      tabIndex={0} onKeyDown={event => {
+        if (event.key !== "Enter" || !onChange || !runtime.current) return;
         event.preventDefault();
-        const point = project(value ?? { latitude: 0, longitude: 0 });
-        const step = (event.shiftKey ? 0.2 : 2) / viewport.zoom;
-        const next = unproject(point.x + (event.key === "ArrowRight" ? step : event.key === "ArrowLeft" ? -step : 0),
-          point.y + (event.key === "ArrowDown" ? step : event.key === "ArrowUp" ? -step : 0));
-        onChange(next);
-        const selected = project(next);
-        const nextBox = mapWindow(selected.x - box.width / 2, selected.y - box.height / 2, viewport.zoom);
-        setViewport({ ...viewport, x: nextBox.x, y: nextBox.y });
-      }}
-      onPointerDown={(event) => {
-        if (event.button !== 0) return;
-        drag.current = { x: event.clientX, y: event.clientY, originX: box.x, originY: box.y, moved: false };
-        event.currentTarget.setPointerCapture(event.pointerId);
-      }}
-      onPointerMove={(event) => {
-        if (!drag.current) return;
-        const dx = event.clientX - drag.current.x, dy = event.clientY - drag.current.y;
-        if (Math.hypot(dx, dy) > 5) drag.current.moved = true;
-        if (!drag.current.moved) return;
-        const rect = event.currentTarget.getBoundingClientRect();
-        const next = mapWindow(drag.current.originX - dx / rect.width * box.width,
-          drag.current.originY - dy / rect.height * box.height, viewport.zoom);
-        setViewport({ ...viewport, x: next.x, y: next.y });
-      }}
-      onPointerUp={(event) => {
-        if (drag.current && !drag.current.moved && onChange) {
-          const point = pointerPoint(event); onChange(unproject(point.x, point.y));
-        }
-        drag.current = null;
-      }}
-      onPointerCancel={() => { drag.current = null; }}>
-      <image href="/images/geo-benchmark/world.svg" x="0" y="0" width="720" height="360" />
-      {Array.from({ length: 11 }, (_, i) => <path key={i} d={`M ${(i + 1) * 60} 0 V 360`} stroke="#9dbdc4" opacity=".35" strokeWidth={0.5} />)}
-      {[60, 120, 180, 240, 300].map(y => <path key={y} d={`M 0 ${y} H 720`} stroke="#9dbdc4" opacity=".35" strokeWidth={0.5} />)}
-      {guess && <circle cx={guess.x} cy={guess.y} r={5 / viewport.zoom} fill="#9c390e" stroke="white" strokeWidth={2 / viewport.zoom} />}
-      {actual && <path d={`M ${actual.x} ${actual.y - 6 / viewport.zoom} l ${6 / viewport.zoom} ${6 / viewport.zoom} l ${-6 / viewport.zoom} ${6 / viewport.zoom} l ${-6 / viewport.zoom} ${-6 / viewport.zoom} Z`} fill="#075840" stroke="white" strokeWidth={1.5 / viewport.zoom} />}
-    </svg>
-    {onChange ? <p className="geo-caption">{copy.mapHint}</p> :
-      <p className="geo-caption"><span className="geo-guess">● {copy.guess}</span> · <span className="geo-answer">◆ {copy.answer}</span></p>}
-    <a className="geo-map-credit" href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noreferrer">{copy.mapCredit}</a>
+        const point = runtime.current.map.getCenter().wrap();
+        onChange({ latitude: point.lat, longitude: point.lng });
+      }} />
+    <p className="geo-caption">{copy.detailHint}</p>
+    {!onChange && <p className="geo-caption"><span className="geo-guess">● {copy.guess}</span> · <span className="geo-answer">◆ {copy.answer}</span></p>}
+    {failed && <p className="geo-error" role="status">{copy.mapError}</p>}
   </div>;
 }

@@ -1,3 +1,15 @@
+# Latest update — map controls (2026-09-06)
+
+Added bilingual Clear selection for editable guesses, clearing marker and coordinate inputs together. Both maps zoom around the current viewport center with buttons and mouse wheel. Submitted responses remain locked.
+Validation: 143 tests, lint, typecheck and build passed. Browser QA verified clearing and center-preserving button/wheel zoom in both detailed and offline maps (work/geo-benchmark/map-controls-qa.mjs).
+No hosting changes or deployment.
+
+# Latest update — detailed map (2026-09-06)
+
+Implemented Leaflet/OpenStreetMap detail map with city, road and building tiles, zoom up to 19, click and keyboard selection, numeric-coordinate sync, localized instructions and tile-failure notice. Local Natural Earth map remains available via the offline toggle.
+Validation: 143 tests, lint, typecheck and build passed. Headless Edge verified real loaded OSM tiles at zoom 14, click/numeric/keyboard selection, switching map modes, 390px overflow and simulated tile failure. Screenshot: work/geo-benchmark/detail-map.png (ignored).
+No Sites changes or deployment. Detailed map requires internet; no API key needed. No required implementation remains for this request.
+
 # Next Task
 
 ## Current focus — Geo Benchmark phase 3 (2026-09-06)
