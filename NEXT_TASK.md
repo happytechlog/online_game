@@ -1,3 +1,14 @@
+# Latest update — Tetris step 3: deterministic engine coverage (2026-09-23)
+
+Added 12 deterministic tests for seeded seven-bag generation, SRS kicks,
+collisions, row settling, hold limits, scoring bonuses, T-Spin qualification,
+level and gravity progression, lock delay, drop points, and top-out.
+node --test tests/tetris-engine.test.mjs passed all 12 tests; npm test passed all 158 repository tests; npm run typecheck and git diff --check passed.
+
+The tests exposed and fixed a T-Spin bug: hard drop alone no longer qualifies;
+a successful rotation remains eligible when immediately locked. Best-score
+storage validation moves to the next phase, when its versioned browser adapter
+is added.
 # Latest update — Tetris step 2: deterministic engine (2026-09-23)
 
 Implemented the pure engine in `src/features/tetris/engine/` and documented the
@@ -13,7 +24,7 @@ Implementation must register the id in the game catalog and recent-game
 validator, add the route to the sitemap, and use the existing bilingual
 feature-copy and safe-storage patterns. The first phase was documentation-only; the engine was added in step 2.
 
-Completed in step 2: the deterministic engine and its scoring and gravity tables. The next planned phase is deterministic engine test coverage. Continue one phase at a time and return for review before moving on.
+Completed in step 3: deterministic engine coverage is now in place. The next planned phase is versioned browser-local best-score storage. Continue one phase at a time and return for review before moving on.
 
 ## Latest update — English detailed-map labels (2026-09-06)
 

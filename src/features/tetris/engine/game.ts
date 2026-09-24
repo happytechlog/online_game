@@ -115,7 +115,7 @@ function detectTSpin(
   lastAction: TetrisState["lastAction"],
   kickIndex: number | null,
 ): SpinType {
-  if (piece.type !== "T" || (lastAction !== "rotate" && lastAction !== "hard-drop")) {
+  if (piece.type !== "T" || lastAction !== "rotate") {
     return "none";
   }
 
@@ -252,7 +252,7 @@ export function hardDrop(state: TetrisState): TetrisState {
     ...state,
     activePiece: landing,
     score: state.score + distance * HARD_DROP_POINTS_PER_CELL,
-    lastAction: "hard-drop",
+    lastAction: state.lastAction === "rotate" ? "rotate" : "hard-drop",
   });
 }
 
