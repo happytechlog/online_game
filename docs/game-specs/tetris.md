@@ -36,3 +36,11 @@
 - Provide visible keyboard focus and semantic labels for all controls.
 - Support both Korean and English through the existing message catalogs.
 - Do not rely on color alone to identify pieces or game states.
+
+## Application integration
+
+- Use the App Router route /games/tetris with game id tetris.
+- Keep all Tetris-specific modules under src/features/tetris/; expose a client game component from the feature.
+- Add the id and bilingual catalog data to src/config/games.ts, the id validator in src/storage/recent-games.ts, and the canonical URL to app/sitemap.ts.
+- Follow the existing feature-specific copy pattern with src/i18n/tetris-content.ts and useLanguage. Keep site-wide labels in src/i18n/messages.ts.
+- Reuse src/storage/safe-storage.ts from the browser-only best-score adapter. Do not add a server or remote leaderboard.

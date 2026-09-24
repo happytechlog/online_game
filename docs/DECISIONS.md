@@ -166,3 +166,21 @@ User requested readable details when zooming. Use client-loaded Leaflet 1.9.4 an
 ## 2026-09-06 — Geo Benchmark 25-photo pool and random rounds
 User requested 5 easy / 15 medium / 5 hard photos and a 1 easy → 3 medium → 1 hard random game. Dataset v2 retains the original five and adds 20 reviewed real Commons photos with local files, pinned revision/license/camera-location evidence and hashes. Photo pools and selected round datasets share a validated data shape; the parser accepts the legacy 5-photo 1/3/1 shape for existing fixtures and the new 25-photo 5/15/5 shape.
 A pure seeded partial Fisher-Yates draw selects without replacement within each tier. The browser supplies a fresh crypto seed after hydration and on restart. The seed and algorithm version accompany selected photo IDs only in final result JSON. No storage, server, model API or hosting changes. Per-game samples may differ in difficulty despite the same tier mix; export identifiers permit reproduction.
+
+## 2026-09-23 — Integrate Tetris as a local App Router game
+
+### Decision
+
+Use the tetris game id at /games/tetris, with the feature isolated under
+src/features/tetris/. Keep the rules engine pure and deterministic, and
+store the browser-local best score through a versioned storage adapter that
+uses the shared safe-storage helpers. Register the game in the catalog, recent
+game validation, and sitemap. Keep all player-facing copy bilingual. Do not
+add accounts, a backend, or an online leaderboard.
+
+### Consequences
+
+- The game remains usable without a network connection after the site loads.
+- Browser storage stays outside the engine and is validated as untrusted input.
+- Route discovery, recent-game history, and search cards all use the existing
+  app integration points.
