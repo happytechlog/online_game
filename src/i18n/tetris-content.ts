@@ -12,11 +12,11 @@ export const tetrisContent = {
     lines: "지운 줄",
     hold: "홀드",
     next: "다음 블록",
-    nextPieceLabel: "다음 {number}번째 블록",
+    nextPieceLabel: "다음 블록 {number}",
     noPiece: "없음",
     controls: "조작 방법",
     keyboardHint:
-      "이동: ← → · 빠르게 내리기: ↓ · 회전: ↑ 또는 X, Z · 즉시 낙하: Space · 홀드: C 또는 Shift · 일시정지: P 또는 Esc",
+      "이동: ← → · 빠르게 내리기: ↓ · 시계 방향 회전: ↑ 또는 X · 반시계 방향 회전: Z · 즉시 낙하: Space · 홀드: C 또는 Shift · 일시정지: P 또는 Esc",
     touchHint: "화면 버튼을 누르거나 길게 눌러 블록을 조작하세요.",
     loading: "게임판을 준비하고 있습니다.",
     startTitle: "준비되셨나요?",
@@ -63,7 +63,7 @@ export const tetrisContent = {
     noPiece: "Empty",
     controls: "Controls",
     keyboardHint:
-      "Move: ← → · Soft drop: ↓ · Rotate: ↑ or X, Z · Hard drop: Space · Hold: C or Shift · Pause: P or Esc",
+      "Move: ← → · Soft drop: ↓ · Rotate clockwise: ↑ or X · counterclockwise: Z · Hard drop: Space · Hold: C or Shift · Pause: P or Esc",
     touchHint: "Tap or hold the on-screen buttons to control the pieces.",
     loading: "Preparing the game board.",
     startTitle: "Ready?",

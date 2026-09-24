@@ -566,22 +566,24 @@ export function TetrisGame() {
         aria-label={copy.title}
         className="shell tetris-hud"
       >
-        <div className="tetris-stat tetris-stat-score">
-          <span>{copy.score}</span>
-          <strong>{scoreFormatter.format(displayedScore)}</strong>
-        </div>
-        <div className="tetris-stat">
-          <span>{copy.bestScore}</span>
-          <strong>{scoreFormatter.format(displayedBest)}</strong>
-        </div>
-        <div className="tetris-stat">
-          <span>{copy.level}</span>
-          <strong>{game?.level ?? 1}</strong>
-        </div>
-        <div className="tetris-stat">
-          <span>{copy.lines}</span>
-          <strong>{game?.lines ?? 0}</strong>
-        </div>
+        <dl className="tetris-hud-list">
+          <div className="tetris-stat tetris-stat-score">
+            <dt>{copy.score}</dt>
+            <dd>{scoreFormatter.format(displayedScore)}</dd>
+          </div>
+          <div className="tetris-stat">
+            <dt>{copy.bestScore}</dt>
+            <dd>{scoreFormatter.format(displayedBest)}</dd>
+          </div>
+          <div className="tetris-stat">
+            <dt>{copy.level}</dt>
+            <dd>{game?.level ?? 1}</dd>
+          </div>
+          <div className="tetris-stat">
+            <dt>{copy.lines}</dt>
+            <dd>{game?.lines ?? 0}</dd>
+          </div>
+        </dl>
       </section>
 
       <section className="shell tetris-layout" aria-label={copy.boardLabel}>
@@ -619,6 +621,7 @@ export function TetrisGame() {
           <div className="tetris-board-card">
             <div
               aria-busy={!storageReady}
+              aria-describedby="tetris-keyboard-hint"
               aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown ArrowUp X Z Space C Shift P Escape"
               aria-label={copy.boardLabel}
               className="tetris-board"
@@ -778,7 +781,9 @@ export function TetrisGame() {
             <span aria-hidden="true">↻</span> {copy.newGame}
           </button>
 
-          <p className="tetris-keyboard-hint">{copy.keyboardHint}</p>
+          <p className="tetris-keyboard-hint" id="tetris-keyboard-hint">
+            {copy.keyboardHint}
+          </p>
         </aside>
       </section>
 

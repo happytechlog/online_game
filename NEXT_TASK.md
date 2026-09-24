@@ -1,3 +1,17 @@
+# Latest update — Tetris step 6: bilingual accessibility review (2026-09-23)
+
+Reviewed the Korean and English accessible UI, clarified the keyboard rotation
+directions, connected the board to its keyboard guide, and gave the score HUD
+definition-list semantics. In the local browser, Left/Up movement and rotation,
+P pause, Enter resume, and the on-screen Move left button worked. Keyboard focus
+was visibly outlined on the board and resume button. Visible game controls
+measured at least 44px in both dimensions at the inspected desktop viewport; no
+browser warnings or errors were reported.
+
+Automated tests, lint, typecheck, and build remain for final verification;
+storage-specific automated tests are outstanding. Next: complete that final
+verification phase.
+
 # Latest update — Tetris step 5: responsive play screen (2026-09-23)
 
 Added the client play screen and `/games/tetris` route. The responsive board
