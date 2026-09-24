@@ -19,11 +19,30 @@
 - Start a new run at level 1. Level speed increases through the marathon.
 - Show score, level, cleared lines, next piece, held piece, pause state, and game-over state.
 
-## Rules to make explicit during implementation
+## Confirmed engine rules
 
-- Select and document one consistent modern scoring table, including T-Spin classification, combo, back-to-back eligibility, and drop points.
-- Define the gravity interval for each level and the maximum speed. The product decision is that speed rises every 10 lines; the exact curve remains an implementation parameter.
-- Specify rotation buffering, lock delay, top-out checks, and piece spawn behavior in deterministic engine tests.
+### Scoring
+
+- Normal line clears score 100 / 300 / 500 / 800 points for 1 / 2 / 3 / 4 lines, multiplied by the level before that clear.
+- T-Spin Mini scores 100 / 200 / 400 for 0 / 1 / 2 lines. Full T-Spin scores 400 / 800 / 1,200 / 1,600 for 0 / 1 / 2 / 3 lines. Multiply by the level before the lock.
+- A T-Spin requires a T piece whose final player action is a successful rotation; a hard drop may immediately lock it. At least three diagonal pivot corners must be occupied. It is full when both front corners are occupied or the fifth SRS kick succeeded; otherwise it is mini.
+- A combo begins with a line-clear placement. The first clear in a chain has no combo bonus; each following consecutive line-clear placement adds 50 × combo step × level. A placement without a line clear resets the combo.
+- A four-line clear or any T-Spin line clear is difficult and can continue a back-to-back chain. Each difficult clear after the first adds 50% of its base clear points. A non-difficult line clear breaks the chain; a placement with no line clear leaves back-to-back unchanged.
+- Soft drop scores 1 point per manually dropped cell. Hard drop scores 2 points per dropped cell. There is no perfect-clear bonus.
+
+### Level and gravity
+
+- Start at level 1. The level is 1 + floor(total cleared lines / 10).
+- One gravity tick is 1/60 second. Levels 1–15 require 60 / 48 / 37 / 28 / 21 / 16 / 12 / 10 / 8 / 6 / 5 / 4 / 3 / 2 / 1 ticks per cell, respectively.
+- Level 15 gravity is the maximum speed and remains in effect at higher score levels. The score multiplier level continues increasing.
+
+### Board and piece behavior
+
+- Store a 10 × 24 board: four hidden rows followed by 20 visible rows. Pieces spawn at x=3, y=0.
+- Use a deterministic seeded seven-bag queue and Super Rotation System wall kicks, with separate kick tests for I pieces and JLSTZ pieces.
+- A held piece can be used once per active piece. Hard drop locks immediately; natural gravity and soft drop use a 500ms lock delay. A successful horizontal move or rotation while grounded resets the delay up to 15 times per piece.
+- Do not buffer pre-spawn rotations. Apply input immediately to the current active piece.
+- Top out if a piece cannot spawn, or if any occupied cell remains in the hidden rows after a lock and line clear. Check lock-out after clearing rows.
 
 ## Controls
 

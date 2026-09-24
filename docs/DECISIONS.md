@@ -184,3 +184,13 @@ add accounts, a backend, or an online leaderboard.
 - Browser storage stays outside the engine and is validated as untrusted input.
 - Route discovery, recent-game history, and search cards all use the existing
   app integration points.
+
+## 2026-09-23 — Tetris deterministic engine rules
+
+Keep Tetris rules independent from React and browser APIs. Generate pieces with
+a seeded seven-bag queue and use the Super Rotation System kick data. The board
+has four hidden rows above the 20 visible rows. Keep scoring, combo, back-to-
+back, lock delay, gravity progression, hold restrictions, and top-out rules
+explicit in `docs/game-specs/tetris.md`. Gravity caps at level 15 while the
+score level continues to rise. Inputs apply synchronously to the active piece
+without a pre-spawn rotation buffer.

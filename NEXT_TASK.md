@@ -1,13 +1,19 @@
+# Latest update — Tetris step 2: deterministic engine (2026-09-23)
+
+Implemented the pure engine in `src/features/tetris/engine/` and documented the
+agreed scoring, gravity, lock, rotation, spawn, and top-out rules. The game is
+not yet registered in the app and has no route, UI, or browser storage.
+
+Tests and runtime checks were not run in this phase. The user reviewed this phase
+and requested a commit. The next planned phase is deterministic engine test coverage.
 ## Latest update — Tetris step 1: repository integration (2026-09-23)
 
 Confirmed the App Router path /games/tetris and game id tetris.
 Implementation must register the id in the game catalog and recent-game
 validator, add the route to the sitemap, and use the existing bilingual
-feature-copy and safe-storage patterns. No game code has changed.
+feature-copy and safe-storage patterns. The first phase was documentation-only; the engine was added in step 2.
 
-Next: define the pure deterministic Tetris engine and settle its scoring and
-gravity tables before implementing browser UI or storage. Continue one phase at
-a time and return for review before moving on.
+Completed in step 2: the deterministic engine and its scoring and gravity tables. The next planned phase is deterministic engine test coverage. Continue one phase at a time and return for review before moving on.
 
 ## Latest update — English detailed-map labels (2026-09-06)
 
@@ -32,9 +38,9 @@ Implemented Leaflet detail map with city, road and building tiles, zoom up to 19
 Validation: 143 tests, lint, typecheck and build passed. Headless Edge verified real loaded OSM tiles at zoom 14, click/numeric/keyboard selection, switching map modes, 390px overflow and simulated tile failure. Screenshot: work/geo-benchmark/detail-map.png (ignored).
 No Sites changes or deployment. Detailed map requires internet; no API key needed. No required implementation remains for this request.
 
-# Next Task
+# Previous project notes — Geo Benchmark
 
-## Current focus — Geo Benchmark phase 3 (2026-09-06)
+## Previous focus — Geo Benchmark phase 3 (2026-09-06)
 
 Browser MVP implemented at /games/geo-benchmark: five local photos, local world
 map with click/pan/zoom/keyboard and numeric coordinates, bilingual manual input,
