@@ -1,3 +1,15 @@
+# Latest update — Tetris step 7: final verification (2026-09-23)
+
+Added five tests for versioned best-score persistence, monotonic saves, malformed
+records, invalid score inputs, and storage failures. All 163 repository tests
+passed. Lint, typecheck, production build, and `git diff --check` passed; the
+build includes `/games/tetris`.
+
+The test runner used `--experimental-test-isolation=none` because the default
+test subprocess is blocked by this Windows sandbox (`EPERM`). The build passed
+with elevated local process permissions after Vite's package-path helper was
+blocked in the sandbox. No required Tetris work remains; await the next request.
+
 # Latest update — Tetris step 6: bilingual accessibility review (2026-09-23)
 
 Reviewed the Korean and English accessible UI, clarified the keyboard rotation

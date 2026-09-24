@@ -2,7 +2,6 @@ import {
   BOARD_HEIGHT,
   BOARD_WIDTH,
   HARD_DROP_POINTS_PER_CELL,
-  HIDDEN_ROWS,
   LOCK_DELAY_MS,
   MAX_LOCK_RESETS,
   SOFT_DROP_POINTS_PER_CELL,
@@ -18,7 +17,7 @@ import {
   rotatePiece,
 } from "./board.ts";
 import { getGravityIntervalMs } from "./gravity.ts";
-import { createSpawnPiece, getPieceCells } from "./pieces.ts";
+import { createSpawnPiece } from "./pieces.ts";
 import { refillPieceQueue } from "./queue.ts";
 import { scoreClear } from "./scoring.ts";
 import type {

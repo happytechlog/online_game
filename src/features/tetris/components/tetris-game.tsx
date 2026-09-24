@@ -310,7 +310,6 @@ export function TetrisGame() {
 
   useEffect(() => {
     if (!storageReady || currentScore <= bestScore) return;
-    setBestScore(currentScore);
     const storage = getBrowserStorage();
     if (storage) saveBestTetrisScore(storage, currentScore);
   }, [bestScore, currentScore, storageReady]);
@@ -345,10 +344,16 @@ export function TetrisGame() {
   );
 
   const startNewGame = useCallback(() => {
+    const newBestScore = Math.max(bestScore, currentScore);
+    if (newBestScore > bestScore) {
+      setBestScore(newBestScore);
+      const storage = getBrowserStorage();
+      if (storage) saveBestTetrisScore(storage, newBestScore);
+    }
     setGame(createGame(createRandomSeed()));
     const storage = getBrowserStorage();
     if (storage) markGameAsRecent(storage, "tetris");
-  }, []);
+  }, [bestScore, currentScore]);
 
   const moveLeft = useCallback(
     () => updateGame((current) => moveActivePiece(current, -1)),
