@@ -1,7 +1,7 @@
 export type GameStatus = "available" | "coming-soon";
 
 export interface GameCatalogItem {
-  id: "othello" | "2048" | "sudoku" | "minesweeper" | "geo-benchmark";
+  id: "othello" | "2048" | "sudoku" | "minesweeper" | "geo-benchmark" | "tetris";
   href: string;
   status: GameStatus;
   featured: boolean;
@@ -40,6 +40,20 @@ export const games: readonly GameCatalogItem[] = [
       en: "Slide and merge tiles to reach 2048",
     },
     category: { ko: "퍼즐 · 숫자", en: "Puzzle · Numbers" },
+  },
+  {
+    id: "tetris",
+    href: "/games/tetris",
+    status: "available",
+    featured: false,
+    accent: "sky",
+    icon: "T",
+    title: { ko: "테트리스", en: "Tetris" },
+    description: {
+      ko: "블록을 쌓고 줄을 지우는 클래식 아케이드 퍼즐",
+      en: "A classic arcade puzzle of stacking blocks and clearing lines",
+    },
+    category: { ko: "퍼즐 · 아케이드", en: "Puzzle · Arcade" },
   },
   {
     id: "sudoku",

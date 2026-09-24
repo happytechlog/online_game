@@ -20,6 +20,7 @@ const GAME_IDS = new Set<GameId>([
   "2048",
   "sudoku",
   "minesweeper",
+  "tetris",
 ]);
 
 export function isRecentGames(value: unknown): value is RecentGames {

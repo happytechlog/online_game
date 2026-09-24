@@ -30,5 +30,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     { url: `${siteConfig.url}/games/geo-benchmark`, changeFrequency: "monthly", priority: 0.8 },
+    {
+      url: `${siteConfig.url}/games/tetris`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
   ];
 }

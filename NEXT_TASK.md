@@ -1,3 +1,19 @@
+# Latest update — Tetris step 5: responsive play screen (2026-09-23)
+
+Added the client play screen and `/games/tetris` route. The responsive board
+shows the active and ghost pieces, hold and next previews, score, best score,
+level, and cleared lines. Start, pause, resume, game-over, keyboard controls,
+and touch buttons are connected to the deterministic engine. Movement keys
+and held pointer controls repeat at a fixed delay and interval. Tetris is now
+registered in the game catalog, recent-game validation, and sitemap; new best
+scores use the versioned local adapter.
+
+The screen copy is available in Korean and English through the feature content
+catalog. Tests and runtime checks were not run in this phase. The next step is
+the bilingual accessibility review: keyboard operation, focus visibility,
+semantic labels, and 44px minimum touch targets. Automated storage tests remain
+for final verification.
+
 # Latest update — Tetris step 4: versioned best-score storage (2026-09-23)
 
 Added `src/features/tetris/storage/` with a validated version 1 record at
