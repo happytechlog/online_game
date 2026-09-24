@@ -1,3 +1,16 @@
+# Latest update — Tetris step 4: versioned best-score storage (2026-09-23)
+
+Added `src/features/tetris/storage/` with a validated version 1 record at
+`online-games:tetris:best:v1`. Invalid or malformed records load as score 0,
+invalid score inputs are rejected, and saving keeps the highest score. Shared
+safe-storage helpers handle JSON parse and write failures, including quota
+errors.
+
+Tests and runtime checks were not run in this phase. The next step is the
+responsive Tetris play screen: board, score/level/lines, previews, game states,
+keyboard support, and touch controls. Automated storage-specific tests remain
+for the final verification phase.
+
 # Latest update — Tetris step 3: deterministic engine coverage (2026-09-23)
 
 Added 12 deterministic tests for seeded seven-bag generation, SRS kicks,
