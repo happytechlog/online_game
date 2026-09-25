@@ -81,9 +81,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .games-grid { display: grid; gap: 22px; grid-template-columns: repeat(3, 1fr); }
 .game-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 8px 26px rgba(28, 61, 43, 0.04); display: block; overflow: hidden; transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
 a.game-card:hover { border-color: #b5cab9; box-shadow: var(--shadow); transform: translateY(-5px); }
-.game-art { align-items: center; display: flex; font-size: 2rem; font-weight: 900; height: 180px; justify-content: center; letter-spacing: -0.08em; overflow: hidden; position: relative; }
+.game-art { background: #e5eee9; height: 180px; overflow: hidden; position: relative; }
+.game-art img { display: block; height: 100%; object-fit: cover; width: 100%; }
 .game-art-emerald { background: linear-gradient(145deg, #174d37, #16835a); color: #17211c; }
-.game-art-emerald > span { background: #18211c; border: 4px solid rgba(255, 255, 255, 0.08); border-radius: 50%; box-shadow: 45px 28px 0 #f7f8f3; color: transparent; height: 74px; transform: translate(-18px, -12px); width: 74px; }
 .game-art-amber { background: #f6ead5; color: #a56410; }
 .game-art-violet { background: #ece5f5; color: #684d90; }
 .game-art-sky { background: #e0eff2; color: #35727d; }

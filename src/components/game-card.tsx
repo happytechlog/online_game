@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import type { GameCatalogItem } from "@/src/config/games";
 import { useLanguage } from "./providers/language-provider";
 
@@ -16,8 +17,14 @@ export function GameCard({
   const content = (
     <>
       <div className={`game-art game-art-${game.accent}`}>
-        <span aria-hidden="true">{game.icon}</span>
-        {game.id === "othello" && <i aria-hidden="true" />}
+        <Image
+          alt=""
+          height="320"
+          loading="lazy"
+          src={game.thumbnail}
+          unoptimized
+          width="640"
+        />
       </div>
       <div className="game-card-body">
         <div className="game-card-meta">

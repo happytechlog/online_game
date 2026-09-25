@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#d9f3f2"/><stop offset="1" stop-color="#9bd2d6"/></linearGradient>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#294348" stroke-width="1" opacity=".8"/></pattern>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h640v320H0z"/><circle cx="104" cy="83" r="94" fill="#fff" opacity=".2"/><circle cx="549" cy="245" r="111" fill="#fff" opacity=".15"/>
+  <rect x="208" y="-4" width="224" height="330" rx="18" fill="#10242b" opacity=".2"/>
+  <rect x="220" y="-10" width="200" height="340" rx="10" fill="#182b32"/>
+  <path fill="url(#grid)" d="M220 0h200v320H220z"/>
+  <path fill="#48c7d6" d="M260 80h19v19h-19zm20 0h19v19h-19zm40 0h19v19h-19zm-40 20h19v19h-19zm20 0h19v19h-19zm20 0h19v19h-19z"/>
+  <path fill="#a880ed" d="M280 140h19v19h-19zm-20 20h19v19h-19zm20 0h19v19h-19zm20 0h19v19h-19z"/>
+  <path fill="#f5cb53" d="M340 180h19v19h-19zm20 0h19v19h-19zm40 0h19v19h-19zm-60 20h19v19h-19zm20 0h19v19h-19zm40 0h19v19h-19z"/>
+  <path fill="#f18d55" d="M220 220h19v19h-19zM240 220h19v19h-19zM260 220h19v19h-19zM300 220h19v19h-19zM220 240h19v19h-19zM240 260h19v19h-19zM280 260h19v19h-19zM300 280h19v19h-19z"/>
+  <path fill="#6ccf8e" d="M220 280h19v19h-19zM240 280h19v19h-19zM260 280h19v19h-19zM280 280h19v19h-19zM340 280h19v19h-19zM360 280h19v19h-19zM400 280h19v19h-19z"/>
+</svg>

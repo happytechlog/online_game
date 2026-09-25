@@ -7,6 +7,7 @@ export interface GameCatalogItem {
   featured: boolean;
   accent: string;
   icon: string;
+  thumbnail: string;
   title: { ko: string; en: string };
   description: { ko: string; en: string };
   category: { ko: string; en: string };
@@ -20,6 +21,7 @@ export const games: readonly GameCatalogItem[] = [
     featured: true,
     accent: "emerald",
     icon: "●",
+    thumbnail: "/images/game-thumbnails/othello.svg",
     title: { ko: "오델로", en: "Othello" },
     description: {
       ko: "한 수로 판을 뒤집는 클래식 전략 게임",
@@ -34,6 +36,7 @@ export const games: readonly GameCatalogItem[] = [
     featured: true,
     accent: "amber",
     icon: "2048",
+    thumbnail: "/images/game-thumbnails/2048.svg",
     title: { ko: "2048", en: "2048" },
     description: {
       ko: "숫자를 밀고 합쳐 2048을 만드세요",
@@ -48,6 +51,7 @@ export const games: readonly GameCatalogItem[] = [
     featured: false,
     accent: "sky",
     icon: "T",
+    thumbnail: "/images/game-thumbnails/tetris.svg",
     title: { ko: "테트리스", en: "Tetris" },
     description: {
       ko: "블록을 쌓고 줄을 지우는 클래식 아케이드 퍼즐",
@@ -62,6 +66,7 @@ export const games: readonly GameCatalogItem[] = [
     featured: true,
     accent: "violet",
     icon: "9×9",
+    thumbnail: "/images/game-thumbnails/sudoku.svg",
     title: { ko: "스도쿠", en: "Sudoku" },
     description: {
       ko: "차분하게 채워 나가는 논리 퍼즐",
@@ -76,6 +81,7 @@ export const games: readonly GameCatalogItem[] = [
     featured: false,
     accent: "sky",
     icon: "✦",
+    thumbnail: "/images/game-thumbnails/minesweeper.svg",
     title: { ko: "지뢰찾기", en: "Minesweeper" },
     description: {
       ko: "숫자 단서로 안전한 칸을 찾아보세요",
@@ -90,6 +96,7 @@ export const games: readonly GameCatalogItem[] = [
     featured: false,
     accent: "sky",
     icon: "◎",
+    thumbnail: "/images/game-thumbnails/geo-benchmark.svg",
     title: { ko: "Geo 벤치마크", en: "Geo Benchmark" },
     description: { ko: "사진 다섯 장으로 테스트하는 위치 추론 능력", en: "Test visual location reasoning with five photos" },
     category: { ko: "AI · 지리", en: "AI · Geography" },

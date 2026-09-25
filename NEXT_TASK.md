@@ -1,3 +1,12 @@
+# Latest update — Game catalog thumbnails (2026-09-24)
+
+Replaced the game list and featured-card icon art with six lightweight SVG
+thumbnails showing recognizable game scenes. Each asset is under 2.1 KB and
+loads successfully. Browser checks covered all six cards at desktop width and
+a single-column mobile layout without horizontal overflow. All 163 tests,
+lint, typecheck, and the production build passed. No required work remains
+for this request.
+
 # Latest update — Tetris play screen revision complete (2026-09-24)
 
 Implemented the mobile and desktop layout update, fixed the zero-height next

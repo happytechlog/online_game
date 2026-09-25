@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#153d2d"/><stop offset="1" stop-color="#158459"/></linearGradient>
+    <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M34 0H0V34" fill="none" stroke="#154e36" stroke-width="2"/></pattern>
+    <circle id="dark" r="12" fill="#18251f" stroke="#344b3c" stroke-width="2"/>
+    <circle id="light" r="12" fill="#f5f5eb" stroke="#cfdfd3" stroke-width="2"/>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h640v320H0z"/>
+  <circle cx="92" cy="70" r="84" fill="#ffffff" opacity=".035"/><circle cx="564" cy="270" r="110" fill="#ffffff" opacity=".035"/>
+  <rect x="170" y="8" width="300" height="304" rx="20" fill="#082a20" opacity=".28"/>
+  <rect x="184" y="24" width="272" height="272" rx="5" fill="#2b9563"/>
+  <path fill="url(#grid)" d="M184 24h272v272H184z"/>
+  <use href="#dark" x="269" y="109"/><use href="#light" x="303" y="109"/><use href="#light" x="337" y="109"/>
+  <use href="#light" x="269" y="143"/><use href="#dark" x="303" y="143"/><use href="#light" x="337" y="143"/><use href="#dark" x="371" y="143"/>
+  <use href="#dark" x="235" y="177"/><use href="#light" x="269" y="177"/><use href="#dark" x="303" y="177"/><use href="#light" x="337" y="177"/><use href="#dark" x="371" y="177"/>
+  <use href="#light" x="269" y="211"/><use href="#dark" x="303" y="211"/><use href="#dark" x="337" y="211"/><use href="#light" x="371" y="211"/>
+  <use href="#light" x="303" y="245"/><use href="#dark" x="337" y="245"/>
+</svg>
