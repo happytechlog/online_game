@@ -1,3 +1,13 @@
+# Latest update — Tetris play screen revision complete (2026-09-24)
+
+Implemented the mobile and desktop layout update, fixed the zero-height next
+piece preview cells, and added the three bilingual lower guide sections.
+Browser checks covered queue progression, hold, 390×844 and 320×568 mobile
+layouts, 1280×900 desktop alignment, and guide content. On very short mobile
+screens, the board stays usable and limited vertical scrolling is allowed.
+All 163 tests, lint, typecheck, production build, and `git diff --check` passed.
+No required Tetris work remains from this request.
+
 # Latest update — Tetris step 7: final verification (2026-09-23)
 
 Added five tests for versioned best-score persistence, monotonic saves, malformed

@@ -39,6 +39,7 @@ import {
   loadBestTetrisScore,
   saveBestTetrisScore,
 } from "../storage/index.ts";
+import { TetrisGuide } from "./tetris-guide";
 
 const EMPTY_BOARD = createEmptyBoard();
 const NEXT_PREVIEW_COUNT = 3;
@@ -619,6 +620,7 @@ export function TetrisGame() {
                 </li>
               ))}
             </ol>
+            {!game && <p className="tetris-next-empty">{copy.nextAfterStart}</p>}
           </section>
         </div>
 
@@ -795,6 +797,7 @@ export function TetrisGame() {
       <p aria-atomic="true" aria-live="polite" className="sr-only">
         {announcedStatus}
       </p>
+      <TetrisGuide />
     </main>
   );
 }
