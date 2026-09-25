@@ -28,6 +28,11 @@ export const messages = {
     searchEmpty: "검색 결과가 없습니다.",
     footerBlogLabel: "운영자의 블로그",
     footerBlogLinkLabel: "happy tlog, 새 창에서 열기",
+    footerSitesLabel: "운영자의 다른 사이트",
+    footerToolsName: "Free Online Tools",
+    footerToolsLinkLabel: "Free Online Tools, 새 창에서 열기",
+    footerLooplistName: "Looplist 영어 학습",
+    footerLooplistLinkLabel: "Looplist 영어 학습, 새 창에서 열기",
     othelloEyebrow: "클래식 보드 게임",
     othelloTitle: "오델로",
     othelloBody:
@@ -229,6 +234,11 @@ export const messages = {
     searchEmpty: "No games match your search.",
     footerBlogLabel: "From the operator",
     footerBlogLinkLabel: "Open happy tlog in a new window",
+    footerSitesLabel: "More from the operator",
+    footerToolsName: "Free Online Tools",
+    footerToolsLinkLabel: "Open Free Online Tools in a new window",
+    footerLooplistName: "Looplist English learning",
+    footerLooplistLinkLabel: "Open Looplist English learning in a new window",
     othelloEyebrow: "Classic board game",
     othelloTitle: "Othello",
     othelloBody:

@@ -1,3 +1,22 @@
+# Latest update — Operator site links in the footer (2026-09-24)
+
+Added Free Online Tools and Looplist English learning beside the operator blog
+in the footer. The links open in new tabs and have Korean and English labels.
+Browser QA confirmed the desktop layout, link destinations, and both language
+variants. Lint, typecheck, and `git diff --check` passed. No required work
+remains for this request.
+
+# Latest update — Home hero and random picks (2026-09-24)
+
+The home hero now shows Tetris, Geo Benchmark, and Minesweeper, the three most
+recently added games. Its primary play button opens Tetris. Today's Pick
+selects three distinct available games at random on each page load. Catalog
+flags for the former fixed picks were removed. Verification: 163 tests passed
+using Node's single-process test option, lint and typecheck passed, and the
+production build completed. No required work remains for this request.
+Browser QA confirmed the three hero images at a narrow viewport, distinct
+recommendations after reload, and Korean and English labels.
+
 # Latest update — Game catalog thumbnails (2026-09-24)
 
 Replaced the game list and featured-card icon art with six lightweight SVG
