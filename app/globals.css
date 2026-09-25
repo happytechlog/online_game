@@ -62,14 +62,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .button-small { background: var(--ink); color: white; font-size: 0.82rem; min-height: 44px; }
 
 .hero-board { aspect-ratio: 1; display: grid; max-width: 480px; place-items: center; position: relative; }
-.board-glow { background: radial-gradient(circle, #dbeeb0 0, #e9f2d8 45%, transparent 70%); inset: -20%; position: absolute; }
-.mini-board { background: #17754c; border: 12px solid #174d37; border-radius: 25px; box-shadow: 0 28px 60px rgba(21, 68, 47, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.15); display: grid; grid-template-columns: repeat(6, 1fr); overflow: hidden; padding: 10px; position: relative; transform: rotate(4deg); width: 82%; }
-.mini-cell { aspect-ratio: 1; border-bottom: 1px solid rgba(6, 53, 33, 0.35); border-right: 1px solid rgba(6, 53, 33, 0.35); display: grid; padding: 9%; place-items: center; }
-.mini-cell i, .placeholder-board i { aspect-ratio: 1; background: #17211c; border-radius: 50%; box-shadow: inset -5px -7px 10px rgba(255, 255, 255, 0.07); display: block; width: 88%; }
-.mini-cell i.white, .placeholder-board i.white { background: #f8faf5; box-shadow: inset -5px -7px 10px rgba(22, 55, 38, 0.15); }
-.floating-chip { align-items: center; backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 14px; box-shadow: 0 16px 40px rgba(22, 55, 38, 0.15); display: flex; font-weight: 900; height: 62px; justify-content: center; position: absolute; width: 62px; }
-.chip-one { color: #b4740a; right: 2%; top: 12%; transform: rotate(8deg); }
-.chip-two { bottom: 10%; color: #6e52a3; left: -1%; transform: rotate(-7deg); }
+.board-glow { background: radial-gradient(circle, #b8e8da 0, #e0f3e8 46%, transparent 72%); inset: -20%; position: absolute; }
+.hero-art-card { background-color: #dceef0; background-position: center; background-repeat: no-repeat; background-size: cover; border: 7px solid white; border-radius: 22px; box-shadow: 0 24px 55px rgba(21, 68, 47, 0.2); overflow: hidden; position: absolute; }
+.hero-art-card span { background: rgba(255, 255, 255, 0.94); border-radius: 999px; bottom: 12px; color: #174d37; font-size: 0.78rem; font-weight: 850; left: 12px; padding: 7px 12px; position: absolute; }
+.hero-art-tetris { background-image: url("/images/game-thumbnails/tetris.svg"); height: 58%; left: 10%; top: 17%; transform: rotate(-7deg); width: 80%; }
+.hero-art-geo { background-image: url("/images/game-thumbnails/geo-benchmark.svg"); height: 38%; right: -1%; top: 1%; transform: rotate(9deg); width: 56%; }
+.hero-art-minesweeper { background-image: url("/images/game-thumbnails/minesweeper.svg"); bottom: 2%; height: 38%; left: -2%; transform: rotate(6deg); width: 56%; }
+.placeholder-board i { aspect-ratio: 1; background: #17211c; border-radius: 50%; box-shadow: inset -5px -7px 10px rgba(255, 255, 255, 0.07); display: block; width: 88%; }
+.placeholder-board i.white { background: #f8faf5; box-shadow: inset -5px -7px 10px rgba(22, 55, 38, 0.15); }
 
 .section { padding-block: 88px; }
 .section-muted { background: #f1f5ee; }

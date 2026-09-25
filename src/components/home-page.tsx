@@ -1,14 +1,30 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { games } from "@/src/config/games";
 import { GameCard } from "./game-card";
 import { useLanguage } from "./providers/language-provider";
 import { RecentGames } from "./recent-games";
 
+const availableGames = games.filter((game) => game.status === "available");
+
 export function HomePage() {
-  const { t } = useLanguage();
-  const featuredGames = games.filter((game) => game.featured);
+  const { language, t } = useLanguage();
+  const [featuredGames, setFeaturedGames] = useState(() => availableGames.slice(0, 3));
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const shuffled = [...availableGames];
+      for (let index = shuffled.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+      }
+      setFeaturedGames(shuffled.slice(0, 3));
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, []);
 
   return (
     <>
@@ -25,7 +41,7 @@ export function HomePage() {
           </h1>
           <p>{t("heroBody")}</p>
           <div className="hero-actions">
-            <Link className="button button-primary" href="/games/othello">
+            <Link className="button button-primary" href="/games/tetris">
               {t("playNow")} <span aria-hidden="true">→</span>
             </Link>
             <Link className="button button-secondary" href="/games">
@@ -35,19 +51,15 @@ export function HomePage() {
         </div>
         <div className="hero-board" aria-hidden="true">
           <div className="board-glow" />
-          <div className="mini-board">
-            {Array.from({ length: 36 }, (_, index) => (
-              <span className="mini-cell" key={index}>
-                {[7, 14, 15, 20, 21, 28].includes(index) && (
-                  <i
-                    className={[14, 21, 28].includes(index) ? "white" : "black"}
-                  />
-                )}
-              </span>
-            ))}
+          <div className="hero-art-card hero-art-tetris">
+            <span>{games.find((game) => game.id === "tetris")?.title[language]}</span>
           </div>
-          <span className="floating-chip chip-one">2048</span>
-          <span className="floating-chip chip-two">9×9</span>
+          <div className="hero-art-card hero-art-geo">
+            <span>{games.find((game) => game.id === "geo-benchmark")?.title[language]}</span>
+          </div>
+          <div className="hero-art-card hero-art-minesweeper">
+            <span>{games.find((game) => game.id === "minesweeper")?.title[language]}</span>
+          </div>
         </div>
       </section>
 

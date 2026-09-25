@@ -4,7 +4,6 @@ export interface GameCatalogItem {
   id: "othello" | "2048" | "sudoku" | "minesweeper" | "geo-benchmark" | "tetris";
   href: string;
   status: GameStatus;
-  featured: boolean;
   accent: string;
   icon: string;
   thumbnail: string;
@@ -18,7 +17,6 @@ export const games: readonly GameCatalogItem[] = [
     id: "othello",
     href: "/games/othello",
     status: "available",
-    featured: true,
     accent: "emerald",
     icon: "●",
     thumbnail: "/images/game-thumbnails/othello.svg",
@@ -33,7 +31,6 @@ export const games: readonly GameCatalogItem[] = [
     id: "2048",
     href: "/games/2048",
     status: "available",
-    featured: true,
     accent: "amber",
     icon: "2048",
     thumbnail: "/images/game-thumbnails/2048.svg",
@@ -48,7 +45,6 @@ export const games: readonly GameCatalogItem[] = [
     id: "tetris",
     href: "/games/tetris",
     status: "available",
-    featured: false,
     accent: "sky",
     icon: "T",
     thumbnail: "/images/game-thumbnails/tetris.svg",
@@ -63,7 +59,6 @@ export const games: readonly GameCatalogItem[] = [
     id: "sudoku",
     href: "/games/sudoku",
     status: "available",
-    featured: true,
     accent: "violet",
     icon: "9×9",
     thumbnail: "/images/game-thumbnails/sudoku.svg",
@@ -78,7 +73,6 @@ export const games: readonly GameCatalogItem[] = [
     id: "minesweeper",
     href: "/games/minesweeper",
     status: "available",
-    featured: false,
     accent: "sky",
     icon: "✦",
     thumbnail: "/images/game-thumbnails/minesweeper.svg",
@@ -93,7 +87,6 @@ export const games: readonly GameCatalogItem[] = [
     id: "geo-benchmark",
     href: "/games/geo-benchmark",
     status: "available",
-    featured: false,
     accent: "sky",
     icon: "◎",
     thumbnail: "/images/game-thumbnails/geo-benchmark.svg",
