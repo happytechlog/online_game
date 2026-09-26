@@ -1,3 +1,24 @@
+# Latest update — Tetris desktop board balance (2026-09-25)
+
+After review showed the first 280px desktop cap made the board too small,
+increased the cap to 320px and compacted the heading and score cards. At the
+reported 1023×808 Chrome viewport, the board is 301.5px wide instead of 239px,
+and the title, score, HOLD/NEXT, board, and controls fit without scrolling.
+Start, pause, and resume keep focus without moving the viewport. Chrome checks
+also covered Korean and English, a 1280×720 desktop window, and 390×844 mobile;
+controls remain at least 44px tall. Lint, typecheck, the production build, and
+`git diff --check` passed. No required work remains for this fix.
+
+# Latest update — Tetris mobile movement input (2026-09-25)
+
+Fixed mobile left/right buttons moving twice on a short tap. The repeat controls
+acted on `pointerdown`, then could act again on the delayed `click` after their
+suppression flag was cleared. Pointer input now acts only on `pointerdown`;
+keyboard and assistive activation continue through `click`. Mobile browser QA
+covered one-cell left/right taps, a delayed click, keyboard activation, and
+held repeat. All 163 automated tests, lint, typecheck, the production build,
+and `git diff --check` passed. No required work remains for this fix.
+
 # Latest update — Operator site links in the footer (2026-09-24)
 
 Added Free Online Tools and Looplist English learning beside the operator blog

@@ -382,9 +382,9 @@ export function TetrisGame() {
   useEffect(() => {
     const status = game?.status ?? null;
     if (status === "paused" || status === "game-over") {
-      overlayActionRef.current?.focus();
+      overlayActionRef.current?.focus({ preventScroll: true });
     } else if (status === "playing" && previousStatus.current !== "playing") {
-      boardRef.current?.focus();
+      boardRef.current?.focus({ preventScroll: true });
     }
     previousStatus.current = status;
   }, [game?.status]);
