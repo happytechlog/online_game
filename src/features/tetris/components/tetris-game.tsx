@@ -7,6 +7,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { useLanguage } from "@/src/components/providers/language-provider";
@@ -178,7 +179,6 @@ function RepeatControl({
 }) {
   const delayTimer = useRef<number | null>(null);
   const repeatTimer = useRef<number | null>(null);
-  const pointerAction = useRef(false);
 
   const stopRepeating = useCallback(() => {
     if (delayTimer.current !== null) {
@@ -194,7 +194,6 @@ function RepeatControl({
   useEffect(() => {
     const handleWindowBlur = () => {
       stopRepeating();
-      pointerAction.current = false;
     };
     window.addEventListener("blur", handleWindowBlur);
     return () => {
@@ -208,7 +207,6 @@ function RepeatControl({
 
   function handlePointerDown(event: ReactPointerEvent<HTMLButtonElement>) {
     if (event.button !== 0) return;
-    pointerAction.current = true;
     try {
       event.currentTarget.setPointerCapture(event.pointerId);
     } catch {
@@ -222,17 +220,11 @@ function RepeatControl({
 
   function handlePointerUp() {
     stopRepeating();
-    window.setTimeout(() => {
-      pointerAction.current = false;
-    }, 0);
   }
 
-  function handleClick() {
-    if (pointerAction.current) {
-      pointerAction.current = false;
-      return;
-    }
-    action();
+  function handleClick(event: ReactMouseEvent<HTMLButtonElement>) {
+    // Pointer presses already act on pointerdown; detail 0 is keyboard or assistive activation.
+    if (event.detail === 0) action();
   }
 
   return (
